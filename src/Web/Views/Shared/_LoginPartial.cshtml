@@ -1,0 +1,32 @@
+﻿@if (User.Identity.IsAuthenticated)
+{
+    <div class="esh-identity">
+        <section class="esh-identity-section">
+            <div class="esh-identity-item">
+                <a asp-area="" asp-controller="Manage" asp-action="Index" class="esh-identity-name esh-identity-name--upper">
+                    Account
+                </a>
+                <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post" id="logoutForm" class="navbar-right">
+                    <a href="javascript:document.getElementById('logoutForm').submit()" class="esh-identity-name esh-identity-name--upper">
+                        Sign Out
+                    </a>
+                </form>
+            </div>
+        </section>
+    </div>
+}
+else
+{
+    <div class="esh-identity">
+        <section class="esh-identity-section">
+            <div class="esh-identity-item">
+                <a asp-area="" asp-controller="Account" asp-action="SignIn" class="esh-identity-name esh-identity-name--upper">
+                    Login
+                </a>
+            </div>
+        </section>
+    </div>
+}
+
+
+
