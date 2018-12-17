@@ -3,6 +3,7 @@ using Inkett.Web.Viewmodels.Profile;
 using Inkett.ApplicationCore.Interfaces.Services;
 using System.Threading.Tasks;
 using Inkett.ApplicationCore.Entitites.Profile;
+using Ardalis.GuardClauses;
 
 namespace Inkett.Web.Services
 {
@@ -18,6 +19,7 @@ namespace Inkett.Web.Services
         public async Task<ProfileViewModel> GetProfileViewModel(string accountId)
         {
             var profile = await _profileService.GetProfileByAccountId(accountId);
+            Guard.Against.Null(profile,nameof(profile));
             return CreateProfileViewModel(profile);
         }
 
@@ -25,8 +27,9 @@ namespace Inkett.Web.Services
         {
             var profileViewModel = new ProfileViewModel() {
             ProfileName=profile.ProfileName,
-            ProfileDescription=profile.ProfileDescription};
-
+            ProfileDescription=profile.ProfileDescription,
+            ProfilePictureUri=profile.ProfilePicture,
+            CoverPictureUri=profile.CoverPicture};
             return profileViewModel;
         }
     }

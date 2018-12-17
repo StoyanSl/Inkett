@@ -95,7 +95,7 @@ namespace Inkett.Web.Controllers
                 {
                     await _profileService.CreateProfileAsync(user.Id,model.ProfileName,String.Empty);
                     await _signInManager.SignInAsync(user, isPersistent: true);
-                    return RedirectToAction("Create","Profile");
+                    return RedirectToAction("Index","Profile");
                 }
                 AddErrors(result);
             }

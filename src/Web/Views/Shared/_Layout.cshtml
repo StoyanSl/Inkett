@@ -12,19 +12,13 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow fixed-top">
-            <div class="container-fluid">
-                <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Toggle Menu</a>
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Web</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <partial name="_LoginPartial" />
-            </div>
-        </nav>
-    </header>
+    <nav class="navbar fixed-top navbar-dark bg-dark">
+        <div class="container">
+            <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle"><span class="navbar-toggler-icon"></span></a>
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Web</a>
+            <partial name="_LoginPartial" />
+        </div>
+    </nav>
     <div id="wrapper">
         <partial name="_SideBar" />
         <div id="page-content-wrapper">

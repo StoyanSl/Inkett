@@ -8,6 +8,6 @@ namespace Inkett.Web.Interfaces.Services
 {
     public interface IProfileViewModelService
     {
-        Task<ProfileViewModel> GetProfileViewModel(string userName);
+        Task<ProfileViewModel> GetProfileViewModel(string userId);
     }
 }

@@ -5,12 +5,15 @@ namespace Inkett.Web.Viewmodels.Profile
 {
     public class ProfileViewModel
     {
-        [Required]
-        [ProfileName]
+        
         [Display(Name = "Profile Name")]
         public string ProfileName { get; set; }
         
         [DataType(DataType.Text)]
         public string ProfileDescription { get; set; }
+
+        public string ProfilePictureUri { get; set; }
+
+        public string CoverPictureUri { get; set; }
     }
 }

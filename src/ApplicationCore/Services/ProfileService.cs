@@ -3,6 +3,7 @@ using Inkett.ApplicationCore.Interfaces.Repositories;
 using Inkett.ApplicationCore.Interfaces.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +26,11 @@ namespace Inkett.ApplicationCore.Services
         public Task<Profile> GetProfileByAccountId(string id)
         {
             return _profileRepository.GetByAccountIdAsync(id);
+        }
+
+        public bool ProfileNameExists(string profileName)
+        {
+            return _profileRepository.ListAll().Any(x=>x.ProfileName==profileName);
         }
     }
 }

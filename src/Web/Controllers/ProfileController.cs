@@ -24,9 +24,20 @@ namespace Inkett.Web.Controllers
 
         [HttpGet]
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var user = await _userManager.GetUserAsync(User);
+            var profileViewModel = await _profileViewModelService.GetProfileViewModel(user.Id);
+            return View(profileViewModel);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Edit()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var profileViewModel = await _profileViewModelService.GetProfileViewModel(user.Id);
+            return View(profileViewModel);
         }
     }
 }

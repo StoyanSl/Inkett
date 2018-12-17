@@ -24,6 +24,8 @@ namespace Inkett.ApplicationCore.Entitites.Profile
 
         public string ProfilePicture { get; set; }
 
+        public string CoverPicture { get; set; }
+
         public string ProfileDescription { get; set; }
     }
 }

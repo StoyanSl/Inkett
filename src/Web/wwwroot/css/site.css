@@ -4,50 +4,55 @@ for details on configuring this project to bundle and minify static web assets. 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
+
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .border-top {
-  border-top: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
 }
+
 .border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
 button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+    font-size: 1rem;
+    line-height: inherit;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    padding-top: 35px;
 }
+
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  /* Set the fixed height of the footer here */
-  height: 60px;
-  line-height: 60px; /* Vertically center the text there */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    line-height: 60px; /* Vertically center the text there */
 }
+
 body {
     overflow-x: hidden;
 }
@@ -65,6 +70,7 @@ body {
     }
 
 #sidebar-wrapper {
+    margin-right: 0px;
     z-index: 1000;
     position: fixed;
     left: 250px;
@@ -72,7 +78,7 @@ body {
     height: 100%;
     margin-left: -250px;
     overflow-y: auto;
-    background: #000;
+    background: #000000;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -80,7 +86,7 @@ body {
 }
 
 #wrapper.toggled #sidebar-wrapper {
-    width: 250px;
+    width: 200px;
 }
 
 #page-content-wrapper {
@@ -128,6 +134,7 @@ body {
             }
 
     .sidebar-nav > .sidebar-brand {
+        margin-top: 20px;
         height: 65px;
         font-size: 18px;
         line-height: 60px;
@@ -145,16 +152,47 @@ body {
 .fb-profile img.fb-image-lg {
     z-index: 0;
     width: 100%;
-    max-height:450px;
-    margin-bottom: 10px;
+    max-height: 450px;
+    margin-bottom: 0px;
 }
 
 .fb-image-profile {
     margin: -90px 10px 0px 50px;
-    z-index: 9;
+    z-index: 0;
+    position: relative;
     width: 20%;
 }
+.hover10 figure img {
+    -webkit-filter: grayscale(0) blur(0);
+    filter: grayscale(0) blur(0);
+    -webkit-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
+}
 
+.hover10 figure:hover img {
+    -webkit-filter: grayscale(100%) blur(1px);
+    filter: grayscale(100%) blur(1px);
+}
+.hover10 figure:hover .middle {
+   opacity:1;
+}
+
+.middle {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}
+.middle-text {
+    background-color: none;
+    color: white;
+    font-size: 16px;
+    padding: 16px 32px;
+}
 @media(min-width:768px) {
     #wrapper {
         padding-left: 0;
@@ -169,7 +207,7 @@ body {
     }
 
     #wrapper.toggled #sidebar-wrapper {
-        width: 250px;
+        width: 200px;
     }
 
     #page-content-wrapper {
@@ -184,7 +222,7 @@ body {
 
     .fb-profile-text > h1 {
         font-weight: 700;
-        font-size: 16px;
+        font-size: 32px;
     }
 
     .fb-image-profile {

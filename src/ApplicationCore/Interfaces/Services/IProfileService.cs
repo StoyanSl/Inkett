@@ -7,5 +7,6 @@ namespace Inkett.ApplicationCore.Interfaces.Services
     {
         Task CreateProfileAsync(string accountId, string userName, string profileDescription);
         Task<Profile> GetProfileByAccountId(string id);
+        bool ProfileNameExists(string profileName);
     }
 }

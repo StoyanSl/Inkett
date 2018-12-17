@@ -1,8 +1,27 @@
-﻿<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-<div class="container">
-    <div class="fb-profile">
-        <img align="left" class="fb-image-lg" src="https://scontent-sof1-1.xx.fbcdn.net/v/t1.0-9/23472765_1843087849057311_736694468743797665_n.jpg?_nc_cat=103&_nc_ht=scontent-sof1-1.xx&oh=88e404d513562b56dce087bb07cf5ca1&oe=5C9FAE5D" alt="Profile image example" />
-        <img align="left" class="fb-image-profile img-thumbnail" src="https://scontent-sof1-1.xx.fbcdn.net/v/t1.0-9/23519038_1845094528856643_5907086588489992593_n.jpg?_nc_cat=103&_nc_ht=scontent-sof1-1.xx&oh=a5ef2e0d3c4b2ed56c74f6b6b141b8f0&oe=5CA7280F" alt="Profile image example" />
+﻿@model ProfileViewModel
 
+<div class="container" >
+    <div class="fb-profile">
+        <img align="left" class="fb-image-lg" src="@Model.CoverPictureUri" alt="Profile image example" />
+        <img align="left" class="fb-image-profile img-thumbnail" src="@Model.ProfilePictureUri" alt="Profile image example" />
+        <div class="fb-profile-text">
+            <h1>@Model.ProfileName</h1>
+        </div>
     </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="btn btn-light" href="#">Profile</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggler">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item active">
+                    <a class="btn btn-light" href="#">Tattoos</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="btn btn-light" asp-controller="Profile" asp-action="Edit">Edit <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 </div>

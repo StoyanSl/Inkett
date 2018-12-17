@@ -1,0 +1,60 @@
+﻿@model ProfileViewModel
+
+<div class="row">
+    <div class="fb-profile hover10">
+        <figure>
+            <img align="left" id="coverPic"  class="fb-image-lg hoverCoverPic" src="@Model.CoverPictureUri" alt="To be set" />
+            
+        </figure>
+        <div class="container">
+            <figure>
+                <img align="left" id="profilePic" class="fb-image-profile img-thumbnail hoverProfilePic " src="@Model.ProfilePictureUri" alt="To be set" />
+            </figure>
+        </div>
+        <input id='uploadProfileImg' type='file' style="display:none">
+        <input id='uploadCoverImg' type='file' style="display:none">
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $('.fb-image-lg').click(function () {
+            $('#uploadCoverImg').click();
+        });
+
+        $('.fb-image-profile').click(function () {
+            $('#uploadProfileImg').click();
+        });
+
+        function readProfilePic() {
+
+            if (this.files && this.files[0]) {
+
+                var FR = new FileReader();
+
+                FR.addEventListener("load", function (e) {
+                    document.getElementById("profilePic").src = e.target.result;
+                });
+
+                FR.readAsDataURL(this.files[0]);
+            }
+
+        }
+        function readCoverPic() {
+
+            if (this.files && this.files[0]) {
+
+                var FR = new FileReader();
+
+                FR.addEventListener("load", function (e) {
+                    document.getElementById("coverPic").src = e.target.result;
+                });
+
+                FR.readAsDataURL(this.files[0]);
+            }
+
+        }
+
+        document.getElementById("uploadProfileImg").addEventListener("change", readProfilePic);
+        document.getElementById("uploadCoverImg").addEventListener("change", readCoverPic);
+    </script>
+}

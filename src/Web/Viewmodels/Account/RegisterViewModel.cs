@@ -12,7 +12,7 @@ namespace Inkett.Web.Viewmodels.Account
 
         [Required]
         [ProfileName]
-        [Display(Name = "ProfileName")]
+        [Display(Name = "Profile Name")]
         public string ProfileName { get; set; }
 
         [Required]
