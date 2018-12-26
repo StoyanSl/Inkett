@@ -1,9 +1,12 @@
 ﻿using Ardalis.GuardClauses;
+using System.Collections.Generic;
 
-namespace Inkett.ApplicationCore.Entitites.Profile
+namespace Inkett.ApplicationCore.Entitites
 {
     public class Profile:BaseEntity
     {
+        private const string defaultCover = "https://res.cloudinary.com/inkettimgs/image/upload/v1545262005/dzibhpjdcs7fatuoqsgg.png";
+        private const string defaultProfile = "https://res.cloudinary.com/inkettimgs/image/upload/v1545262005/kuftk6oeg691tsboqibv.jpg";
         public Profile()
         {
 
@@ -16,7 +19,8 @@ namespace Inkett.ApplicationCore.Entitites.Profile
             this.AccountId = accountId;
             this.ProfileName = profileName;
             this.ProfileDescription = profileDescription;
-            this.ProfilePicture = string.Empty;
+            this.ProfilePicture =defaultProfile;
+            this.CoverPicture = defaultCover;
         }
         public string AccountId { get; set; }
 
@@ -27,5 +31,9 @@ namespace Inkett.ApplicationCore.Entitites.Profile
         public string CoverPicture { get; set; }
 
         public string ProfileDescription { get; set; }
+
+        public List<Album> Albums { get; set; }
+
+        public List<Tattoo> Tattoos { get; set; }
     }
 }

@@ -1,18 +1,23 @@
-﻿@model ProfileViewModel
+﻿@model EditProfileViewModel
 
 <div class="row">
     <div class="fb-profile hover10">
         <figure>
-            <img align="left" id="coverPic"  class="fb-image-lg hoverCoverPic" src="@Model.CoverPictureUri" alt="To be set" />
-            
+            <img align="left" id="coverPic" class="fb-image-lg hoverCoverPic" src="@Model.CoverPictureUri" alt="To be set" />
+
         </figure>
         <div class="container">
             <figure>
                 <img align="left" id="profilePic" class="fb-image-profile img-thumbnail hoverProfilePic " src="@Model.ProfilePictureUri" alt="To be set" />
             </figure>
         </div>
-        <input id='uploadProfileImg' type='file' style="display:none">
-        <input id='uploadCoverImg' type='file' style="display:none">
+        <form method="post" enctype="multipart/form-data" asp-controller="Profile" asp-action="Edit">
+            <input name="ProfilePictureFile" id='uploadProfileImg' type='file' style="display:none">
+            <input name="CoverPictureFile" id='uploadCoverImg' type='file' style="display:none">
+            <div class="form-group">
+                <input class="btn btn-success" type="submit" value="Save Changes" />
+            </div>
+        </form>
     </div>
 </div>
 @section Scripts{

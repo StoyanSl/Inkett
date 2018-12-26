@@ -1,4 +1,4 @@
-﻿using Inkett.ApplicationCore.Entitites.Profile;
+﻿using Inkett.ApplicationCore.Entitites;
 using Inkett.Infrastructure.Data.ModelConfig;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,9 +16,31 @@ namespace Inkett.Infrastructure.Data
 
         public DbSet<Profile> Profiles { get; set; }
 
+        public DbSet<Album> Albums { get; set; }
+
+        public DbSet<Style> Styles { get; set; }
+
+        public DbSet<Tattoo> Tattoos { get; set; }
+
+        public DbSet<TattooStyle> TattooStyles { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Profile>().HasMany(a => a.Albums).WithOne();
+
+            modelBuilder.Entity<TattooStyle>().Ignore(ts => ts.Id);
+            modelBuilder.Entity<TattooStyle>()
+                .HasKey(ts => new { ts.StyleId,ts.TattooId });
+            modelBuilder.Entity<TattooStyle>()
+                .HasOne(ts=>ts.Tattoo)
+                .WithMany(t=> t.TattooStyles)
+                .HasForeignKey(ts => ts.TattooId);
+            modelBuilder.Entity<TattooStyle>()
+                .HasOne(ts => ts.Style)
+                .WithMany(t => t.TattooStyles)
+                .HasForeignKey(ts => ts.StyleId);
         }
     }
 }

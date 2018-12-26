@@ -2,7 +2,7 @@
 
 namespace Inkett.ApplicationCore.Interfaces.Services
 {
-    interface IEmailSender
+    public interface IEmailSender
     {
         Task SendEmailAsync(string email, string subject, string message);
     }

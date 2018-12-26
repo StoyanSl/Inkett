@@ -33,7 +33,7 @@ namespace Inkett.Web.Controllers
         // GET: /Account/SignIn 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> SignIn(string returnUrl = null)
+        public async Task<IActionResult> Login(string returnUrl = null)
         {
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
@@ -49,7 +49,7 @@ namespace Inkett.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SignIn(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             if (!ModelState.IsValid)
             {
@@ -57,12 +57,16 @@ namespace Inkett.Web.Controllers
             }
             ViewData["ReturnUrl"] = returnUrl;
             ApplicationUser signedUser = await _userManager.FindByEmailAsync(model.Email);
-            var result = await _signInManager.PasswordSignInAsync(signedUser, model.Password, model.RememberMe, lockoutOnFailure: false);
-            
-            if (result.Succeeded)
+            if (signedUser!=null)
             {
-                return RedirectToLocal(returnUrl);
+                var result = await _signInManager.PasswordSignInAsync(signedUser, model.Password, model.RememberMe, lockoutOnFailure: false);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToLocal(returnUrl);
+                }
             }
+            
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return View(model);
         }
@@ -89,7 +93,7 @@ namespace Inkett.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { Email = model.Email, UserName=model.Email.Substring(0,model.Email.IndexOf("@"))};
+                var user = new ApplicationUser { Email = model.Email, UserName=model.Email};
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -120,8 +124,13 @@ namespace Inkett.Web.Controllers
 
         private void AddErrors(IdentityResult result)
         {
+            
             foreach (var error in result.Errors)
             {
+                if (error.Code== "DuplicateUserName")
+                {
+                  error.Description=  error.Description.Replace("User name", "");
+                }
                 ModelState.AddModelError("", error.Description);
             }
         }

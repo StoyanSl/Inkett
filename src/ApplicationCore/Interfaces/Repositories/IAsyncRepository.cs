@@ -10,7 +10,9 @@ namespace Inkett.ApplicationCore.Interfaces.Repositories
     {
         Task<T> GetByIdAsync(int id);
         Task<IReadOnlyList<T>> ListAllAsync();
+        Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec);
         Task<T> AddAsync(T entity);
+        Task<T> GetSingleBySpec(ISpecification<T> spec);
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);
     }

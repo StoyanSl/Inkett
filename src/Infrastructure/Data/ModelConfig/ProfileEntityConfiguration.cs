@@ -1,4 +1,4 @@
-﻿using Inkett.ApplicationCore.Entitites.Profile;
+﻿using Inkett.ApplicationCore.Entitites;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;

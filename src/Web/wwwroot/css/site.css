@@ -25,7 +25,7 @@ html {
     box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
-button.accept-policy {
+.accept-policy {
     font-size: 1rem;
     line-height: inherit;
 }
@@ -70,7 +70,6 @@ body {
     }
 
 #sidebar-wrapper {
-    margin-right: 0px;
     z-index: 1000;
     position: fixed;
     left: 250px;
@@ -149,17 +148,19 @@ body {
                 background: none;
             }
 
-.fb-profile img.fb-image-lg {
+.fb-image-lg {
     z-index: 0;
     width: 100%;
-    max-height: 450px;
-    margin-bottom: 0px;
+    height: 450px;
+    width:960px;
+    margin-bottom: 0;
 }
 
 .fb-image-profile {
-    margin: -90px 10px 0px 50px;
+    margin: -90px 10px 0 50px;
     z-index: 0;
     position: relative;
+    height: 186px;
     width: 20%;
 }
 .hover10 figure img {
@@ -193,7 +194,7 @@ body {
     font-size: 16px;
     padding: 16px 32px;
 }
-@media(min-width:768px) {
+@media only screen and (max-width: 768px) {
     #wrapper {
         padding-left: 0;
     }
@@ -226,8 +227,9 @@ body {
     }
 
     .fb-image-profile {
-        margin: -110px 10px 0px 25px;
+        margin: -110px 10px 0 25px;
         z-index: 9;
+        height: auto;
         width: 20%;
     }
 }

@@ -8,6 +8,7 @@ using Inkett.ApplicationCore.Services;
 using Inkett.Infrastructure.Data;
 using Inkett.Infrastructure.Identity;
 using Inkett.Web.Interfaces.Services;
+using Inkett.Infrastructure.Services;
 using Inkett.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,20 +31,18 @@ namespace Web
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();
 
-           
-
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+                
             });
             services.AddDbContext<AppIdentityDbContext>(c =>
                 c.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
@@ -53,15 +52,19 @@ namespace Web
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
-
-            services.AddScoped<IProfileRepository, ProfileRepository>();
+            
             services.AddScoped<IProfileService, ProfileService>();
+            services.AddScoped<IAlbumService, AlbumService>();
+            services.AddScoped<ITattooService, TattooService>();
+            services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<IImageUploader, ImageUploader>();
             services.AddScoped<IProfileViewModelService, ProfileViewModelService>();
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddScoped<IAlbumViewModelService, AlbumViewModelService>();
+            services.AddScoped<ITattooViewModelService, TattooViewModelService>();
+            services.AddMvc(options=> { options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()); }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -71,7 +74,6 @@ namespace Web
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -85,7 +87,6 @@ namespace Web
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
-
             });
         }
     }

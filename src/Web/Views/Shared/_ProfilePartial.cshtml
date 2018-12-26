@@ -1,0 +1,25 @@
+﻿@model ProfileViewModel
+
+<div class="fb-profile">
+    <img align="left" class="fb-image-lg" src="@Model.CoverPictureUri" alt="Profile image example" />
+    <img align="left" class="fb-image-profile img-thumbnail" src="@Model.ProfilePictureUri" alt="Profile image example" />
+    <div class="fb-profile-text">
+        <h1>@Model.ProfileName</h1>
+    </div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="btn btn-light" href="#">Profile</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarToggler">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+                <a class="btn btn-light" asp-controller="Profile" asp-action="Albums">Tattoos</a>
+            </li>
+            <li class="nav-item active">
+                <a class="btn btn-light" asp-controller="Profile" asp-action="Edit">Edit <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>

@@ -1,0 +1,31 @@
+﻿@model CreateTattooViewModel
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <section>
+                <form asp-controller="Tattoo" asp-action="Create" enctype="multipart/form-data" method="post" class="form-horizontal">
+                    <h4>Upload Tattoo</h4>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label form-label"></label>
+                        <input asp-for="Description" class="form-control form-input form-input-center" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TattooPicture" class="control-label form-label"></label>
+                        <input asp-for="TattooPicture" id='uploadProfileImg' type='file'>
+                    </div>
+                    <div class="form-group">
+                        <partial name="_StylesCheckboxesPartial" model="Model.StylesCheckBoxes" />
+                    </div>
+                    <div class="form-group">
+                        <select asp-for="Album" asp-items="Model.Albums"></select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default btn-brand btn-brand-big">&nbsp;Create Album&nbsp;</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+﻿@model List<CheckboxModel>
+@{ 
+    var StylesCheckBoxes = Model;
+}
+@for (var i = 0; i < StylesCheckBoxes.Count; i++)
+{
+    <div class="checkbox-inline">
+        <input type="checkbox" asp-for="@StylesCheckBoxes[i].Checked" />
+        <input type="hidden" asp-for="@StylesCheckBoxes[i].Text" />
+        <input type="hidden" asp-for="@StylesCheckBoxes[i].Value" />
+        <label asp-for="@StylesCheckBoxes[i].Checked">@StylesCheckBoxes[i].Text</label>
+    </div>
+}

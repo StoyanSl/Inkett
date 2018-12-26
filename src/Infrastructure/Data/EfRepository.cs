@@ -4,6 +4,7 @@ using Inkett.ApplicationCore.Interfaces.Repositories;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Inkett.ApplicationCore.Interfaces;
 
 namespace Inkett.Infrastructure.Data
 {
@@ -50,7 +51,6 @@ namespace Inkett.Infrastructure.Data
         {
             return await _dbContext.Set<T>().FindAsync(id);
         }
-
         public IEnumerable<T> ListAll()
         {
             return _dbContext.Set<T>().AsEnumerable();
@@ -59,6 +59,17 @@ namespace Inkett.Infrastructure.Data
         {
             return await _dbContext.Set<T>().ToListAsync();
         }
+
+        public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).ToListAsync();
+        }
+
+        public async Task<T> GetSingleBySpec(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).FirstOrDefaultAsync();
+        }
+
         public void Update(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
@@ -68,6 +79,11 @@ namespace Inkett.Infrastructure.Data
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
+        }
+
+        private IQueryable<T> ApplySpecification(ISpecification<T> spec)
+        {
+            return SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec);
         }
     }
 }
