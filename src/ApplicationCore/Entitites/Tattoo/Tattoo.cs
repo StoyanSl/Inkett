@@ -1,9 +1,9 @@
-﻿
+﻿using Inkett.ApplicationCore.Interfaces;
 using System.Collections.Generic;
 
 namespace Inkett.ApplicationCore.Entitites
 {
-    public class Tattoo : BaseEntity
+    public class Tattoo : BaseEntity,IProfileAuthorizable
     {
         public string TattooPictureUri { get; set; }
 

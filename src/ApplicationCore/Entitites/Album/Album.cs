@@ -1,11 +1,9 @@
 ﻿using Ardalis.GuardClauses;
+using Inkett.ApplicationCore.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Inkett.ApplicationCore.Entitites
 {
-    public class Album : BaseEntity
+    public class Album : BaseEntity, IProfileAuthorizable
     {
         private const string defaultPictureUri = "https://res.cloudinary.com/inkettimgs/image/upload/v1545352616/rc7oscdwtwzpg6aheec8.jpg";
         private const string defaultAlbumTitle = "My Tattoos";

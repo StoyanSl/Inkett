@@ -5,10 +5,9 @@ namespace Inkett.ApplicationCore.Interfaces.Services
 {
     public interface IProfileService
     {
-        Task CreateProfileAsync(string accountId, string userName, string profileDescription);
-        Task<Profile> GetProfileByAccountId(string id);
+        Task<Profile> CreateProfileAsync(string accountId, string userName, string profileDescription);
         bool ProfileNameExists(string profileName);
-        Task UpdateProfilePicture(string accountId, string pictureUrl);
-        Task UpdateCoverPicture(string accountId, string pictureUrl);
+        Task UpdateProfilePicture(int profileId, string pictureUrl);
+        Task UpdateCoverPicture(int profileId, string pictureUrl);
     }
 }
