@@ -2,28 +2,22 @@
 using Inkett.Infrastructure.Identity;
 using Inkett.Web.Interfaces.Services;
 using Inkett.Web.Viewmodels.Profile;
-using Inkett.Web.Viewmodels.Profile.BindingModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
+
 
 namespace Inkett.Web.Controllers
 {
     public class ProfileController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly InkettUserManager _userManager;
         private readonly IProfileViewModelService _profileViewModelService;
         private readonly IImageService _imageService;
         private readonly IProfileService _profileService;
         private readonly IAlbumService _albumService;
         public ProfileController(
-          UserManager<ApplicationUser> userManager,
+          InkettUserManager userManager,
           IProfileViewModelService profileViewModelService,
           IImageService imageService,
           IProfileService profileService,
@@ -39,10 +33,14 @@ namespace Inkett.Web.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id)
         {
-            var user = await _userManager.GetUserAsync(User);
-            var profileViewModel = await _profileViewModelService.GetProfileViewModel(user.Id);
+            if (id==0)
+            {
+                id = _userManager.GetProfileId(User);
+            }
+            var userId =  _userManager.GetUserId(User);
+            var profileViewModel = await _profileViewModelService.GetProfileViewModel(id);
             return View(profileViewModel);
         }
 
@@ -50,27 +48,26 @@ namespace Inkett.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Edit()
         {
-            var user = await _userManager.GetUserAsync(User);
-            var profileViewModel = await _profileViewModelService.GetEditProfileViewModel(user.Id);
+            var profileId =  _userManager.GetProfileId(User);
+            var profileViewModel = await _profileViewModelService.GetEditProfileViewModel(profileId);
             return View(profileViewModel);
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit(EditProfileBindingModel profileBindingModel)
+        public async Task<IActionResult> Edit(EditProfileViewModel profileBindingModel)
         {
-            
             if (!ModelState.IsValid)
             {
                 RedirectToAction("Edit");
             }
-            var user = await _userManager.GetUserAsync(User);
+            var profileId =  _userManager.GetProfileId(User);
             if (profileBindingModel.CoverPictureFile!=null)
             {
                 var result=_imageService.UploadImage(profileBindingModel.CoverPictureFile);
                 if (result.Success)
                 {
-                   await _profileService.UpdateCoverPicture(user.Id,result.ImageUri);
+                   await _profileService.UpdateCoverPicture(profileId,result.ImageUri);
                 }
             }
             if (profileBindingModel.ProfilePictureFile != null)
@@ -78,7 +75,7 @@ namespace Inkett.Web.Controllers
                 var result = _imageService.UploadImage(profileBindingModel.ProfilePictureFile);
                 if (result.Success)
                 {
-                    await _profileService.UpdateProfilePicture(user.Id, result.ImageUri);
+                    await _profileService.UpdateProfilePicture(profileId, result.ImageUri);
                 }
             }
             return RedirectToAction("Index");
@@ -86,11 +83,11 @@ namespace Inkett.Web.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Albums()
+        public async Task<IActionResult> Albums(int id)
         {
             var user = await _userManager.GetUserAsync(User);
-            var profileViewModel = await _profileViewModelService.GetEditProfileViewModel(user.Id);
-            return View(profileViewModel);
+            var profileAlbumsViewModel = await _profileViewModelService.GetEditProfileViewModel(2);
+            return View();
         }
     }
 }

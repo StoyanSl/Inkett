@@ -8,6 +8,6 @@ namespace Inkett.Web.Interfaces.Services
 {
     public interface IAlbumViewModelService
     {
-        Task<EditAlbumViewModel> GetEditViewModel(int profileId, int albumId);
+        Task<AlbumViewModel> GetAlbumViewModel(int profileId, int albumId);
     }
 }

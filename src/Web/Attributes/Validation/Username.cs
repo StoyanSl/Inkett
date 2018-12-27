@@ -21,7 +21,7 @@ namespace Inkett.Web.Attributes.Validation
 
             if (String.IsNullOrWhiteSpace(profileName))
             {
-                return new ValidationResult(this.IncorrectLength);
+                return new ValidationResult(this.EmptyString);
             }
             if (service.ProfileNameExists(profileName))
             {

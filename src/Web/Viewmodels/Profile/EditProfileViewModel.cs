@@ -6,12 +6,13 @@ namespace Inkett.Web.Viewmodels.Profile
 {
     public class EditProfileViewModel
     {
-        [Display(Name = "Profile Name")]
-        public string ProfileName { get; set; }
+        public ProfileViewModel ProfileViewModel { get; set; }
 
-        public string ProfilePictureUri { get; set; }
+        [ImageValidation]
+        public IFormFile CoverPictureFile { get; set; }
 
-        public string CoverPictureUri { get; set; }
+        [ImageValidation]
+        public IFormFile ProfilePictureFile { get; set; }
 
     }
 }

@@ -17,7 +17,7 @@ namespace Inkett.Web.Services
         {
             _albumRepository = albumRepository;
         }
-        public async Task<EditAlbumViewModel> GetEditViewModel(int profileId,int albumId)
+        public async Task<AlbumViewModel> GetAlbumViewModel(int profileId,int albumId)
         {
             var spec = new AlbumByProfileSpecification(albumId, profileId);
             var album = await _albumRepository.GetSingleBySpec(spec);
@@ -25,7 +25,7 @@ namespace Inkett.Web.Services
             {
                 return null;
             }
-            var viewModel = new EditAlbumViewModel
+            var viewModel = new AlbumViewModel
             {
                 Title = album.Title,
                 Description = album.Description,

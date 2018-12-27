@@ -9,9 +9,9 @@ namespace Inkett.Infrastructure.Services
 {
     public class ImageUploader : IImageUploader
     {
-        private const string cloudName = "";
-        private const string apiKey = "";
-        private const string apiSecret = "";
+        private const string cloudName = "inkettimgs";
+        private const string apiKey = "291351422639137";
+        private const string apiSecret = "EvDuWYGlZFActWoWpxVaVtbrfY8";
 
         private readonly Cloudinary _cloudinary;
 

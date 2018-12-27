@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Inkett.Web.Viewmodels.Album.BindingModels;
 using Inkett.ApplicationCore.Interfaces.Services;
 using Inkett.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -11,25 +10,34 @@ using System;
 using Inkett.ApplicationCore.Entitites;
 using Inkett.Web.Interfaces.Services;
 using Microsoft.AspNetCore.Routing;
+using Inkett.Web.Viewmodels.Album;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Inkett.Web.Controllers
 {
     public class AlbumController:Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly InkettUserManager _userManager;
         private readonly IAlbumService _albumService;
         private readonly IProfileService _profileService;
-        private readonly IAlbumViewModelService _albumViewModelService; 
+        private readonly IAlbumViewModelService _albumViewModelService;
+        private readonly IAuthorizationService _authorizationService;
+        private readonly IAsyncRepository<Album> _asyncRepository;
+
         public AlbumController(
-            UserManager<ApplicationUser> userManager,
+            InkettUserManager userManager,
             IAlbumService albumService,
             IProfileService profileService,
-            IAlbumViewModelService albumViewModelService)
+            IAlbumViewModelService albumViewModelService,
+            IAuthorizationService authorizationService,
+            IAsyncRepository<Album> asyncRepository)
         {
             _albumService = albumService;
             _profileService = profileService;
             _userManager = userManager;
             _albumViewModelService = albumViewModelService;
+            _authorizationService = authorizationService;
+            _asyncRepository = asyncRepository;
         }
 
         public IActionResult Create()
@@ -38,13 +46,12 @@ namespace Inkett.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateAlbumBindingModel bindingModel)
+        public async Task<IActionResult> Create(AlbumViewModel bindingModel)
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.GetUserAsync(User);
-                var profile = await _profileService.GetProfileByAccountId(user.Id);
-                await _albumService.CreateAlbum(profile.Id,bindingModel.Title,bindingModel.Description,bindingModel.AlbumPicture);
+                var profileId =  _userManager.GetProfileId(User);
+                await _albumService.CreateAlbum(profileId,bindingModel.Title,bindingModel.Description,bindingModel.AlbumPicture);
             }
             return View(bindingModel);
         }
@@ -52,10 +59,11 @@ namespace Inkett.Web.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var user = await _userManager.GetUserAsync(User);
-            var profile = await _profileService.GetProfileByAccountId(user.Id);
-            var album = await _albumViewModelService.GetEditViewModel(profile.Id, id);
-            if (album is null)
+            var album = await _asyncRepository.GetByIdAsync(id);
+            var result = await _authorizationService.AuthorizeAsync(User, album, "EditPolicy");
+            var profileId = _userManager.GetProfileId(User);
+            var albumvm = await _albumViewModelService.GetAlbumViewModel(profileId, id);
+            if (albumvm is null)
             {
                 throw new ApplicationException();
             }
@@ -63,11 +71,11 @@ namespace Inkett.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id,EditAlbumBindingModel editAlbumBindingModel)
+        public async Task<IActionResult> Edit(int id, AlbumViewModel editAlbumBindingModel)
         {
-            var user = await _userManager.GetUserAsync(User);
-            var profile = await _profileService.GetProfileByAccountId(user.Id);
-            await _albumService.EditAlbum(profile.Id, id, editAlbumBindingModel.Title,
+            
+            var profileId = _userManager.GetProfileId(User);
+            await _albumService.EditAlbum(profileId, id, editAlbumBindingModel.Title,
                 editAlbumBindingModel.Description,
                 editAlbumBindingModel.AlbumPicture);
             return RedirectToAction("Edit", id);

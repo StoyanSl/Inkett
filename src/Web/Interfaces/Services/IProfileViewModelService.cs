@@ -1,14 +1,12 @@
 ﻿using Inkett.Web.Viewmodels.Profile;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace Inkett.Web.Interfaces.Services
 {
     public interface IProfileViewModelService
     {
-        Task<ProfileViewModel> GetProfileViewModel(string userId);
-        Task<EditProfileViewModel> GetEditProfileViewModel(string userId);
+        Task<ProfileViewModel> GetProfileViewModel(int profileId);
+        Task<EditProfileViewModel> GetEditProfileViewModel(int profileId);
     }
 }

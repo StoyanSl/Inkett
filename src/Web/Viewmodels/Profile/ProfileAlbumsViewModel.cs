@@ -1,7 +1,5 @@
-﻿using System;
+﻿using Inkett.Web.Viewmodels.Album;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Inkett.Web.Viewmodels.Profile
 {
@@ -9,6 +7,6 @@ namespace Inkett.Web.Viewmodels.Profile
     {
         public ProfileViewModel ProfileViewModel { get; set; }
 
-        public List<ProfileAlbumViewModel> ProfileAlbumViewModels { get; set; }
+        public List<AlbumViewModel> ProfileAlbumViewModels { get; set; }
     }
 }

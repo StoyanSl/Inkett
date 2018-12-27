@@ -21,39 +21,34 @@ namespace Inkett.ApplicationCore.Services
             _albumService = albumService;
         }
 
-        public async Task UpdateProfilePicture(string accountId, string pictureUrl)
+        public async Task UpdateProfilePicture(int profileId, string pictureUrl)
         {
-            var spec = new ProfileByAccountIdSpecification(accountId);
-            var profile =  await _profileRepository.GetSingleBySpec(spec);
+            var profile = await _profileRepository.GetByIdAsync(profileId);
             profile.ProfilePicture = pictureUrl;
-           await _profileRepository.UpdateAsync(profile);
+            await _profileRepository.UpdateAsync(profile);
         }
-        public async Task UpdateCoverPicture(string accountId, string pictureUrl)
+        public async Task UpdateCoverPicture(int profileId, string pictureUrl)
         {
-            var spec = new ProfileByAccountIdSpecification(accountId);
-            var profile = await _profileRepository.GetSingleBySpec(spec);
+
+            var profile = await _profileRepository.GetByIdAsync(profileId);
             profile.CoverPicture = pictureUrl;
             await _profileRepository.UpdateAsync(profile);
         }
 
-        public async Task CreateProfileAsync(string accountId, string userName, string profileDescription)
+        public async Task<Profile> CreateProfileAsync(string accountId, string userName, string profileDescription)
         {
             var profile = new Profile(accountId, userName, profileDescription);
-            await _profileRepository.AddAsync(profile);
+            profile = await _profileRepository.AddAsync(profile);
             await _albumService.CreateAlbum(profile.Id);
+            return profile;
         }
-
-        public async Task<Profile> GetProfileByAccountId(string id)
-        {
-            var spec = new ProfileByAccountIdSpecification(id);
-            return await _profileRepository.GetSingleBySpec(spec);
-        }
+        
 
         public bool ProfileNameExists(string profileName)
         {
-            return _profileRepository.ListAllAsync().Result.Any(x=>x.ProfileName==profileName);
+            return _profileRepository.ListAllAsync().Result.Any(x => x.ProfileName == profileName);
         }
 
-       
+
     }
 }

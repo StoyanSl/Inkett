@@ -6,7 +6,6 @@ namespace Inkett.Web.Viewmodels.Profile
 {
     public class ProfileViewModel
     {
-
         [Display(Name = "Profile Name")]
         public string ProfileName { get; set; }
 

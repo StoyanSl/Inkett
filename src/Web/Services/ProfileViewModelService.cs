@@ -19,10 +19,9 @@ namespace Inkett.Web.Services
 
         }
 
-        public async Task<ProfileViewModel> GetProfileViewModel(string accountId)
+        public async Task<ProfileViewModel> GetProfileViewModel(int profileId)
         {
-            var spec = new ProfileByAccountIdSpecification(accountId);
-            var profile = await _profileRepository.GetSingleBySpec(spec);
+            var profile = await _profileRepository.GetByIdAsync(profileId);
 
             var profileViewModel = new ProfileViewModel
             {
@@ -34,16 +33,13 @@ namespace Inkett.Web.Services
 
             return profileViewModel;
         }
-        public async Task<EditProfileViewModel> GetEditProfileViewModel(string accountId)
+        public async Task<EditProfileViewModel> GetEditProfileViewModel(int profileId)
         {
-            var spec = new ProfileByAccountIdSpecification(accountId);
-            var profile = await _profileRepository.GetSingleBySpec(spec);
+            var profileViewModel = await this.GetProfileViewModel(profileId);
 
-            var editProfileViewModel = new EditProfileViewModel
+            var editProfileViewModel = new EditProfileViewModel()
             {
-                ProfileName = profile.ProfileName,
-                ProfilePictureUri = profile.ProfilePicture,
-                CoverPictureUri = profile.CoverPicture
+                ProfileViewModel = profileViewModel
             };
 
             return editProfileViewModel;
@@ -51,7 +47,7 @@ namespace Inkett.Web.Services
         public async Task<ProfileAlbumsViewModel> GetProfileAlbumsViewModel(string accountId)
         {
             var viewModel = new ProfileAlbumsViewModel();
-            viewModel.ProfileViewModel = await GetProfileViewModel(accountId);
+            viewModel.ProfileViewModel = await GetProfileViewModel(1);
             return viewModel;
 
         }

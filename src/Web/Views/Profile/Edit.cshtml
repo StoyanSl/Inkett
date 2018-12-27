@@ -3,12 +3,11 @@
 <div class="row">
     <div class="fb-profile hover10">
         <figure>
-            <img align="left" id="coverPic" class="fb-image-lg hoverCoverPic" src="@Model.CoverPictureUri" alt="To be set" />
-
+            <img align="left" id="coverPic" class="fb-image-lg hoverCoverPic" src="@Model.ProfileViewModel.CoverPictureUri" alt="To be set" />
         </figure>
         <div class="container">
             <figure>
-                <img align="left" id="profilePic" class="fb-image-profile img-thumbnail hoverProfilePic " src="@Model.ProfilePictureUri" alt="To be set" />
+                <img align="left" id="profilePic" class="fb-image-profile img-thumbnail hoverProfilePic " src="@Model.ProfileViewModel.ProfilePictureUri" alt="To be set" />
             </figure>
         </div>
         <form method="post" enctype="multipart/form-data" asp-controller="Profile" asp-action="Edit">
