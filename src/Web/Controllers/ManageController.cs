@@ -16,13 +16,13 @@ namespace Inkett.Web.Controllers
     [Route("[controller]/[action]")]
     public class ManageController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly InkettUserManager _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UrlEncoder _urlEncoder;
 
 
         public ManageController(
-          UserManager<ApplicationUser> userManager,
+          InkettUserManager userManager,
           SignInManager<ApplicationUser> signInManager,
           UrlEncoder urlEncoder)
         {

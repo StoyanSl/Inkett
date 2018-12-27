@@ -9,18 +9,20 @@ using Microsoft.AspNetCore.Authentication;
 using Inkett.Web.Viewmodels.Account;
 using Inkett.Infrastructure.Identity;
 using Inkett.ApplicationCore.Interfaces.Services;
-
+using System.Security.Claims;
 
 namespace Inkett.Web.Controllers
 {
     public class AccountController:Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly InkettUserManager _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IProfileService _profileService;
 
+        
+
         public AccountController(
-            UserManager<ApplicationUser> userManager,
+            InkettUserManager userManager,
             SignInManager<ApplicationUser> signInManager,
             IProfileService profileService
             )
@@ -97,7 +99,8 @@ namespace Inkett.Web.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await _profileService.CreateProfileAsync(user.Id,model.ProfileName,String.Empty);
+                   var profile= await _profileService.CreateProfileAsync(user.Id,model.ProfileName,String.Empty);
+                    await _userManager.AddClaimAsync(user, new Claim("ProfileId", profile.Id.ToString()));
                     await _signInManager.SignInAsync(user, isPersistent: true);
                     return RedirectToAction("Index","Profile");
                 }

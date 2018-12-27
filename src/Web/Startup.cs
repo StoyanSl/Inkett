@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authorization;
+using Inkett.Web.Handlers;
 
 namespace Web
 {
@@ -36,6 +38,7 @@ namespace Web
         {
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
+                .AddUserManager<InkettUserManager>()
                 .AddDefaultTokenProviders();
 
             services.Configure<CookiePolicyOptions>(options =>
@@ -49,6 +52,14 @@ namespace Web
 
             services.AddDbContext<InkettContext>(c =>
                 c.UseSqlServer(Configuration.GetConnectionString("InkettConnection")));
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("EditPolicy", policy =>
+                    policy.Requirements.Add(new SameProfileRequirement()));
+            });
+
+            services.AddScoped<IAuthorizationHandler, ResourceAuthorizationHandler>();
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
