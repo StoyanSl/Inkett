@@ -7,10 +7,9 @@ namespace Inkett.Web.Interfaces.Services
 {
     public interface IProfileViewModelService
     {
-        Task<ProfileViewModel> GetProfileViewModel(int profileId);
-        Task<EditProfileViewModel> GetEditProfileViewModel(int profileId);
-        Task<ProfileAlbumsViewModel> GetProfileAlbumsViewModel(int profileId);
-        Task<ProfileTattoosViewModel> GetProfileTattoosViewModel(int profileId); 
-        ProfileViewModel GetProfileViewModel(Profile album);
+        ProfileViewModel GetProfileViewModel(Profile profile);
+        EditProfileViewModel GetEditProfileViewModel(Profile profile);
+        ProfileAlbumsViewModel GetProfileAlbumsViewModel(Profile profile);
+        ProfileTattoosViewModel GetProfileTattoosViewModel(Profile profile); 
     }
 }

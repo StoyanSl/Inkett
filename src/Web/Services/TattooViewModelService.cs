@@ -37,6 +37,23 @@ namespace Inkett.Web.Services
             _profileService = profileService;
         }
 
+        public async Task<IndexTattooViewModel> GetIndexTattooViewModel(Tattoo tattoo)
+        {
+            var viewModel = new IndexTattooViewModel();
+            viewModel.Description = tattoo.Description;
+            viewModel.PictureUri = tattoo.TattooPictureUri;
+            var styles = await _styleService.GetStyles();
+            foreach (var tattooStyle in tattoo.TattooStyles)
+            {
+                viewModel.StylesViewModels.Add(new StyleViewModel()
+                {
+                    Id = tattooStyle.StyleId,
+                    Name = styles.First(x=>x.Id== tattooStyle.StyleId).Name
+                });
+            }
+            return viewModel;
+        }
+
         public async Task<TattooViewModel> GetCreateTattooViewModel(int profileId)
         {
             var stylesTask = _styleService.GetStyles();
@@ -122,5 +139,7 @@ namespace Inkett.Web.Services
             });
             return albumsSelectList;
         }
+
+       
     }
 }

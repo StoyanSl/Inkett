@@ -21,6 +21,7 @@
 
 
   <ItemGroup>
+    <Folder Include="Viewmodels\Style\" />
     <Folder Include="wwwroot\tempImages\" />
   </ItemGroup>
 

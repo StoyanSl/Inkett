@@ -54,5 +54,16 @@ namespace Inkett.ApplicationCore.Services
             var spec = new ProfileWithAlbumsSpecification(profileId);
             return _profileRepository.GetSingleBySpec(spec);
         }
+
+        public  Task<Profile> GetProfileById(int profileId)
+        {
+           return _profileRepository.GetByIdAsync(profileId);
+        }
+
+        public Task<Profile> GetProfileWithTattoos(int profileId)
+        {
+            var spec = new ProfileWithTattoosSpecification(profileId);
+            return _profileRepository.GetSingleBySpec(spec);
+        }
     }
 }

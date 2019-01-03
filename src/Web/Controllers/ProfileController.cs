@@ -39,7 +39,12 @@ namespace Inkett.Web.Controllers
             {
                 id = _userManager.GetProfileId(User);
             }
-            var profileViewModel = await _profileViewModelService.GetProfileViewModel(id);
+            var profile = await _profileService.GetProfileById(id);
+            if (profile==null)
+            {
+                return NotFound();
+            }
+            var profileViewModel =  _profileViewModelService.GetProfileViewModel(profile);
             return View(profileViewModel);
         }
 
@@ -51,7 +56,12 @@ namespace Inkett.Web.Controllers
             {
                 id = _userManager.GetProfileId(User);
             }
-            var profileTattoosViewModel = await _profileViewModelService.GetProfileTattoosViewModel(id);
+            var profile = await _profileService.GetProfileWithTattoos(id);
+            if (profile==null)
+            {
+                return NotFound();
+            }
+            var profileTattoosViewModel = _profileViewModelService.GetProfileTattoosViewModel(profile);
             if (profileTattoosViewModel.ProfileViewModel.Id == _userManager.GetProfileId(User))
             {
                 profileTattoosViewModel.IsOwner = true;
@@ -67,7 +77,12 @@ namespace Inkett.Web.Controllers
             {
                 id = _userManager.GetProfileId(User);
             }
-            var profileAlbumsViewModel = await _profileViewModelService.GetProfileAlbumsViewModel(id);
+            var profile = await _profileService.GetProfileWithAlbums(id);
+            if (profile == null)
+            {
+                return NotFound();
+            }
+            var profileAlbumsViewModel =  _profileViewModelService.GetProfileAlbumsViewModel(profile);
             if (profileAlbumsViewModel.ProfileViewModel.Id== _userManager.GetProfileId(User))
             {
                 profileAlbumsViewModel.IsOwner = true;
@@ -80,7 +95,12 @@ namespace Inkett.Web.Controllers
         public async Task<IActionResult> Edit()
         {
             var profileId = _userManager.GetProfileId(User);
-            var profileViewModel = await _profileViewModelService.GetEditProfileViewModel(profileId);
+            var profile = await _profileService.GetProfileWithTattoos(profileId);
+            if (profile == null)
+            {
+                return NotFound();
+            }
+            var profileViewModel = _profileViewModelService.GetEditProfileViewModel(profile);
             return View(profileViewModel);
         }
 
@@ -90,7 +110,7 @@ namespace Inkett.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                RedirectToAction("Edit");
+               return RedirectToAction("Edit");
             }
             var profileId = _userManager.GetProfileId(User);
             if (profileBindingModel.CoverPictureFile != null)

@@ -26,7 +26,7 @@ namespace Inkett.ApplicationCore.Entitites
             Guard.Against.NullOrEmpty(title, nameof(title));
             this.ProfileId = profileId;
             this.Title = title;
-            this.Description = description??String.Empty;
+            this.Description = description;
             this.AlbumPictureUri = pictureUri??defaultPictureUri;
         }
 

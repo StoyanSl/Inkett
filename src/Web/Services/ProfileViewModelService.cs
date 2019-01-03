@@ -24,10 +24,8 @@ namespace Inkett.Web.Services
             _albumViewModelService = albumViewModelService;
         }
 
-        public async Task<ProfileViewModel> GetProfileViewModel(int profileId)
+        public  ProfileViewModel GetProfileViewModel(Profile profile)
         {
-            var profile = await _profileRepository.GetByIdAsync(profileId);
-
             var profileViewModel = new ProfileViewModel
             {
                 Id = profile.Id,
@@ -36,12 +34,11 @@ namespace Inkett.Web.Services
                 ProfilePictureUri = profile.ProfilePicture,
                 CoverPictureUri = profile.CoverPicture
             };
-
             return profileViewModel;
         }
-        public async Task<EditProfileViewModel> GetEditProfileViewModel(int profileId)
+        public  EditProfileViewModel GetEditProfileViewModel(Profile profile)
         {
-            var profileViewModel = await this.GetProfileViewModel(profileId);
+            var profileViewModel = this.GetProfileViewModel(profile);
 
             var editProfileViewModel = new EditProfileViewModel()
             {
@@ -50,10 +47,8 @@ namespace Inkett.Web.Services
 
             return editProfileViewModel;
         }
-        public async Task<ProfileAlbumsViewModel> GetProfileAlbumsViewModel(int profileId)
+        public ProfileAlbumsViewModel GetProfileAlbumsViewModel(Profile profile)
         {
-            var spec = new ProfileWithAlbumsSpecification(profileId);
-            var profile = await _profileRepository.GetSingleBySpec(spec);
             var viewModel = new ProfileAlbumsViewModel();
             viewModel.ProfileViewModel = this.GetProfileViewModel(profile);
             foreach (var album in profile.Albums)
@@ -62,10 +57,9 @@ namespace Inkett.Web.Services
             }
             return viewModel;
         }
-        public async Task<ProfileTattoosViewModel> GetProfileTattoosViewModel(int profileId)
+        public ProfileTattoosViewModel GetProfileTattoosViewModel(Profile profile)
         {
-            var spec = new ProfileWithTattoosSpecification(profileId);
-            var profile = await _profileRepository.GetSingleBySpec(spec);
+            
             var viewModel = new ProfileTattoosViewModel();
             viewModel.ProfileViewModel = this.GetProfileViewModel(profile);
             foreach (var tattoo in profile.Tattoos)
@@ -73,17 +67,6 @@ namespace Inkett.Web.Services
                 viewModel.ProfileTattoos.Add(_tattooViewModelService.GetListedTattooViewModel(tattoo));
             }
             return viewModel;
-        }
-        public ProfileViewModel GetProfileViewModel(Profile profile)
-        {
-            return new ProfileViewModel
-            {
-                Id=profile.Id,
-                ProfileName = profile.ProfileName,
-                ProfileDescription = profile.ProfileDescription,
-                ProfilePictureUri = profile.ProfilePicture,
-                CoverPictureUri = profile.CoverPicture
-            };
         }
     }
 }

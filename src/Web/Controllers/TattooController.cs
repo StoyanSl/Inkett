@@ -16,18 +16,21 @@ namespace Inkett.Web.Controllers
     {
         private readonly InkettUserManager _userManager;
         private readonly ITattooViewModelService _tattooViewModelService;
+        private readonly IProfileViewModelService _profileViewModelService;
         private readonly IAuthorizationService _authorizationService;
         private readonly ITattooService _tattooService;
 
         public TattooController(ITattooViewModelService tattooViewModelService,
            InkettUserManager userManager,
            IAuthorizationService authorizationService,
-            ITattooService tattooService)
+            ITattooService tattooService,
+            IProfileViewModelService profileViewModelService)
         {
             _tattooViewModelService = tattooViewModelService;
             _userManager = userManager;
             _authorizationService = authorizationService;
             _tattooService = tattooService;
+            _profileViewModelService = profileViewModelService;
     }
         public async Task<IActionResult> Create()
         {
@@ -65,12 +68,13 @@ namespace Inkett.Web.Controllers
         public async Task<IActionResult> Index(int id)
         {
             var tattoo = await _tattooService.GetTattooWithStyles(id);
-            var authorizeResult = await _authorizationService.AuthorizeAsync(User,tattoo, "EditPolicy");
-            if (!authorizeResult.Succeeded)
+            if (tattoo==null)
             {
-                return Unauthorized();
+                return NotFound();
             }
-            return RedirectToAction("Index","Home");
+            var viewModel = await _tattooViewModelService.GetIndexTattooViewModel(tattoo);
+            viewModel.ProfileViewModel = _profileViewModelService.GetProfileViewModel(tattoo.Profile);
+            return View(viewModel);
         }
 
     }

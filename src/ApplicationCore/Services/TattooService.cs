@@ -28,7 +28,7 @@ namespace Inkett.ApplicationCore.Services
             var tattoo = new Tattoo
             {
                 ProfileId = profileId,
-                Description = description,
+                Description = description??string.Empty,
                 AlbumId = albumId != 0 ?  albumId: (int?)null,
                 TattooPictureUri = result.ImageUri
             };
