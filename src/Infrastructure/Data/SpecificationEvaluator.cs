@@ -27,7 +27,13 @@ namespace Inkett.Infrastructure.Data
                 query = query.OrderBy(specification.OrderBy);
             else if (specification.OrderByDescending != null)
                 query = query.OrderByDescending(specification.OrderByDescending);
-            
+
+            if (specification.isPagingEnabled)
+            {
+                query = query.Skip(specification.Skip)
+                             .Take(specification.Take);
+            }
+
             return query;
         }
     }
