@@ -1,8 +1,12 @@
-﻿<div class="col-auto mb-3" style="padding-left:0; padding-right:0;">
-    <div class="card" style="width: 18rem; ">
-        <img class="card-img-top img-fluid" src="//placehold.it/500x280" alt="Card image cap">
-        <div class="card-img-overlay">
-            <h4 class="card-title">3 Card title</h4>
-        </div>
+﻿@model AlbumViewModel
+
+<div class="col-auto my-2" style="padding-left:0; padding-right:0;">
+    <div class="card border border-3" style="width: 18rem;">
+        <img class="card-img-top img-fluid" src="@Model.PictureUri" alt="Card image cap">
+        <a href="/Album/Index/@Model.Id">
+            <div class="card-img-overlay p-2" >
+                <h4 class="card-title">@Model.Title</h4>
+            </div>
+        </a>
     </div>
 </div>

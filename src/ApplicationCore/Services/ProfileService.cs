@@ -27,6 +27,7 @@ namespace Inkett.ApplicationCore.Services
             profile.ProfilePicture = pictureUrl;
             await _profileRepository.UpdateAsync(profile);
         }
+
         public async Task UpdateCoverPicture(int profileId, string pictureUrl)
         {
 
@@ -43,12 +44,15 @@ namespace Inkett.ApplicationCore.Services
             return profile;
         }
         
-
         public bool ProfileNameExists(string profileName)
         {
             return _profileRepository.ListAllAsync().Result.Any(x => x.ProfileName == profileName);
         }
 
-
+        public  Task<Profile> GetProfileWithAlbums(int profileId)
+        {
+            var spec = new ProfileWithAlbumsSpecification(profileId);
+            return _profileRepository.GetSingleBySpec(spec);
+        }
     }
 }

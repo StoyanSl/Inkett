@@ -1,4 +1,5 @@
-﻿using Inkett.Web.Viewmodels.Album;
+﻿using Inkett.ApplicationCore.Entitites;
+using Inkett.Web.Viewmodels.Album;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,9 @@ namespace Inkett.Web.Interfaces.Services
 {
     public interface IAlbumViewModelService
     {
-        Task<AlbumViewModel> GetAlbumViewModel(int profileId, int albumId);
+        AlbumViewModel GetAlbumViewModel(Album album);
+        Task<AlbumViewModel> GetAlbumViewModel(int albumId);
+        AlbumIndexViewModel GetIndexAlbumViewModel(Album album);
+        Task<AlbumViewModel> UpdateAlbum(Album album, AlbumViewModel albumViewModel);
     }
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Inkett.Infrastructure.Migrations.Inkett
 {
     [DbContext(typeof(InkettContext))]
-    [Migration("20181225215757_TattooRelationsFixed_Migration")]
-    partial class TattooRelationsFixed_Migration
+    [Migration("20190103133848_Initial_Migration")]
+    partial class Initial_Migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -123,13 +123,14 @@ namespace Inkett.Infrastructure.Migrations.Inkett
             modelBuilder.Entity("Inkett.ApplicationCore.Entitites.Tattoo", b =>
                 {
                     b.HasOne("Inkett.ApplicationCore.Entitites.Album", "Album")
-                        .WithMany()
-                        .HasForeignKey("AlbumId");
+                        .WithMany("Tattoos")
+                        .HasForeignKey("AlbumId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Inkett.ApplicationCore.Entitites.Profile", "Profile")
                         .WithMany("Tattoos")
                         .HasForeignKey("ProfileId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Inkett.ApplicationCore.Entitites.TattooStyle", b =>

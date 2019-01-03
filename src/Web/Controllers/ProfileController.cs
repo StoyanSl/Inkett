@@ -39,16 +39,47 @@ namespace Inkett.Web.Controllers
             {
                 id = _userManager.GetProfileId(User);
             }
-            var userId =  _userManager.GetUserId(User);
             var profileViewModel = await _profileViewModelService.GetProfileViewModel(id);
             return View(profileViewModel);
         }
 
         [HttpGet]
         [Authorize]
+        public async Task<IActionResult> Tattoos(int id)
+        {
+            if (id == 0)
+            {
+                id = _userManager.GetProfileId(User);
+            }
+            var profileTattoosViewModel = await _profileViewModelService.GetProfileTattoosViewModel(id);
+            if (profileTattoosViewModel.ProfileViewModel.Id == _userManager.GetProfileId(User))
+            {
+                profileTattoosViewModel.IsOwner = true;
+            }
+            return View(profileTattoosViewModel);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Albums(int id)
+        {
+            if (id == 0)
+            {
+                id = _userManager.GetProfileId(User);
+            }
+            var profileAlbumsViewModel = await _profileViewModelService.GetProfileAlbumsViewModel(id);
+            if (profileAlbumsViewModel.ProfileViewModel.Id== _userManager.GetProfileId(User))
+            {
+                profileAlbumsViewModel.IsOwner = true;
+            }
+            return View(profileAlbumsViewModel);
+        }
+
+        [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Edit()
         {
-            var profileId =  _userManager.GetProfileId(User);
+            var profileId = _userManager.GetProfileId(User);
             var profileViewModel = await _profileViewModelService.GetEditProfileViewModel(profileId);
             return View(profileViewModel);
         }
@@ -61,33 +92,24 @@ namespace Inkett.Web.Controllers
             {
                 RedirectToAction("Edit");
             }
-            var profileId =  _userManager.GetProfileId(User);
-            if (profileBindingModel.CoverPictureFile!=null)
+            var profileId = _userManager.GetProfileId(User);
+            if (profileBindingModel.CoverPictureFile != null)
             {
-                var result=_imageService.UploadImage(profileBindingModel.CoverPictureFile);
+                var result = _imageService.UploadImage(profileBindingModel.CoverPictureFile, 450, 960);
                 if (result.Success)
                 {
-                   await _profileService.UpdateCoverPicture(profileId,result.ImageUri);
+                    await _profileService.UpdateCoverPicture(profileId, result.ImageUri);
                 }
             }
             if (profileBindingModel.ProfilePictureFile != null)
             {
-                var result = _imageService.UploadImage(profileBindingModel.ProfilePictureFile);
+                var result = _imageService.UploadImage(profileBindingModel.ProfilePictureFile, 186, 186);
                 if (result.Success)
                 {
                     await _profileService.UpdateProfilePicture(profileId, result.ImageUri);
                 }
             }
             return RedirectToAction("Index");
-        }
-
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> Albums(int id)
-        {
-            var user = await _userManager.GetUserAsync(User);
-            var profileAlbumsViewModel = await _profileViewModelService.GetEditProfileViewModel(2);
-            return View();
         }
     }
 }

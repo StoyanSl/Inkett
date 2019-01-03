@@ -22,13 +22,7 @@ namespace Inkett.ApplicationCore.Services
             _imageService = imageService;
         }
 
-        public async Task<bool> AlbumNameExists(int profileId, string albumTitle)
-        {
-            var spec = new AlbumByProfileSpecification(profileId);
-            var albums = await _albumRepository.ListAsync(spec);
-            return albums.Any(a => a.Title == albumTitle);
-        }
-
+      
         public async Task CreateAlbum(int profileId)
         {
             var album = new Album(profileId);
@@ -52,27 +46,36 @@ namespace Inkett.ApplicationCore.Services
            
             
         }
-        public async Task EditAlbum(int profileId,int albumId, string title, string description, IFormFile picture)
+        public async Task<Album> EditAlbum(Album album, string title, IFormFile picture)
         {
-            var spec = new AlbumByProfileSpecification(albumId, profileId);
-            var album = await _albumRepository.GetSingleBySpec(spec);
-            if (album==null)
-            {
-                throw new ApplicationException();
-            }
             if (picture != null)
             {
                 var result = _imageService.UploadImage(picture);
                 if (!result.Success)
                 {
-                    throw new ApplicationException();
+                    return null;
                 }
                 album.AlbumPictureUri = result.ImageUri;
             }
             album.Title = title;
-            album.Description = description;
-            await _albumRepository.UpdateAsync(album);
+            album = await _albumRepository.UpdateAsync(album);
+            return album;
         }
-        
+
+        public Task<Album> GetAlbumById(int id)
+        {
+            return _albumRepository.GetByIdAsync(id);
+        }
+
+        public Task<Album> GetAlbumWithTattoos(int id)
+        {
+            var album = _albumRepository.GetSingleBySpec(new AlbumWithTattoosSpecification(id));
+            return album;
+        }
+
+        public Task RemoveAlbum(Album album)
+        {
+            return  _albumRepository.DeleteAsync(album);
+        }
     }
 }

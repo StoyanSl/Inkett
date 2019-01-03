@@ -121,13 +121,14 @@ namespace Inkett.Infrastructure.Migrations.Inkett
             modelBuilder.Entity("Inkett.ApplicationCore.Entitites.Tattoo", b =>
                 {
                     b.HasOne("Inkett.ApplicationCore.Entitites.Album", "Album")
-                        .WithMany()
-                        .HasForeignKey("AlbumId");
+                        .WithMany("Tattoos")
+                        .HasForeignKey("AlbumId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Inkett.ApplicationCore.Entitites.Profile", "Profile")
                         .WithMany("Tattoos")
                         .HasForeignKey("ProfileId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Inkett.ApplicationCore.Entitites.TattooStyle", b =>

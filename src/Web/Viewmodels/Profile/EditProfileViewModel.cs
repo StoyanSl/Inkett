@@ -6,6 +6,7 @@ namespace Inkett.Web.Viewmodels.Profile
 {
     public class EditProfileViewModel
     {
+
         public ProfileViewModel ProfileViewModel { get; set; }
 
         [ImageValidation]

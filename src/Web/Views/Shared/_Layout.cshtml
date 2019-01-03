@@ -12,16 +12,16 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <nav class="navbar fixed-top navbar-dark bg-dark">
-        <div class="container">
-            <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle"><span class="navbar-toggler-icon"></span></a>
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Web</a>
-            <partial name="_LoginPartial" />
-        </div>
-    </nav>
     <div id="wrapper">
         <partial name="_SideBar" />
-        <div id="page-content-wrapper">
+        <div id="content">
+            <nav class="navbar fixed-top navbar-dark bg-dark">
+                <div class="container">
+                    <a  class="btn btn-secondary" id="sidebarCollapse"><span class="navbar-toggler-icon"></span></a>
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Web</a>
+                    <partial name="_LoginPartial" />
+                </div>
+            </nav>
             <div class="container">
                 <partial name="_CookieConsentPartial" />
                 <main role="main" class="pb-3">
@@ -30,14 +30,14 @@
             </div>
 
         </div>
-        <!-- /#page-content-wrapper -->
+        <!-- Dark Overlay element -->
+        <div class="overlay"></div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
-            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-            asp-fallback-test="window.jQuery"
-            crossorigin="anonymous"
-            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
-    </script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+   
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"
             asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
             asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
@@ -45,7 +45,6 @@
             integrity="sha256-E/V4cWE4qvAeO5MOhjtGtqDzPndRO1LBk8lJ/PR7CA4=">
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
     @RenderSection("Scripts", required: false)
 
 </body>

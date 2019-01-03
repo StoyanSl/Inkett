@@ -9,5 +9,6 @@ namespace Inkett.ApplicationCore.Interfaces.Services
         bool ProfileNameExists(string profileName);
         Task UpdateProfilePicture(int profileId, string pictureUrl);
         Task UpdateCoverPicture(int profileId, string pictureUrl);
+        Task<Profile> GetProfileWithAlbums(int profileId);
     }
 }

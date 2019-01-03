@@ -5,8 +5,9 @@ namespace Inkett.ApplicationCore.Entitites
 {
     public class Profile:BaseEntity
     {
-        private const string defaultCover = "https://res.cloudinary.com/inkettimgs/image/upload/v1545262005/dzibhpjdcs7fatuoqsgg.png";
-        private const string defaultProfile = "https://res.cloudinary.com/inkettimgs/image/upload/v1545262005/kuftk6oeg691tsboqibv.jpg";
+        
+        private const string defaultCover = "https://res.cloudinary.com/inkettimgs/image/upload/v1546455039/u72isnupu4bujqzb4c4u.png";
+        private const string defaultProfile = "https://res.cloudinary.com/inkettimgs/image/upload/v1546454758/c9eeekpbmtrzkmakndu1.png";
         public Profile()
         {
 

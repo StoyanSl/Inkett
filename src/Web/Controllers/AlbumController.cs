@@ -1,17 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using Inkett.ApplicationCore.Interfaces.Services;
+﻿using Inkett.ApplicationCore.Interfaces.Services;
 using Inkett.Infrastructure.Identity;
-using Microsoft.AspNetCore.Identity;
-using Inkett.ApplicationCore.Specifications;
-using Inkett.ApplicationCore.Interfaces.Repositories;
-using System.Linq;
-using System;
-using Inkett.ApplicationCore.Entitites;
 using Inkett.Web.Interfaces.Services;
-using Microsoft.AspNetCore.Routing;
 using Inkett.Web.Viewmodels.Album;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Inkett.Web.Controllers
 {
@@ -20,9 +13,9 @@ namespace Inkett.Web.Controllers
         private readonly InkettUserManager _userManager;
         private readonly IAlbumService _albumService;
         private readonly IProfileService _profileService;
+        private readonly IProfileViewModelService _profileViewModelService;
         private readonly IAlbumViewModelService _albumViewModelService;
         private readonly IAuthorizationService _authorizationService;
-        private readonly IAsyncRepository<Album> _asyncRepository;
 
         public AlbumController(
             InkettUserManager userManager,
@@ -30,20 +23,35 @@ namespace Inkett.Web.Controllers
             IProfileService profileService,
             IAlbumViewModelService albumViewModelService,
             IAuthorizationService authorizationService,
-            IAsyncRepository<Album> asyncRepository)
+            IProfileViewModelService profileViewModelService)
         {
             _albumService = albumService;
             _profileService = profileService;
             _userManager = userManager;
             _albumViewModelService = albumViewModelService;
             _authorizationService = authorizationService;
-            _asyncRepository = asyncRepository;
+            _profileViewModelService = profileViewModelService;
         }
 
+        public async Task<IActionResult> Index(int id)
+        {
+            var album = await _albumService.GetAlbumWithTattoos(id);
+            var authorization = _authorizationService.AuthorizeAsync(User, album, "EditPolicy");
+            var viewModel = _albumViewModelService.GetIndexAlbumViewModel(album);
+            var authResult = await authorization;
+            if (authResult.Succeeded)
+            {
+                viewModel.isOwner = true;
+            }
+            viewModel.ProfileViewModel = await _profileViewModelService.GetProfileViewModel(album.ProfileId);
+            return View(viewModel);
+
+        }
         public IActionResult Create()
         {
             return this.View();
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Create(AlbumViewModel bindingModel)
@@ -51,35 +59,71 @@ namespace Inkett.Web.Controllers
             if (ModelState.IsValid)
             {
                 var profileId =  _userManager.GetProfileId(User);
-                await _albumService.CreateAlbum(profileId,bindingModel.Title,bindingModel.Description,bindingModel.AlbumPicture);
+                await _albumService.CreateAlbum(profileId,bindingModel.Title,bindingModel.Description,bindingModel.Picture);
             }
             return View(bindingModel);
         }
-
+       
 
         public async Task<IActionResult> Edit(int id)
         {
-            var album = await _asyncRepository.GetByIdAsync(id);
-            var result = await _authorizationService.AuthorizeAsync(User, album, "EditPolicy");
-            var profileId = _userManager.GetProfileId(User);
-            var albumvm = await _albumViewModelService.GetAlbumViewModel(profileId, id);
-            if (albumvm is null)
-            {
-                throw new ApplicationException();
-            }
-            return this.View(album);
+            
+                var album = await _albumService.GetAlbumById(id);
+                var authorization = await _authorizationService.AuthorizeAsync(User, album, "EditPolicy");
+                if (!authorization.Succeeded)
+                {
+                    return Unauthorized();
+                }
+                var albumViewModel = _albumViewModelService.GetAlbumViewModel(album);
+          
+            return this.View(albumViewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, AlbumViewModel editAlbumBindingModel)
+        public async Task<IActionResult> Edit(int id, AlbumViewModel albumViewModel)
         {
-            
-            var profileId = _userManager.GetProfileId(User);
-            await _albumService.EditAlbum(profileId, id, editAlbumBindingModel.Title,
-                editAlbumBindingModel.Description,
-                editAlbumBindingModel.AlbumPicture);
-            return RedirectToAction("Edit", id);
+
+        if (ModelState.IsValid)
+        {
+            var album = await _albumService.GetAlbumById(id);
+            if (album==null)
+            {
+                return NotFound();
+            }
+            var authorization = await _authorizationService.AuthorizeAsync(User, album, "EditPolicy");
+            if (!authorization.Succeeded)
+            {
+                return Unauthorized();
+            }
+            albumViewModel = await _albumViewModelService.UpdateAlbum(album, albumViewModel);
+            }
+            return this.View(albumViewModel);
+           
+        }
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var album = await _albumService.GetAlbumById(id);
+            var authorization = await _authorizationService.AuthorizeAsync(User, album, "EditPolicy");
+            if (!authorization.Succeeded)
+            {
+                return Unauthorized();
+            }
+            var albumViewModel = _albumViewModelService.GetAlbumViewModel(album);
+            return this.View(albumViewModel);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete(AlbumViewModel viewModel)
+        {
+            var album = await _albumService.GetAlbumById(viewModel.Id);
+            var authorization = await _authorizationService.AuthorizeAsync(User, album, "EditPolicy");
+            if (!authorization.Succeeded)
+            {
+                return Unauthorized();
+            }
+           await _albumService.RemoveAlbum(album);
+            return RedirectToAction("Index","Profile");
+        }
     }
 }

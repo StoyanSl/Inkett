@@ -1,0 +1,28 @@
+﻿@model ProfileTattoosViewModel
+
+<div class="container" style="padding-right:135px">
+    <partial name="_ProfilePartial" model="Model.ProfileViewModel" />
+    <div class="container" style="margin-top:30px; padding:0">
+        <div class="col-md-12 bg-white" style="border-radius: 40px;">
+            <div class="row">
+                @if (Model.ProfileTattoos.Count == 0)
+                {
+                    if (Model.IsOwner)
+                    {
+                        <h1 class="px-4"> Upload new tattoo <a href="/Profile/Edit/"><b><u>picture!</u></b></a> </h1>
+
+                    }
+                    else
+                    {
+                        <h1 class="px-4"> The user has no Tattoos.</h1>
+                    }
+                }
+                else
+                {
+                    <partial name="_ListedTattoosContainer" model="Model.ProfileTattoos" />
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,5 @@
-﻿using Inkett.Web.Viewmodels.Tattoo;
+﻿using Inkett.ApplicationCore.Entitites;
+using Inkett.Web.Viewmodels.Tattoo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,9 @@ namespace Inkett.Web.Interfaces.Services
 {
     public interface ITattooViewModelService
     {
-        Task<CreateTattooViewModel> GetCreateTattooViewModelAsync(string accountId);
-        Task CreateTattooByViewModel(CreateTattooViewModel createTattooViewModel, int profileId);
+        Task<TattooViewModel> GetCreateTattooViewModel(int profileId);
+        Task<TattooViewModel> GetEditTattooViewModel(Tattoo tattoo);
+        Task CreateTattooByViewModel(TattooViewModel createTattooViewModel, int profileId);
+        ListedTattooViewModel GetListedTattooViewModel(Tattoo tattoo);
     }
 }

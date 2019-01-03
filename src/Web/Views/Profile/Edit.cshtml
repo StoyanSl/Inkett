@@ -1,24 +1,49 @@
 ﻿@model EditProfileViewModel
 
-<div class="row">
-    <div class="fb-profile hover10">
-        <figure>
-            <img align="left" id="coverPic" class="fb-image-lg hoverCoverPic" src="@Model.ProfileViewModel.CoverPictureUri" alt="To be set" />
-        </figure>
-        <div class="container">
-            <figure>
-                <img align="left" id="profilePic" class="fb-image-profile img-thumbnail hoverProfilePic " src="@Model.ProfileViewModel.ProfilePictureUri" alt="To be set" />
-            </figure>
-        </div>
-        <form method="post" enctype="multipart/form-data" asp-controller="Profile" asp-action="Edit">
-            <input name="ProfilePictureFile" id='uploadProfileImg' type='file' style="display:none">
-            <input name="CoverPictureFile" id='uploadCoverImg' type='file' style="display:none">
-            <div class="form-group">
-                <input class="btn btn-success" type="submit" value="Save Changes" />
+<<div class="container" style="padding-right:135px">
+     <div class="fb-profile hover10">
+         <figure>
+             <img align="left" id="coverPic" class="fb-image-lg hoverCoverPic" src="@Model.ProfileViewModel.CoverPictureUri" alt="To be set" />
+         </figure>
+         <div class="container">
+             <figure>
+                 <img align="left" id="profilePic" class="fb-image-profile img-thumbnail hoverProfilePic " src="@Model.ProfileViewModel.ProfilePictureUri" alt="To be set" />
+             </figure>
+         </div>
+         <div class="fb-profile-text">
+             <h1>@Model.ProfileViewModel.ProfileName</h1>
+         </div>
+     </div>
+    <div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="border-radius: 10px;">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse p-0" id="navbarToggler">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <form method="post" enctype="multipart/form-data" asp-controller="Profile" asp-action="Edit">
+                            <input name="ProfilePictureFile" id='uploadProfileImg' type='file' style="display:none">
+                            <input name="CoverPictureFile" id='uploadCoverImg' type='file' style="display:none">
+                            <div>
+                                <input class="btn btn-success" type="submit" value="Save Changes" />
+                            </div>
+                        </form>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="btn btn-light border-dark mx-2" asp-controller="Album" asp-action="Create">Create Album</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="btn btn-light border-dark mx-2" asp-controller="Tattoo" asp-action="Create">Upload Tattoo <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
             </div>
-        </form>
+
+        </nav>
     </div>
 </div>
+
+
 @section Scripts{
     <script>
         $('.fb-image-lg').click(function () {

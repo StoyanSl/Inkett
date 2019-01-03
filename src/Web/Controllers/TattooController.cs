@@ -1,5 +1,6 @@
 ﻿using Inkett.ApplicationCore.Entitites;
 using Inkett.ApplicationCore.Interfaces.Repositories;
+using Inkett.ApplicationCore.Interfaces.Services;
 using Inkett.ApplicationCore.Specifications;
 using Inkett.Infrastructure.Identity;
 using Inkett.Web.Interfaces.Services;
@@ -15,43 +16,55 @@ namespace Inkett.Web.Controllers
     {
         private readonly InkettUserManager _userManager;
         private readonly ITattooViewModelService _tattooViewModelService;
-        private readonly IAsyncRepository<Profile> _profileRepository;
         private readonly IAuthorizationService _authorizationService;
-        private readonly IAsyncRepository<Tattoo> _tattoRepository;
+        private readonly ITattooService _tattooService;
 
         public TattooController(ITattooViewModelService tattooViewModelService,
            InkettUserManager userManager,
-           IAsyncRepository<Profile> profileRepository,
-           IAsyncRepository<Tattoo> tattoRepository,
-           IAuthorizationService authorizationService)
+           IAuthorizationService authorizationService,
+            ITattooService tattooService)
         {
             _tattooViewModelService = tattooViewModelService;
             _userManager = userManager;
-            _profileRepository = profileRepository;
             _authorizationService = authorizationService;
-            _tattoRepository = tattoRepository;
-        }
+            _tattooService = tattooService;
+    }
         public async Task<IActionResult> Create()
         {
-            var user = await _userManager.GetUserAsync(User);
-            var viewModel = await _tattooViewModelService.GetCreateTattooViewModelAsync(user.Id);
+            var profileId =  _userManager.GetProfileId(User);
+            var viewModel = await _tattooViewModelService.GetCreateTattooViewModel(profileId);
             return this.View(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateTattooViewModel viewModel)
+        public async Task<IActionResult> Create(TattooViewModel viewModel)
         {
-            var user = await _userManager.GetUserAsync(User);
-            var spec = new ProfileByAccountIdSpecification(user.Id);
-            var profile = await _profileRepository.GetSingleBySpec(spec);
-            await _tattooViewModelService.CreateTattooByViewModel(viewModel, profile.Id);
+            if (ModelState.IsValid)
+            {
+                var profileId = _userManager.GetProfileId(User);
+                await _tattooViewModelService.CreateTattooByViewModel(viewModel, profileId);
+            }
+           
             return RedirectToAction("Index","Profile");
+        }
+        
+        public async Task<IActionResult> Edit(int id)
+        {
+            var profileId = _userManager.GetProfileId(User);
+            var tattoo = await _tattooService.GetTattooWithStyles(id);
+            var authorizeResultTask =  _authorizationService.AuthorizeAsync(User, tattoo, "EditPolicy");
+            var viewModelTask = _tattooViewModelService.GetEditTattooViewModel(tattoo);
+            if (!authorizeResultTask.GetAwaiter().GetResult().Succeeded)
+            {
+                return Unauthorized();
+            }
+            return View(viewModelTask.GetAwaiter().GetResult());
         }
 
         [HttpGet]
-        public async Task<IActionResult> Show(int id)
+        public async Task<IActionResult> Index(int id)
         {
-            var tattoo = await _tattoRepository.GetByIdAsync(id);
+            var tattoo = await _tattooService.GetTattooWithStyles(id);
             var authorizeResult = await _authorizationService.AuthorizeAsync(User,tattoo, "EditPolicy");
             if (!authorizeResult.Succeeded)
             {

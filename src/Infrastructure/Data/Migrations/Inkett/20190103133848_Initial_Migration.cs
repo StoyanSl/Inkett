@@ -3,10 +3,62 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Inkett.Infrastructure.Migrations.Inkett
 {
-    public partial class AddeddTattoos_Migration : Migration
+    public partial class Initial_Migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Profiles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    AccountId = table.Column<string>(nullable: true),
+                    ProfileName = table.Column<string>(nullable: true),
+                    ProfilePicture = table.Column<string>(nullable: true),
+                    CoverPicture = table.Column<string>(nullable: true),
+                    ProfileDescription = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Profiles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Styles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Styles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Albums",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ProfileId = table.Column<int>(nullable: false),
+                    Title = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    AlbumPictureUri = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Albums", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Albums_Profiles_ProfileId",
+                        column: x => x.ProfileId,
+                        principalTable: "Profiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Tattoos",
                 columns: table => new
@@ -15,8 +67,8 @@ namespace Inkett.Infrastructure.Migrations.Inkett
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     TattooPictureUri = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    AlbumId = table.Column<int>(nullable: false),
-                    ProfileId = table.Column<int>(nullable: true)
+                    AlbumId = table.Column<int>(nullable: true),
+                    ProfileId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,7 +78,7 @@ namespace Inkett.Infrastructure.Migrations.Inkett
                         column: x => x.AlbumId,
                         principalTable: "Albums",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_Tattoos_Profiles_ProfileId",
                         column: x => x.ProfileId,
@@ -60,6 +112,11 @@ namespace Inkett.Infrastructure.Migrations.Inkett
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Albums_ProfileId",
+                table: "Albums",
+                column: "ProfileId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tattoos_AlbumId",
                 table: "Tattoos",
                 column: "AlbumId");
@@ -81,7 +138,16 @@ namespace Inkett.Infrastructure.Migrations.Inkett
                 name: "TattooStyles");
 
             migrationBuilder.DropTable(
+                name: "Styles");
+
+            migrationBuilder.DropTable(
                 name: "Tattoos");
+
+            migrationBuilder.DropTable(
+                name: "Albums");
+
+            migrationBuilder.DropTable(
+                name: "Profiles");
         }
     }
 }

@@ -1,1 +1,25 @@
-﻿
+﻿@model ProfileAlbumsViewModel
+
+<div class="container" style="padding-right:135px">
+    <partial name="_ProfilePartial" model="Model.ProfileViewModel" />
+    <div class="container bg-white p-2" style="margin-top:30px; border-radius:10px;">
+        <div class="card-deck d-flex justify-content-start" style="padding:0">
+            @if (Model.ProfileAlbumViewModels.Count == 0)
+            {
+                if (Model.IsOwner)
+                {
+                    <h1 class="px-4"> You have no albums? Create one right <a href="/Profile/Edit"><b><u>Now!</u></b></a> </h1>
+
+                }
+                else
+                {
+                    <h1 class="px-4"> The user has no albums.</h1>
+                }
+            }
+            @foreach (var albumViewModel in Model.ProfileAlbumViewModels)
+            {
+                <partial name="_AlbumPartial" model="albumViewModel" />
+            }
+        </div>
+    </div>
+</div>

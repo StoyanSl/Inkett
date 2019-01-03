@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Inkett.ApplicationCore.Entitites;
+using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
 namespace Inkett.ApplicationCore.Interfaces.Services    
@@ -7,7 +8,9 @@ namespace Inkett.ApplicationCore.Interfaces.Services
     {
         Task CreateAlbum(int profileId);
         Task CreateAlbum(int profileId, string title, string description, IFormFile picture);
-        Task EditAlbum(int profileId, int albumId, string title, string description, IFormFile picture);
-        Task<bool> AlbumNameExists(int profileId,string albumTitle);
+        Task<Album> EditAlbum(Album album, string title, IFormFile picture);
+        Task<Album> GetAlbumById(int id);
+        Task<Album> GetAlbumWithTattoos(int id);
+        Task RemoveAlbum(Album album);
     }
 }

@@ -6,5 +6,6 @@ namespace Inkett.ApplicationCore.Interfaces.Services
     public interface IImageUploader
     {
         UploadResult ImageUpload(Stream stream);
+        UploadResult ImageUpload(string imgPath);
     }
 }

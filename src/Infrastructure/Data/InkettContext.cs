@@ -32,15 +32,25 @@ namespace Inkett.Infrastructure.Data
 
             modelBuilder.Entity<TattooStyle>().Ignore(ts => ts.Id);
             modelBuilder.Entity<TattooStyle>()
-                .HasKey(ts => new { ts.StyleId,ts.TattooId });
+                .HasKey(ts => new { ts.StyleId, ts.TattooId });
             modelBuilder.Entity<TattooStyle>()
-                .HasOne(ts=>ts.Tattoo)
-                .WithMany(t=> t.TattooStyles)
+                .HasOne(ts => ts.Tattoo)
+                .WithMany(t => t.TattooStyles)
                 .HasForeignKey(ts => ts.TattooId);
             modelBuilder.Entity<TattooStyle>()
                 .HasOne(ts => ts.Style)
                 .WithMany(t => t.TattooStyles)
                 .HasForeignKey(ts => ts.StyleId);
+            modelBuilder.Entity<Tattoo>()
+                .HasOne(b => b.Album)
+                .WithMany(a => a.Tattoos)
+                 .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Tattoo>()
+               .HasOne(b => b.Profile)
+               .WithMany(a => a.Tattoos)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

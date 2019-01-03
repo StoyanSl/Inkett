@@ -1,4 +1,5 @@
-﻿using Inkett.Web.Viewmodels.Profile;
+﻿using Inkett.ApplicationCore.Entitites;
+using Inkett.Web.Viewmodels.Profile;
 using System.Threading.Tasks;
 
 
@@ -8,5 +9,8 @@ namespace Inkett.Web.Interfaces.Services
     {
         Task<ProfileViewModel> GetProfileViewModel(int profileId);
         Task<EditProfileViewModel> GetEditProfileViewModel(int profileId);
+        Task<ProfileAlbumsViewModel> GetProfileAlbumsViewModel(int profileId);
+        Task<ProfileTattoosViewModel> GetProfileTattoosViewModel(int profileId); 
+        ProfileViewModel GetProfileViewModel(Profile album);
     }
 }

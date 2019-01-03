@@ -7,5 +7,6 @@ namespace Inkett.ApplicationCore.Interfaces.Services
     public interface IImageService
     {
        ImageUploadResult UploadImage(IFormFile formFile);
+        ImageUploadResult UploadImage(IFormFile formFile, int height, int width);
     }
 }

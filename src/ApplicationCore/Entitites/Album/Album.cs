@@ -1,6 +1,8 @@
 ﻿using Ardalis.GuardClauses;
 using Inkett.ApplicationCore.Interfaces;
 using System;
+using System.Collections.Generic;
+
 namespace Inkett.ApplicationCore.Entitites
 {
     public class Album : BaseEntity, IProfileAuthorizable
@@ -36,5 +38,7 @@ namespace Inkett.ApplicationCore.Entitites
         public string Description { get; set; }
 
         public string AlbumPictureUri { get; set; }
+
+        public List<Tattoo> Tattoos { get; set; }
     }
 }
