@@ -5,15 +5,23 @@ namespace Inkett.Web.Viewmodels.Tattoo
 {
     public class IndexTattooViewModel
     {
+        
         public IndexTattooViewModel()
         {
-            this.StylesViewModels = new List<StyleViewModel>();
+            this.Styles = new List<StyleViewModel>();
         }
-        public ProfileViewModel ProfileViewModel { get; set; }
+
+        public int Id { get; set; }
+
+        public ProfileViewModel Profile { get; set; }
 
         public string Description { get; set; }
 
-        public List<StyleViewModel> StylesViewModels { get; set; }
+        public List<StyleViewModel> Styles { get; set; }
+
+        public List<CommentViewModel> Comments { get; set; }
+
+        public bool IsLiked { get; set; }
 
         public string PictureUri { get; set; }
     }

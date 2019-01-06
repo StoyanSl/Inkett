@@ -1,7 +1,5 @@
 ﻿using Inkett.ApplicationCore.Entitites;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Inkett.ApplicationCore.Specifications
 {
@@ -12,7 +10,9 @@ namespace Inkett.ApplicationCore.Specifications
             AddInclude(t => t.TattooStyles);
             AddInclude(t => t.Profile);
             AddInclude(t => t.Profile.Albums);
-            //   AddInclude($"{nameof(Tattoo.Profile)}.{nameof(Profile.Albums)}");
+            AddInclude($"Comments.Profile");
+            AddInclude(t=>t.Likes);
+            
         }
 
     }

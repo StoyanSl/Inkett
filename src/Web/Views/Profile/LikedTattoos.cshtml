@@ -7,15 +7,9 @@
             <div class="row">
                 @if (Model.Tattoos.Count == 0)
                 {
-                    if (Model.IsOwner)
-                    {
-                        <h1 class="px-4"> Upload new tattoo <a href="/Profile/Edit/"><b><u>picture!</u></b></a> </h1>
-
-                    }
-                    else
-                    {
-                        <h1 class="px-4"> The user has no Tattoos.</h1>
-                    }
+                   
+                        <h1 class="px-4"> You have not liked any tattoos.</h1>
+                   
                 }
                 else
                 {

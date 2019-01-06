@@ -289,3 +289,73 @@ a.article:hover {
     height: 200px;
     overflow-y: auto;
 }
+
+.button-like {
+    border: 2px solid #8a8a8a;
+    background-color: transparent;
+    text-decoration: none;
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+    display: inline-block;
+    border-radius: 3rem;
+    color: #8a8a8a;
+    transition: all ease 0.4s;
+}
+
+    .button-like span {
+        margin-left: 0.5rem;
+    }
+
+    .button-like .fa,
+    .button-like span {
+        transition: all ease 0.4s;
+    }
+
+    .button-like:focus {
+        background-color: transparent;
+    }
+
+        .button-like:focus .fa,
+        .button-like:focus span {
+            color: #8a8a8a;
+        }
+
+    .button-like:hover {
+        border-color: #343a40;
+        background-color: transparent;
+    }
+
+        .button-like:hover .fa,
+        .button-like:hover span {
+            color: #343a40;
+        }
+
+.liked {
+    background-color: #343a40;
+    border-color: #343a40;
+}
+
+    .liked .fa,
+    .liked span {
+        color: #fefefe;
+    }
+
+    .liked:focus {
+        background-color: #343a40;
+    }
+
+        .liked:focus .fa,
+        .liked:focus span {
+            color: #fefefe;
+        }
+
+    .liked:hover {
+        background-color: #343a40;
+        border-color: #343a40;
+    }
+
+        .liked:hover .fa,
+        .liked:hover span {
+            color: #fefefe;
+        }

@@ -55,6 +55,13 @@ namespace Inkett.ApplicationCore.Services
             return _profileRepository.GetSingleBySpec(spec);
         }
 
+        public Task<Profile> GetProfileWithLikes(int profileId)
+        {
+            var spec = new ProfileWithLikesSpecification(profileId);
+            return _profileRepository.GetSingleBySpec(spec);
+        }
+
+
         public  Task<Profile> GetProfileById(int profileId)
         {
            return _profileRepository.GetByIdAsync(profileId);

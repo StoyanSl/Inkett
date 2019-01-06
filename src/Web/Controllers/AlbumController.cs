@@ -36,7 +36,7 @@ namespace Inkett.Web.Controllers
         public async Task<IActionResult> Index(int id)
         {
             var album = await _albumService.GetAlbumWithTattoos(id);
-            var profile = await _profileService.GetProfileById(_userManager.GetProfileId(User));
+            var profile = await _profileService.GetProfileById(album.ProfileId);
             if (album == null)
             {
                 return NotFound();
@@ -48,7 +48,7 @@ namespace Inkett.Web.Controllers
             {
                 viewModel.isOwner = true;
             }
-            viewModel.ProfileViewModel =  _profileViewModelService.GetProfileViewModel(profile);
+            viewModel.Profile =  _profileViewModelService.GetProfileViewModel(profile);
             return View(viewModel);
 
         }

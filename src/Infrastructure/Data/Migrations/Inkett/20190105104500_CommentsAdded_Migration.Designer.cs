@@ -4,14 +4,16 @@ using Inkett.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Inkett.Infrastructure.Migrations.Inkett
 {
     [DbContext(typeof(InkettContext))]
-    partial class InkettContextModelSnapshot : ModelSnapshot
+    [Migration("20190105104500_CommentsAdded_Migration")]
+    partial class CommentsAdded_Migration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,25 +61,6 @@ namespace Inkett.Infrastructure.Migrations.Inkett
                     b.HasIndex("TattooId");
 
                     b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("Inkett.ApplicationCore.Entitites.Like", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ProfileId");
-
-                    b.Property<int>("TattooId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProfileId");
-
-                    b.HasIndex("TattooId");
-
-                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("Inkett.ApplicationCore.Entitites.Profile", b =>
@@ -167,19 +150,6 @@ namespace Inkett.Infrastructure.Migrations.Inkett
 
                     b.HasOne("Inkett.ApplicationCore.Entitites.Tattoo", "Tattoo")
                         .WithMany("Comments")
-                        .HasForeignKey("TattooId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("Inkett.ApplicationCore.Entitites.Like", b =>
-                {
-                    b.HasOne("Inkett.ApplicationCore.Entitites.Profile", "Profile")
-                        .WithMany("Likes")
-                        .HasForeignKey("ProfileId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Inkett.ApplicationCore.Entitites.Tattoo", "Tattoo")
-                        .WithMany("Likes")
                         .HasForeignKey("TattooId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });

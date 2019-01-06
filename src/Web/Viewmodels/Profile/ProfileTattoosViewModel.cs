@@ -10,11 +10,11 @@ namespace Inkett.Web.Viewmodels.Profile
     {
         public ProfileTattoosViewModel()
         {
-            ProfileTattoos = new List<ListedTattooViewModel>();
+            Tattoos = new List<ListedTattooViewModel>();
         }
-        public ProfileViewModel ProfileViewModel { get; set; }
+        public ProfileViewModel Profile { get; set; }
 
-        public List<ListedTattooViewModel> ProfileTattoos { get; set; }
+        public List<ListedTattooViewModel> Tattoos { get; set; }
 
         public bool IsOwner { get; set;  }
     }

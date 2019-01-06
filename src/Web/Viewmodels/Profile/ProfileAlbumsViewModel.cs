@@ -7,11 +7,11 @@ namespace Inkett.Web.Viewmodels.Profile
     {
         public ProfileAlbumsViewModel()
         {
-            ProfileAlbumViewModels = new List<AlbumViewModel>();
+            ProfileAlbums = new List<AlbumViewModel>();
         }
-        public ProfileViewModel ProfileViewModel { get; set; }
+        public ProfileViewModel Profile { get; set; }
 
-        public List<AlbumViewModel> ProfileAlbumViewModels { get; set; } 
+        public List<AlbumViewModel> ProfileAlbums { get; set; } 
 
         public bool IsOwner { get; set; }
     }

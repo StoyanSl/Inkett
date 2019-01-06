@@ -10,5 +10,7 @@ namespace Inkett.ApplicationCore.Interfaces.Services
         Task CreateTattoo(string description, IFormFile tattooPicture, IEnumerable<int> styleIds,int profileId,int albumId);
         Task<Tattoo> GetTattooById(int id);
         Task<Tattoo> GetTattooWithStyles(int id);
+        Task CreateLike(int profileId, int tattooId);
+        Task RemoveLike(int profileId, int tattooId);
     }
 }

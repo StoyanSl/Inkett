@@ -9,7 +9,7 @@ namespace Inkett.Web.Viewmodels.Album
     {
         public int Id { get; set; }
         
-        public ProfileViewModel ProfileViewModel { get; set; }
+        public ProfileViewModel Profile { get; set; }
 
         [Display(Name = "Album Title")]
         public string Title { get; set; }

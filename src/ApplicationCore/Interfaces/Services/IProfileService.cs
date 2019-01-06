@@ -10,6 +10,7 @@ namespace Inkett.ApplicationCore.Interfaces.Services
         Task UpdateProfilePicture(int profileId, string pictureUrl);
         Task UpdateCoverPicture(int profileId, string pictureUrl);
         Task<Profile> GetProfileWithAlbums(int profileId);
+        Task<Profile> GetProfileWithLikes(int profileId);
         Task<Profile> GetProfileWithTattoos(int profileId);
         Task<Profile> GetProfileById(int profileId);
     }

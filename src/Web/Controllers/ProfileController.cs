@@ -62,7 +62,22 @@ namespace Inkett.Web.Controllers
                 return NotFound();
             }
             var profileTattoosViewModel = _profileViewModelService.GetProfileTattoosViewModel(profile);
-            if (profileTattoosViewModel.ProfileViewModel.Id == _userManager.GetProfileId(User))
+            if (profileTattoosViewModel.Profile.Id == _userManager.GetProfileId(User))
+            {
+                profileTattoosViewModel.IsOwner = true;
+            }
+            return View(profileTattoosViewModel);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> LikedTattoos()
+        {
+
+            var profileId = _userManager.GetProfileId(User);
+            var profile = await _profileService.GetProfileWithLikes(profileId);
+            var profileTattoosViewModel = _profileViewModelService.GetProfileLikedTattoosViewModel(profile);
+            if (profileTattoosViewModel.Profile.Id == _userManager.GetProfileId(User))
             {
                 profileTattoosViewModel.IsOwner = true;
             }
@@ -83,7 +98,7 @@ namespace Inkett.Web.Controllers
                 return NotFound();
             }
             var profileAlbumsViewModel =  _profileViewModelService.GetProfileAlbumsViewModel(profile);
-            if (profileAlbumsViewModel.ProfileViewModel.Id== _userManager.GetProfileId(User))
+            if (profileAlbumsViewModel.Profile.Id== _userManager.GetProfileId(User))
             {
                 profileAlbumsViewModel.IsOwner = true;
             }

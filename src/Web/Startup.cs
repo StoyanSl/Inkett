@@ -73,9 +73,10 @@ namespace Web
             services.AddScoped<IAlbumViewModelService, AlbumViewModelService>();
             services.AddScoped<ITattooViewModelService, TattooViewModelService>();
             services.AddScoped<IStyleService, StyleService>();
+            services.AddScoped<ICommentService, CommentService>();
             services.AddMemoryCache();
 
-            services.AddMvc(options=> { options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()); }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(options => { options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()); }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         

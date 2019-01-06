@@ -36,5 +36,7 @@ namespace Inkett.ApplicationCore.Entitites
         public List<Album> Albums { get; set; }
 
         public List<Tattoo> Tattoos { get; set; }
+
+        public List<Like> Likes { get; set; }
     }
 }

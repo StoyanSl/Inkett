@@ -42,7 +42,7 @@ namespace Inkett.Web.Services
 
             var editProfileViewModel = new EditProfileViewModel()
             {
-                ProfileViewModel = profileViewModel
+                Profile = profileViewModel
             };
 
             return editProfileViewModel;
@@ -50,10 +50,10 @@ namespace Inkett.Web.Services
         public ProfileAlbumsViewModel GetProfileAlbumsViewModel(Profile profile)
         {
             var viewModel = new ProfileAlbumsViewModel();
-            viewModel.ProfileViewModel = this.GetProfileViewModel(profile);
+            viewModel.Profile = this.GetProfileViewModel(profile);
             foreach (var album in profile.Albums)
             {
-                viewModel.ProfileAlbumViewModels.Add(_albumViewModelService.GetAlbumViewModel(album));
+                viewModel.ProfileAlbums.Add(_albumViewModelService.GetAlbumViewModel(album));
             }
             return viewModel;
         }
@@ -61,10 +61,21 @@ namespace Inkett.Web.Services
         {
             
             var viewModel = new ProfileTattoosViewModel();
-            viewModel.ProfileViewModel = this.GetProfileViewModel(profile);
+            viewModel.Profile = this.GetProfileViewModel(profile);
             foreach (var tattoo in profile.Tattoos)
             {
-                viewModel.ProfileTattoos.Add(_tattooViewModelService.GetListedTattooViewModel(tattoo));
+                viewModel.Tattoos.Add(_tattooViewModelService.GetListedTattooViewModel(tattoo));
+            }
+            return viewModel;
+        }
+
+        public ProfileTattoosViewModel GetProfileLikedTattoosViewModel(Profile profile)
+        {
+            var viewModel = new ProfileTattoosViewModel();
+            viewModel.Profile = this.GetProfileViewModel(profile);
+            foreach (var like in profile.Likes)
+            {
+                viewModel.Tattoos.Add(_tattooViewModelService.GetListedTattooViewModel(like.Tattoo));
             }
             return viewModel;
         }

@@ -9,12 +9,13 @@ using System.Threading.Tasks;
 using System.Linq;
 using Inkett.ApplicationCore.Interfaces.Services;
 using Inkett.Web.Viewmodels;
+using Inkett.Web.Viewmodels.Profile;
 
 namespace Inkett.Web.Services
 {
     public class TattooViewModelService : ITattooViewModelService
     {
-        private const string  notSelectedAlbum= "None";
+        private const string notSelectedAlbum = "None";
         private const int notSelectedAlbumId = 0;
 
         private readonly IAsyncRepository<Style> _styleRepository;
@@ -22,7 +23,7 @@ namespace Inkett.Web.Services
         private readonly IProfileService _profileService;
         private readonly ITattooService _tattooService;
         private readonly IStyleService _styleService;
-        
+
 
         public TattooViewModelService(IAsyncRepository<Style> styleRepository,
             IAsyncRepository<Profile> profileRepository,
@@ -37,20 +38,38 @@ namespace Inkett.Web.Services
             _profileService = profileService;
         }
 
-        public async Task<IndexTattooViewModel> GetIndexTattooViewModel(Tattoo tattoo)
+        public async Task<IndexTattooViewModel> GetIndexTattooViewModel(Tattoo tattoo, int profileId)
         {
-            var viewModel = new IndexTattooViewModel();
-            viewModel.Description = tattoo.Description;
-            viewModel.PictureUri = tattoo.TattooPictureUri;
+
+            var viewModel = new IndexTattooViewModel
+            {
+                Id = tattoo.Id,
+                Description = tattoo.Description,
+                PictureUri = tattoo.TattooPictureUri
+
+            };
+            viewModel.Comments = tattoo.Comments.Select(c => new CommentViewModel()
+            {
+                Profile = new ProfileViewModel()
+                {
+                    ProfileName = c.Profile.ProfileName,
+                    Id = c.ProfileId,
+                    ProfilePictureUri = c.Profile.ProfilePicture,
+                },
+                Text = c.Text
+            }).ToList();
+
             var styles = await _styleService.GetStyles();
             foreach (var tattooStyle in tattoo.TattooStyles)
             {
-                viewModel.StylesViewModels.Add(new StyleViewModel()
+                viewModel.Styles.Add(new StyleViewModel()
                 {
                     Id = tattooStyle.StyleId,
-                    Name = styles.First(x=>x.Id== tattooStyle.StyleId).Name
+                    Name = styles.First(x => x.Id == tattooStyle.StyleId).Name
                 });
             }
+            viewModel.IsLiked = tattoo.Likes.Any(l => l.ProfileId == profileId);
+
             return viewModel;
         }
 
@@ -96,8 +115,15 @@ namespace Inkett.Web.Services
             viewModel.PictureUri = tattoo.TattooPictureUri;
             viewModel.Description = tattoo.Description;
             viewModel.StylesCheckBoxes = await GetStylesCheckboxes(tattoo.TattooStyles);
-            viewModel.Albums = GetAlbumsSelectList(tattoo.Profile.Albums,tattoo.AlbumId);
+            viewModel.Albums = GetAlbumsSelectList(tattoo.Profile.Albums, tattoo.AlbumId);
             return viewModel;
+
+        }
+
+        public CommentViewModel GetCommentViewModel(ProfileViewModel profileViewModel, string text)
+        {
+            return new CommentViewModel() { Profile = profileViewModel, Text = text };
+
 
         }
         private async Task<List<CheckboxModel>> GetStylesCheckboxes()
@@ -123,13 +149,13 @@ namespace Inkett.Web.Services
             }).ToList();
             return stylesCheckBoxes;
         }
-        private List<SelectListItem> GetAlbumsSelectList(List<Album> albums,int? selectedAlbumId=null)
+        private List<SelectListItem> GetAlbumsSelectList(List<Album> albums, int? selectedAlbumId = null)
         {
             var albumsSelectList = albums.Select(s => new SelectListItem()
             {
                 Value = s.Id.ToString(),
                 Text = s.Title,
-                Selected=selectedAlbumId==s.Id
+                Selected = selectedAlbumId == s.Id
             }).ToList();
             albumsSelectList.Add(new SelectListItem()
             {
@@ -140,6 +166,6 @@ namespace Inkett.Web.Services
             return albumsSelectList;
         }
 
-       
+
     }
 }

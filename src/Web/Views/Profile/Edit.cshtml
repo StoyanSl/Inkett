@@ -3,15 +3,15 @@
 <<div class="container" style="padding-right:135px">
      <div class="fb-profile hover10">
          <figure>
-             <img align="left" id="coverPic" class="fb-image-lg hoverCoverPic" src="@Model.ProfileViewModel.CoverPictureUri" alt="To be set" />
+             <img align="left" id="coverPic" class="fb-image-lg hoverCoverPic" style="width:960px;height:450px"  src="@Model.Profile.CoverPictureUri" alt="To be set" />
          </figure>
          <div class="container">
              <figure>
-                 <img align="left" id="profilePic" class="fb-image-profile img-thumbnail hoverProfilePic " src="@Model.ProfileViewModel.ProfilePictureUri" alt="To be set" />
+                 <img align="left" id="profilePic" style="width:186px;height:186px" class="fb-image-profile  hoverProfilePic " src="@Model.Profile.ProfilePictureUri" alt="To be set" />
              </figure>
          </div>
          <div class="fb-profile-text">
-             <h1>@Model.ProfileViewModel.ProfileName</h1>
+             <h1>@Model.Profile.ProfileName</h1>
          </div>
      </div>
     <div>

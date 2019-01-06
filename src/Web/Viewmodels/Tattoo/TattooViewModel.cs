@@ -21,5 +21,6 @@ namespace Inkett.Web.Viewmodels.Tattoo
         public string PictureUri { get; set; }
 
         public int Album { get; set; }
+
     }
 }

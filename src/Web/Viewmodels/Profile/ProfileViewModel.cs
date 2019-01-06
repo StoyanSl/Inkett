@@ -1,6 +1,4 @@
-﻿using Inkett.Web.Attributes.Validation;
-using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Inkett.Web.Viewmodels.Profile
 {

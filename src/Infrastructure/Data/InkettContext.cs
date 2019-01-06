@@ -20,9 +20,13 @@ namespace Inkett.Infrastructure.Data
 
         public DbSet<Style> Styles { get; set; }
 
+        public DbSet<Like> Likes { get; set; }
+
         public DbSet<Tattoo> Tattoos { get; set; }
 
         public DbSet<TattooStyle> TattooStyles { get; set; }
+
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,9 +51,24 @@ namespace Inkett.Infrastructure.Data
                  .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Tattoo>()
-               .HasOne(b => b.Profile)
+               .HasOne(t => t.Profile)
                .WithMany(a => a.Tattoos)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Comment>()
+              .HasOne(c => c.Tattoo)
+              .WithMany(a => a.Comments)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Like>()
+             .HasOne(l => l.Tattoo)
+             .WithMany(a => a.Likes)
+              .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Like>()
+             .HasOne(l => l.Profile)
+             .WithMany(a => a.Likes)
+              .OnDelete(DeleteBehavior.Restrict);
 
         }
     }
