@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Inkett.ApplicationCore.Interfaces.Repositories;
+using System.Linq;
 
 namespace Inkett.ApplicationCore.Services
 {
@@ -28,6 +29,12 @@ namespace Inkett.ApplicationCore.Services
                 entry.SlidingExpiration = _defaultCacheDuration;
                 return await _styleRepository.ListAllAsync();
             });
+        }
+        public async Task<Style> GetStyleById(int id)
+        {
+            var styles = await GetStyles();
+
+            return styles.FirstOrDefault(s=>s.Id==id);
         }
     }
 }

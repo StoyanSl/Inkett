@@ -68,7 +68,6 @@ namespace Inkett.Web.Services
             }
             return viewModel;
         }
-
         public ProfileTattoosViewModel GetProfileLikedTattoosViewModel(Profile profile)
         {
             var viewModel = new ProfileTattoosViewModel();

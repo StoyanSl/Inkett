@@ -1,0 +1,14 @@
+﻿@model List<StyleViewModel>
+
+<div class="container" style="margin-top:100px">
+    <div class="container">
+        <div class="col-12 bg-white py-4" style="border-radius: 40px;">
+            <div class="d-flex flex-wrap align-items-stretch col-12 offset-sm-0 px-2 pt-2" style="margin-bottom:10px; border-radius:10px">
+                @foreach (var style in Model)
+                {
+                    <a class="btn btn-secondary mr-4  mb-2" href="/Style/Index/@style.Id"><h3>@style.Name</h3></a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

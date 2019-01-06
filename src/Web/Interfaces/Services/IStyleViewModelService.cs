@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Inkett.ApplicationCore.Entitites;
+using Inkett.Web.Viewmodels.Style;
+using Inkett.Web.Viewmodels.Tattoo;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Inkett.Web.Interfaces.Services
 {
-    interface IStyleViewModelService
+    public interface IStyleViewModelService
     {
+        List<StyleViewModel> GetStylesViewModels(IReadOnlyCollection<Style> styles);
+        IndexStyleViewModel GetIndexStyleViewModel(Style style);
     }
 }

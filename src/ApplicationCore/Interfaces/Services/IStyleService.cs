@@ -7,5 +7,6 @@ namespace Inkett.ApplicationCore.Interfaces.Services
     public interface IStyleService
     {
         Task<IReadOnlyList<Style>> GetStyles();
+        Task<Style> GetStyleById(int id);
     }
 }

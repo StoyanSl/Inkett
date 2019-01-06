@@ -63,6 +63,10 @@ namespace Inkett.ApplicationCore.Services
             return _tattooRepository.GetSingleBySpec(spec);
         }
 
-        
+        public async Task<IReadOnlyCollection<Tattoo>> GetTattoosByStyle(int pageIndex, int itemsPerPage ,int id)
+        {
+            var spec = new TattooByStyleSpecification(pageIndex*itemsPerPage,itemsPerPage,id);
+            return await _tattooRepository.ListAsync(spec);
+        }
     }
 }

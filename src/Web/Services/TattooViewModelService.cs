@@ -166,6 +166,14 @@ namespace Inkett.Web.Services
             return albumsSelectList;
         }
 
-
+        public List<ListedTattooViewModel> GetListedTattooViewModel(IReadOnlyCollection<Tattoo> tattoos)
+        {
+            var colleciton = new List<ListedTattooViewModel>();
+            foreach (var tattoo in tattoos)
+            {
+                colleciton.Add(GetListedTattooViewModel(tattoo));
+            }
+            return colleciton;
+        }
     }
 }

@@ -34,7 +34,7 @@
                 <div class="border my-2" style="border-radius:10px">
                     <div class="mx-3 my-2">
                         <a class=" text-dark" data-toggle="collapse" href="#commentSection" aria-expanded="false" aria-controls="collapseExample">
-                            <h5>  Comments: @Model.Comments.Count</h5>
+                            <h5 id="commentCount">Comments: @Model.Comments.Count</h5>
                         </a>
                         <div class="border-bottom mr-4"></div>
                     </div>
@@ -123,6 +123,8 @@
         {
             var form = $('#commentForm');
             var commentValue = form.find("textarea[name='comment']").val();
+            var commentCountString = $('#commentCount').text();
+            var commentCountNumber = Number(@Model.Comments.Count);
             var tattooId=@Model.Id;
             var token = $('input[name="__RequestVerificationToken"]', form).val();
                 $.ajax({
@@ -158,6 +160,9 @@
                             profileName: obj.Profile.ProfileName,
                             commentText: obj.Text
                         }))
+                        commentCountNumber += 1;
+                        commentCountString = commentCountString.split(" ")[0] + " " + commentCountNumber;
+                        $("#commentCount").html(commentCountString);
                     }
                 });
                 return false;

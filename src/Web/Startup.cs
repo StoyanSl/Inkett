@@ -33,7 +33,7 @@ namespace Web
 
         public IConfiguration Configuration { get; }
 
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -45,7 +45,7 @@ namespace Web
             {
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
-                
+
             });
             services.AddDbContext<AppIdentityDbContext>(c =>
                 c.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
@@ -63,7 +63,7 @@ namespace Web
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
-            
+
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IAlbumService, AlbumService>();
             services.AddScoped<ITattooService, TattooService>();
@@ -74,12 +74,13 @@ namespace Web
             services.AddScoped<ITattooViewModelService, TattooViewModelService>();
             services.AddScoped<IStyleService, StyleService>();
             services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IStyleViewModelService, StyleViewModelService>();
             services.AddMemoryCache();
 
             services.AddMvc(options => { options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()); }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
-        
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
