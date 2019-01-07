@@ -76,8 +76,11 @@ namespace Web
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IStyleViewModelService, StyleViewModelService>();
             services.AddMemoryCache();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
 
             services.AddMvc(options => { options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()); }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+           
+           
         }
 
 

@@ -27,7 +27,8 @@ namespace Inkett.ApplicationCore.Services
             return await _cache.GetOrCreateAsync(_stylesKey, async entry =>
             {
                 entry.SlidingExpiration = _defaultCacheDuration;
-                return await _styleRepository.ListAllAsync();
+                var styles= await _styleRepository.ListAllAsync();
+                return styles;
             });
         }
         public async Task<Style> GetStyleById(int id)

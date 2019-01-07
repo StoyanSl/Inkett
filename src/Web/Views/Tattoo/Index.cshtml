@@ -118,7 +118,12 @@
                     }
                 })
         });
-
+        function escapeHtml(text) {
+            'use strict';
+            return text.replace(/[\"&<>]/g, function (a) {
+                return { '"': '&quot;', '&': '&amp;', '<': '&lt;', '>': '&gt;' }[a];
+            });
+        }
         $("#commentForm").submit(function (event)
         {
             var form = $('#commentForm');
@@ -158,7 +163,7 @@
                             profileId: obj.Profile.Id,
                             profilePicUri: obj.Profile.ProfilePictureUri,
                             profileName: obj.Profile.ProfileName,
-                            commentText: obj.Text
+                            commentText: escapeHtml(obj.Text)
                         }))
                         commentCountNumber += 1;
                         commentCountString = commentCountString.split(" ")[0] + " " + commentCountNumber;

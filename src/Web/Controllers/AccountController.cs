@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
@@ -18,21 +16,20 @@ namespace Inkett.Web.Controllers
         private readonly InkettUserManager _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IProfileService _profileService;
-
+        private readonly IEmailSender _emailSender;
         
 
         public AccountController(
             InkettUserManager userManager,
             SignInManager<ApplicationUser> signInManager,
-            IProfileService profileService
-            )
+            IProfileService profileService,
+            IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _profileService = profileService;
+            _emailSender = emailSender;
         }
-
-        // GET: /Account/SignIn 
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
@@ -102,12 +99,14 @@ namespace Inkett.Web.Controllers
                    var profile= await _profileService.CreateProfileAsync(user.Id,model.ProfileName,String.Empty);
                     await _userManager.AddClaimAsync(user, new Claim("ProfileId", profile.Id.ToString()));
                     await _signInManager.SignInAsync(user, isPersistent: true);
+
                     return RedirectToAction("Index","Profile");
                 }
                 AddErrors(result);
             }
             return View(model);
         }
+        
 
         private IActionResult RedirectToLocal(string returnUrl)
         {
