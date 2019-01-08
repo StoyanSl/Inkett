@@ -23,6 +23,8 @@ namespace Inkett.Web.Viewmodels.Tattoo
 
         public bool IsLiked { get; set; }
 
+        public bool IsOwner { get; set; }
+
         public string PictureUri { get; set; }
     }
 }

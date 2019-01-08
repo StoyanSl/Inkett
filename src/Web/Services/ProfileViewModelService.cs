@@ -36,6 +36,7 @@ namespace Inkett.Web.Services
             };
             return profileViewModel;
         }
+
         public  EditProfileViewModel GetEditProfileViewModel(Profile profile)
         {
             var profileViewModel = this.GetProfileViewModel(profile);
@@ -47,6 +48,7 @@ namespace Inkett.Web.Services
 
             return editProfileViewModel;
         }
+
         public ProfileAlbumsViewModel GetProfileAlbumsViewModel(Profile profile)
         {
             var viewModel = new ProfileAlbumsViewModel();
@@ -57,6 +59,7 @@ namespace Inkett.Web.Services
             }
             return viewModel;
         }
+
         public ProfileTattoosViewModel GetProfileTattoosViewModel(Profile profile)
         {
             
@@ -68,6 +71,7 @@ namespace Inkett.Web.Services
             }
             return viewModel;
         }
+
         public ProfileTattoosViewModel GetProfileLikedTattoosViewModel(Profile profile)
         {
             var viewModel = new ProfileTattoosViewModel();

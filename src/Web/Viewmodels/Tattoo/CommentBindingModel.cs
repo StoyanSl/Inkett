@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Inkett.Web.Viewmodels.Tattoo
 {
     public class CommentBindingModel
     {
-       public string CommentText { get; set; }
+        [Required]
+        [StringLength(maximumLength:255,MinimumLength =1)]
+        public string CommentText { get; set; }
 
-       public int TattooId { get; set; }
+        [Required]
+        public int TattooId { get; set; }
     }
 }

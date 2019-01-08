@@ -16,32 +16,22 @@ namespace Inkett.Web.Controllers
         private readonly InkettUserManager _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IProfileService _profileService;
-        private readonly IEmailSender _emailSender;
         
 
         public AccountController(
             InkettUserManager userManager,
             SignInManager<ApplicationUser> signInManager,
-            IProfileService profileService,
-            IEmailSender emailSender)
+            IProfileService profileService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _profileService = profileService;
-            _emailSender = emailSender;
         }
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(string returnUrl = null)
+        public async Task<IActionResult> Login()
         {
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
-            ViewData["ReturnUrl"] = returnUrl;
-            if (!String.IsNullOrEmpty(returnUrl) &&
-                returnUrl.IndexOf("checkout", StringComparison.OrdinalIgnoreCase) >= 0)
-            {
-                ViewData["ReturnUrl"] = "/Basket/Index";
-            }
             return View();
         }
 

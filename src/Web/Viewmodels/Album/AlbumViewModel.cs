@@ -1,10 +1,6 @@
 ﻿using Inkett.Web.Attributes.Validation;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Inkett.Web.Viewmodels.Album
 {
@@ -14,6 +10,7 @@ namespace Inkett.Web.Viewmodels.Album
 
         [AlbumTitle]
         [Display(Name = "Album Title")]
+        [Required]
         public string Title { get; set; }
 
         [ImageValidation]

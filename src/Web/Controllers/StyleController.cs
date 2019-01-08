@@ -1,10 +1,14 @@
 ﻿using Inkett.ApplicationCore.Interfaces.Services;
+using Inkett.Web.Common;
 using Inkett.Web.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace Inkett.Web.Controllers
 {
+    [Authorize]
     public class StyleController : Controller
     {
         private readonly IStyleService _styleService;
@@ -33,6 +37,10 @@ namespace Inkett.Web.Controllers
         {
             int tattoosPerPage = 9;
             var style = await _styleService.GetStyleById(id);
+            if (style==null)
+            {
+                return NotFound();
+            }
             var tattoos = await _tattooService.GetTattoosByStyle(page??0,tattoosPerPage,id);
             var viewModel = _styleViewModelService.GetIndexStyleViewModel(style);
             viewModel.Tattoos =  _tattooViewModelService.GetListedTattooViewModel(tattoos);

@@ -4,14 +4,16 @@ using Inkett.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Inkett.Infrastructure.Migrations.Inkett
 {
     [DbContext(typeof(InkettContext))]
-    partial class InkettContextModelSnapshot : ModelSnapshot
+    [Migration("20190108081652_RequiredAnottationAdded_Migration")]
+    partial class RequiredAnottationAdded_Migration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,14 +30,12 @@ namespace Inkett.Infrastructure.Migrations.Inkett
                     b.Property<string>("AlbumPictureUri")
                         .IsRequired();
 
-                    b.Property<string>("Description")
-                        .HasMaxLength(255);
+                    b.Property<string>("Description");
 
                     b.Property<int>("ProfileId");
 
                     b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(50);
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -64,29 +64,6 @@ namespace Inkett.Infrastructure.Migrations.Inkett
                     b.HasIndex("TattooId");
 
                     b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("Inkett.ApplicationCore.Entitites.Follow", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("FollowedProfileId");
-
-                    b.Property<int>("FollowerId");
-
-                    b.Property<int?>("FollowerProfileId");
-
-                    b.Property<int>("FoollowedId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FollowedProfileId");
-
-                    b.HasIndex("FollowerProfileId");
-
-                    b.ToTable("Follows");
                 });
 
             modelBuilder.Entity("Inkett.ApplicationCore.Entitites.Like", b =>
@@ -123,8 +100,7 @@ namespace Inkett.Infrastructure.Migrations.Inkett
                     b.Property<string>("ProfileDescription");
 
                     b.Property<string>("ProfileName")
-                        .IsRequired()
-                        .HasMaxLength(25);
+                        .IsRequired();
 
                     b.Property<string>("ProfilePicture")
                         .IsRequired();
@@ -203,19 +179,6 @@ namespace Inkett.Infrastructure.Migrations.Inkett
                     b.HasOne("Inkett.ApplicationCore.Entitites.Tattoo", "Tattoo")
                         .WithMany("Comments")
                         .HasForeignKey("TattooId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("Inkett.ApplicationCore.Entitites.Follow", b =>
-                {
-                    b.HasOne("Inkett.ApplicationCore.Entitites.Profile", "FollowedProfile")
-                        .WithMany("Followers")
-                        .HasForeignKey("FollowedProfileId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Inkett.ApplicationCore.Entitites.Profile", "FollowerProfile")
-                        .WithMany("Following")
-                        .HasForeignKey("FollowerProfileId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

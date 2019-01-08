@@ -1,7 +1,7 @@
 ﻿using Ardalis.GuardClauses;
 using Inkett.ApplicationCore.Interfaces;
-using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Inkett.ApplicationCore.Entitites
 {
@@ -23,20 +23,23 @@ namespace Inkett.ApplicationCore.Entitites
         }
         public Album(int profileId, string title, string description, string pictureUri= defaultPictureUri)
         {
-            Guard.Against.NullOrEmpty(title, nameof(title));
             this.ProfileId = profileId;
             this.Title = title;
             this.Description = description;
             this.AlbumPictureUri = pictureUri??defaultPictureUri;
         }
 
-
+        [Required]
         public int ProfileId { get; set; }
 
+        [Required]
+        [StringLength(50, MinimumLength = 1)]
         public string Title { get; set; }
 
+        [StringLength(255,MinimumLength = 1)]
         public string Description { get; set; }
 
+        [Required]
         public string AlbumPictureUri { get; set; }
 
         public List<Tattoo> Tattoos { get; set; }

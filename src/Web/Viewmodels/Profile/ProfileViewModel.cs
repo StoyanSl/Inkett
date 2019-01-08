@@ -16,5 +16,6 @@ namespace Inkett.Web.Viewmodels.Profile
 
         public string CoverPictureUri { get; set; }
 
+        public bool IsOwner { get; set; }
     }
 }

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Inkett.ApplicationCore.Entitites
 {
@@ -15,7 +14,7 @@ namespace Inkett.ApplicationCore.Entitites
         {
             Name = name;
         }
-
+        [Required]
         public string Name { get; set; }
 
         [NotMapped]

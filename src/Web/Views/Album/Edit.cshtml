@@ -7,7 +7,7 @@
     <div class="row m-5 justify-content-center">
         <div class="col-sm-7 bg-white p-4" style="border-radius:10px">
             <form asp-controller="Album" asp-action="Edit" enctype="multipart/form-data" method="post" class="form-horizontal">
-                <h1>Edit <b>@Model.Title</b></h1>
+                <h1>Edit <a asp-action="Index" asp-controller="Album" asp-route-id="@Model.Id">@Model.Title</a> album</h1>
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="Title" class="control-label form-label"></label>
@@ -18,6 +18,7 @@
                 <div class="form-group hover10">
                     <figure>
                         <img id="albumPic" class="img-fluid hoverCoverPic" style="border-radius:10px" src="@Model.PictureUri" />
+                        <input type="hidden" asp-for="@Model.PictureUri" />
                     </figure>
                     <input name="Picture" id='uploadAlbumPic' type='file' style="display:none">
                 </div>

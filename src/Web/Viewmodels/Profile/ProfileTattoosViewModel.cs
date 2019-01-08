@@ -15,7 +15,6 @@ namespace Inkett.Web.Viewmodels.Profile
         public ProfileViewModel Profile { get; set; }
 
         public List<ListedTattooViewModel> Tattoos { get; set; }
-
-        public bool IsOwner { get; set;  }
+        
     }
 }

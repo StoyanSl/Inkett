@@ -6,7 +6,7 @@
         <div class="card-deck d-flex justify-content-start" style="padding:0">
             @if (Model.ProfileAlbums.Count == 0)
             {
-                if (Model.IsOwner)
+                if (Model.Profile.IsOwner)
                 {
                     <h1 class="px-4"> You have no albums? Create one right <a href="/Profile/Edit"><b><u>Now!</u></b></a> </h1>
 
@@ -23,3 +23,6 @@
         </div>
     </div>
 </div>
+@section ProfileScripts{
+    <script src="~/js/FollowButton.js" asp-append-version="true"></script>
+}

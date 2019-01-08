@@ -1,14 +1,17 @@
 ﻿using Inkett.ApplicationCore.Interfaces.Services;
 using Inkett.Infrastructure.Identity;
+using Inkett.Web.Common;
 using Inkett.Web.Interfaces.Services;
 using Inkett.Web.Viewmodels.Profile;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 
 namespace Inkett.Web.Controllers
 {
+    [Authorize]
     public class ProfileController : Controller
     {
         private readonly InkettUserManager _userManager;
@@ -32,24 +35,23 @@ namespace Inkett.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> Index(int id)
         {
-            if (id==0)
+            if (id == 0)
             {
                 id = _userManager.GetProfileId(User);
             }
             var profile = await _profileService.GetProfileById(id);
-            if (profile==null)
+            if (profile == null)
             {
                 return NotFound();
             }
-            var profileViewModel =  _profileViewModelService.GetProfileViewModel(profile);
+            var profileViewModel = _profileViewModelService.GetProfileViewModel(profile);
+            profileViewModel.IsOwner = profileViewModel.Id == _userManager.GetProfileId(User);
             return View(profileViewModel);
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> Tattoos(int id)
         {
             if (id == 0)
@@ -57,35 +59,32 @@ namespace Inkett.Web.Controllers
                 id = _userManager.GetProfileId(User);
             }
             var profile = await _profileService.GetProfileWithTattoos(id);
-            if (profile==null)
+            if (profile == null)
             {
                 return NotFound();
             }
             var profileTattoosViewModel = _profileViewModelService.GetProfileTattoosViewModel(profile);
             if (profileTattoosViewModel.Profile.Id == _userManager.GetProfileId(User))
             {
-                profileTattoosViewModel.IsOwner = true;
+                profileTattoosViewModel.Profile.IsOwner = true;
             }
             return View(profileTattoosViewModel);
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> LikedTattoos()
         {
-
             var profileId = _userManager.GetProfileId(User);
             var profile = await _profileService.GetProfileWithLikes(profileId);
-            var profileTattoosViewModel = _profileViewModelService.GetProfileLikedTattoosViewModel(profile);
-            if (profileTattoosViewModel.Profile.Id == _userManager.GetProfileId(User))
+            if (profile == null)
             {
-                profileTattoosViewModel.IsOwner = true;
+                return NotFound();
             }
+            var profileTattoosViewModel = _profileViewModelService.GetProfileLikedTattoosViewModel(profile);
             return View(profileTattoosViewModel);
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> Albums(int id)
         {
             if (id == 0)
@@ -97,16 +96,15 @@ namespace Inkett.Web.Controllers
             {
                 return NotFound();
             }
-            var profileAlbumsViewModel =  _profileViewModelService.GetProfileAlbumsViewModel(profile);
-            if (profileAlbumsViewModel.Profile.Id== _userManager.GetProfileId(User))
+            var profileAlbumsViewModel = _profileViewModelService.GetProfileAlbumsViewModel(profile);
+            if (profileAlbumsViewModel.Profile.Id == _userManager.GetProfileId(User))
             {
-                profileAlbumsViewModel.IsOwner = true;
+                profileAlbumsViewModel.Profile.IsOwner = true;
             }
             return View(profileAlbumsViewModel);
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> Edit()
         {
             var profileId = _userManager.GetProfileId(User);
@@ -120,12 +118,11 @@ namespace Inkett.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Edit(EditProfileViewModel profileBindingModel)
         {
             if (!ModelState.IsValid)
             {
-               return RedirectToAction("Edit");
+                return RedirectToAction("Edit");
             }
             var profileId = _userManager.GetProfileId(User);
             if (profileBindingModel.CoverPictureFile != null)

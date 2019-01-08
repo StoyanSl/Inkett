@@ -22,6 +22,7 @@
 
 
   <ItemGroup>
+    <Folder Include="Viewmodels\Tattoo\BindingModels\" />
     <Folder Include="wwwroot\tempImages\" />
   </ItemGroup>
 

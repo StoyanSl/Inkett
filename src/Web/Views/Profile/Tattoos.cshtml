@@ -7,7 +7,7 @@
             <div class="row">
                 @if (Model.Tattoos.Count == 0)
                 {
-                    if (Model.IsOwner)
+                    if (Model.Profile.IsOwner)
                     {
                         <h1 class="px-4"> Upload new tattoo <a href="/Profile/Edit/"><b><u>picture!</u></b></a> </h1>
 
@@ -26,3 +26,6 @@
         </div>
     </div>
 </div>
+@section ProfileScripts{
+    <script src="~/js/site.js" asp-append-version="true"></script>
+}

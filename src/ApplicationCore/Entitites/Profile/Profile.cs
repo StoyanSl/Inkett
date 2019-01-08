@@ -1,5 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Inkett.ApplicationCore.Entitites
 {
@@ -23,12 +24,17 @@ namespace Inkett.ApplicationCore.Entitites
             this.ProfilePicture =defaultProfile;
             this.CoverPicture = defaultCover;
         }
+        [Required]
         public string AccountId { get; set; }
 
+        [Required]
+        [StringLength(25, MinimumLength = 2)]
         public string ProfileName { get; set; }
 
+        [Required]
         public string ProfilePicture { get; set; }
 
+        [Required]
         public string CoverPicture { get; set; }
 
         public string ProfileDescription { get; set; }
@@ -38,5 +44,9 @@ namespace Inkett.ApplicationCore.Entitites
         public List<Tattoo> Tattoos { get; set; }
 
         public List<Like> Likes { get; set; }
+
+        public List<Follow> Followers { get; set; }
+
+        public List<Follow> Following { get; set; }
     }
 }

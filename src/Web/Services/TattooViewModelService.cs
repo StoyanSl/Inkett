@@ -1,6 +1,5 @@
 ﻿using Inkett.ApplicationCore.Entitites;
 using Inkett.ApplicationCore.Interfaces.Repositories;
-using Inkett.ApplicationCore.Specifications;
 using Inkett.Web.Interfaces.Services;
 using Inkett.Web.Viewmodels.Tattoo;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -69,7 +68,7 @@ namespace Inkett.Web.Services
                 });
             }
             viewModel.IsLiked = tattoo.Likes.Any(l => l.ProfileId == profileId);
-
+            viewModel.IsOwner = tattoo.ProfileId == profileId ? true : false;
             return viewModel;
         }
 
@@ -99,6 +98,16 @@ namespace Inkett.Web.Services
             await _tattooService.CreateTattoo(viewModel.Description, viewModel.TattooPicture, selectedStyles, profileId, viewModel.Album);
         }
 
+        public async Task EditTattooByViewModel(EditTattooViewModel viewModel, Tattoo tattoo)
+        {
+            var selectedStyles = new List<int>();
+            foreach (var selectedStyle in viewModel.StylesCheckBoxes.Where(s => s.Checked == true))
+            {
+                selectedStyles.Add(selectedStyle.Value);
+            }
+            await _tattooService.EditTattoo(tattoo, viewModel.Description, selectedStyles, viewModel.Album);
+        }
+        
         public ListedTattooViewModel GetListedTattooViewModel(Tattoo tattoo)
         {
             return new ListedTattooViewModel()
@@ -108,10 +117,11 @@ namespace Inkett.Web.Services
             };
         }
 
-        public async Task<TattooViewModel> GetEditTattooViewModel(Tattoo tattoo)
+        public async Task<EditTattooViewModel> GetEditTattooViewModel(Tattoo tattoo)
         {
             var styles = await _styleService.GetStyles();
-            var viewModel = new TattooViewModel();
+            var viewModel = new EditTattooViewModel();
+            viewModel.Album = tattoo.AlbumId?? 0;
             viewModel.PictureUri = tattoo.TattooPictureUri;
             viewModel.Description = tattoo.Description;
             viewModel.StylesCheckBoxes = await GetStylesCheckboxes(tattoo.TattooStyles);
@@ -126,6 +136,7 @@ namespace Inkett.Web.Services
 
 
         }
+
         private async Task<List<CheckboxModel>> GetStylesCheckboxes()
         {
             var styles = await _styleService.GetStyles();
@@ -137,6 +148,7 @@ namespace Inkett.Web.Services
             }).ToList();
             return stylesCheckBoxes;
         }
+
         private async Task<List<CheckboxModel>> GetStylesCheckboxes(List<TattooStyle> tattooStyles)
         {
             var checkedStyles = tattooStyles.Select(x => x.StyleId).ToList();
@@ -149,6 +161,7 @@ namespace Inkett.Web.Services
             }).ToList();
             return stylesCheckBoxes;
         }
+
         private List<SelectListItem> GetAlbumsSelectList(List<Album> albums, int? selectedAlbumId = null)
         {
             var albumsSelectList = albums.Select(s => new SelectListItem()
@@ -159,7 +172,7 @@ namespace Inkett.Web.Services
             }).ToList();
             albumsSelectList.Add(new SelectListItem()
             {
-                Selected = true,
+                Selected = selectedAlbumId == null ? true : false,
                 Text = notSelectedAlbum,
                 Value = notSelectedAlbumId.ToString()
             });

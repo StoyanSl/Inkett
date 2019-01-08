@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Inkett.Web.Models;
 using Inkett.ApplicationCore.Interfaces.Services;
 using Inkett.Web.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Inkett.Web.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ITattooService _tattooService;
@@ -30,24 +29,19 @@ namespace Inkett.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<PartialViewResult> GetTattoos( int? page)
+        public async Task<PartialViewResult> GetTattoos(int? page)
         {
             var itemsPerPage = 9;
             var tattoos = await _tattooService.GetTopTattoos(page??0,itemsPerPage);
             var viewModel = _tattooViewModelService.GetListedTattooViewModel(tattoos);
-            var partial = PartialView("~/Views/Shared/_ListedTattoosContainer.cshtml", viewModel);
-            return partial;
+            return PartialView("~/Views/Shared/_ListedTattoosContainer.cshtml", viewModel);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [AllowAnonymous]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel
+            { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

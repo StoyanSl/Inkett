@@ -14,6 +14,7 @@ namespace Inkett.ApplicationCore.Interfaces.Repositories
         Task<T> AddAsync(T entity);
         Task<T> GetSingleBySpec(ISpecification<T> spec);
         Task<T> UpdateAsync(T entity);
+        Task DeleteRange(IEnumerable<T> collection);
         Task DeleteAsync(T entity);
     }
 }

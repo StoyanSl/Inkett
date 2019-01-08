@@ -28,6 +28,8 @@ namespace Inkett.Infrastructure.Data
 
         public DbSet<Comment> Comments { get; set; }
 
+        public DbSet<Follow> Follows { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -70,6 +72,15 @@ namespace Inkett.Infrastructure.Data
              .WithMany(a => a.Likes)
               .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Follow>()
+             .HasOne(f=>f.FollowerProfile)
+             .WithMany(p=>p.Following)
+              .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Follow>()
+            .HasOne(f => f.FollowedProfile)
+            .WithMany(p => p.Followers)
+             .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

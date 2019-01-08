@@ -1,10 +1,12 @@
 ﻿using Inkett.ApplicationCore.Interfaces;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Inkett.ApplicationCore.Entitites
 {
-    public class Tattoo : BaseEntity,IProfileAuthorizable
+    public class Tattoo : BaseEntity, IProfileAuthorizable
     {
+        [Required]
         public string TattooPictureUri { get; set; }
 
         public string Description { get; set; }
@@ -12,6 +14,7 @@ namespace Inkett.ApplicationCore.Entitites
         public int? AlbumId { get; set; }
         public Album Album { get; set; }
 
+        [Required]
         public int ProfileId { get; set; }
         public Profile Profile { get; set; }
 

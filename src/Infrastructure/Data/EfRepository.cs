@@ -43,6 +43,13 @@ namespace Inkett.Infrastructure.Data
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task DeleteRange(IEnumerable<T> collection)
+        {
+            _dbContext.Set<T>().RemoveRange(collection);
+            await _dbContext.SaveChangesAsync();
+        }
+
+
         public T GetById( int id)
         {
             return _dbContext.Set<T>().Find(id);
@@ -86,5 +93,7 @@ namespace Inkett.Infrastructure.Data
         {
             return SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec);
         }
+
+        
     }
 }
