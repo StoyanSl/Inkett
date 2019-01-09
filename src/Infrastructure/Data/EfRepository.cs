@@ -24,6 +24,7 @@ namespace Inkett.Infrastructure.Data
 
             return entity;
         }
+
         public async Task<T> AddAsync(T entity)
         {
             _dbContext.Set<T>().Add(entity);
@@ -32,11 +33,18 @@ namespace Inkett.Infrastructure.Data
             return entity;
         }
 
+        public async Task AddRangeAsync(IEnumerable<T> range)
+        {
+            await _dbContext.Set<T>().AddRangeAsync(range);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public void Delete(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
             _dbContext.SaveChanges();
         }
+
         public async Task DeleteAsync(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
@@ -49,19 +57,21 @@ namespace Inkett.Infrastructure.Data
             await _dbContext.SaveChangesAsync();
         }
 
-
-        public T GetById( int id)
+        public T GetById(int id)
         {
             return _dbContext.Set<T>().Find(id);
         }
+
         public async Task<T> GetByIdAsync(int id)
         {
             return await _dbContext.Set<T>().FindAsync(id);
         }
+
         public IEnumerable<T> ListAll()
         {
             return _dbContext.Set<T>().AsEnumerable();
         }
+
         public async Task<IReadOnlyList<T>> ListAllAsync()
         {
             return await _dbContext.Set<T>().ToListAsync();
@@ -82,6 +92,7 @@ namespace Inkett.Infrastructure.Data
             _dbContext.Entry(entity).State = EntityState.Modified;
             _dbContext.SaveChanges();
         }
+
         public async Task<T> UpdateAsync(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
@@ -94,6 +105,6 @@ namespace Inkett.Infrastructure.Data
             return SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec);
         }
 
-        
+
     }
 }

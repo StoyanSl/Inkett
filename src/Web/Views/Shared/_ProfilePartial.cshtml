@@ -1,5 +1,7 @@
 ﻿@model ProfileViewModel
-
+@{
+    string followed = Model.IsFollowed ? "liked" : String.Empty;
+}
 
 <div class="fb-profile">
     <img align="left" class="fb-image-lg img-fluid" src="@Model.CoverPictureUri" alt="Profile image example" />
@@ -28,8 +30,9 @@
         {
             <div class="d-flex flex-grow-1 align-self-start justify-content-end pr-3">
                 <div>
-                    <a id="followButton" class="button button-like">
+                    <a id="followButton" class="button button-like @followed">
                         <i class="fa fa-heart p-2"></i>
+                        <input type="hidden" id="profileId" asp-for="@Model.Id" >
                     </a>
                 </div>
             </div>

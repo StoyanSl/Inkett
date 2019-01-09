@@ -9,19 +9,19 @@ namespace Inkett.ApplicationCore.Entitites
 
         }
 
-        public Follow(int followerId, int followedId)
+        public Follow(int profileId, int followedId)
         {
-            FollowerId = followerId;
-            FoollowedId = followedId;
+            ProfileId = profileId;
+            FollowedProfileId = followedId;
         }
 
         [Required]
-        public int FollowerId { get; set; }
+        public int ProfileId { get; set; }
 
-        public Profile FollowerProfile { get; set; }
+        public Profile Profile { get; set; }
 
         [Required]
-        public int FoollowedId { get; set; }
+        public int FollowedProfileId { get; set; }
 
         public Profile FollowedProfile { get; set; }
     }

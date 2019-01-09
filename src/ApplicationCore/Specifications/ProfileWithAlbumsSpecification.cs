@@ -11,6 +11,7 @@ namespace Inkett.ApplicationCore.Specifications
             : base(profile => profile.Id == profileId)
         {
             AddInclude(profile => profile.Albums);
+            AddInclude(profile => profile.Followers);
         }
     }
 }

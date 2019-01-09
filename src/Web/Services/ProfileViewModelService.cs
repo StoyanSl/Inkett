@@ -6,6 +6,7 @@ using Inkett.ApplicationCore.Entitites;
 using Ardalis.GuardClauses;
 using Inkett.ApplicationCore.Interfaces.Repositories;
 using Inkett.ApplicationCore.Specifications;
+using System.Linq;
 
 namespace Inkett.Web.Services
 {
@@ -49,18 +50,28 @@ namespace Inkett.Web.Services
             return editProfileViewModel;
         }
 
-        public ProfileAlbumsViewModel GetProfileAlbumsViewModel(Profile profile)
+        public ProfileAlbumsViewModel GetProfileAlbumsViewModel(Profile profile, int userProfileId)
         {
-            var viewModel = new ProfileAlbumsViewModel();
-            viewModel.Profile = this.GetProfileViewModel(profile);
+            var viewModel = new ProfileAlbumsViewModel
+            {
+                Profile = this.GetProfileViewModel(profile)
+            };
             foreach (var album in profile.Albums)
             {
                 viewModel.ProfileAlbums.Add(_albumViewModelService.GetAlbumViewModel(album));
             }
+            if (profile.Id==userProfileId)
+            {
+                viewModel.Profile.IsOwner = true ;
+            }
+            if (profile.Followers.Any(x=>x.ProfileId==userProfileId))
+            {
+                viewModel.Profile.IsFollowed = true;
+            }
             return viewModel;
         }
 
-        public ProfileTattoosViewModel GetProfileTattoosViewModel(Profile profile)
+        public ProfileTattoosViewModel GetProfileTattoosViewModel(Profile profile, int userProfileId)
         {
             
             var viewModel = new ProfileTattoosViewModel();
@@ -69,16 +80,32 @@ namespace Inkett.Web.Services
             {
                 viewModel.Tattoos.Add(_tattooViewModelService.GetListedTattooViewModel(tattoo));
             }
+            if (profile.Id == userProfileId)
+            {
+                viewModel.Profile.IsOwner = true;
+            }
+            if (profile.Followers.Any(x => x.ProfileId == userProfileId))
+            {
+                viewModel.Profile.IsFollowed = true;
+            }
             return viewModel;
         }
 
-        public ProfileTattoosViewModel GetProfileLikedTattoosViewModel(Profile profile)
+        public ProfileTattoosViewModel GetProfileLikedTattoosViewModel(Profile profile, int userProfileId)
         {
             var viewModel = new ProfileTattoosViewModel();
             viewModel.Profile = this.GetProfileViewModel(profile);
             foreach (var like in profile.Likes)
             {
                 viewModel.Tattoos.Add(_tattooViewModelService.GetListedTattooViewModel(like.Tattoo));
+            }
+            if (profile.Id == userProfileId)
+            {
+                viewModel.Profile.IsOwner = true;
+            }
+            if (profile.Followers.Any(x => x.ProfileId == userProfileId))
+            {
+                viewModel.Profile.IsFollowed = true;
             }
             return viewModel;
         }

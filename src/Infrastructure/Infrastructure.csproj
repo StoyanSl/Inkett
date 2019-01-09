@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Migrations\Inkett\20190105232624_LikesAdded_Migration.cs" />
+    <Compile Remove="Data\Migrations\Inkett\20190108081652_RequiredAnottationAdded_Migration.cs" />
+    <Compile Remove="Data\Migrations\Inkett\20190108223657_LikesFollows_Migration.cs" />
+    <Compile Remove="Data\Migrations\Inkett\20190108225741_LikesFollows_Migration.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CloudinaryDotNet" Version="1.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />

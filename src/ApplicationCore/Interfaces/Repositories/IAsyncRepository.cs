@@ -12,6 +12,7 @@ namespace Inkett.ApplicationCore.Interfaces.Repositories
         Task<IReadOnlyList<T>> ListAllAsync();
         Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec);
         Task<T> AddAsync(T entity);
+        Task AddRangeAsync(IEnumerable<T> range);
         Task<T> GetSingleBySpec(ISpecification<T> spec);
         Task<T> UpdateAsync(T entity);
         Task DeleteRange(IEnumerable<T> collection);

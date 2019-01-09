@@ -6,6 +6,7 @@ using Inkett.Web.Viewmodels.Profile;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 
@@ -41,13 +42,15 @@ namespace Inkett.Web.Controllers
             {
                 id = _userManager.GetProfileId(User);
             }
-            var profile = await _profileService.GetProfileById(id);
+            var userProfileId = _userManager.GetProfileId(User);
+            var profile = await _profileService.GetProfileWithLikes(id);
             if (profile == null)
             {
                 return NotFound();
             }
             var profileViewModel = _profileViewModelService.GetProfileViewModel(profile);
             profileViewModel.IsOwner = profileViewModel.Id == _userManager.GetProfileId(User);
+            profileViewModel.IsFollowed = profile.Followers.Any(f => f.ProfileId == userProfileId);
             return View(profileViewModel);
         }
 
@@ -63,11 +66,9 @@ namespace Inkett.Web.Controllers
             {
                 return NotFound();
             }
-            var profileTattoosViewModel = _profileViewModelService.GetProfileTattoosViewModel(profile);
-            if (profileTattoosViewModel.Profile.Id == _userManager.GetProfileId(User))
-            {
-                profileTattoosViewModel.Profile.IsOwner = true;
-            }
+            var profileTattoosViewModel = _profileViewModelService
+                .GetProfileTattoosViewModel(profile, _userManager.GetProfileId(User));
+           
             return View(profileTattoosViewModel);
         }
 
@@ -80,7 +81,9 @@ namespace Inkett.Web.Controllers
             {
                 return NotFound();
             }
-            var profileTattoosViewModel = _profileViewModelService.GetProfileLikedTattoosViewModel(profile);
+            var profileTattoosViewModel = _profileViewModelService
+                .GetProfileLikedTattoosViewModel(profile,_userManager.GetProfileId(User));
+            
             return View(profileTattoosViewModel);
         }
 
@@ -96,12 +99,35 @@ namespace Inkett.Web.Controllers
             {
                 return NotFound();
             }
-            var profileAlbumsViewModel = _profileViewModelService.GetProfileAlbumsViewModel(profile);
-            if (profileAlbumsViewModel.Profile.Id == _userManager.GetProfileId(User))
-            {
-                profileAlbumsViewModel.Profile.IsOwner = true;
-            }
+            var profileAlbumsViewModel = _profileViewModelService.GetProfileAlbumsViewModel(profile, _userManager.GetProfileId(User));
+           
             return View(profileAlbumsViewModel);
+        }
+
+        [HttpPost]
+        [Route("FollowProfile")]
+        public async Task<IActionResult> FollowProfile(int profileId)
+        {
+            var followerId = _userManager.GetProfileId(User);
+            if (profileId==followerId)
+            {
+                return NotFound();
+            }
+            await _profileService.CreateFollow(followerId, profileId);
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("UnFollowProfile")]
+        public async Task<IActionResult> UnFollowProfile(int profileId)
+        {
+            var followerId = _userManager.GetProfileId(User);
+            if (profileId == followerId)
+            {
+                return NotFound();
+            }
+            await _profileService.RemoveFollow(followerId, profileId);
+            return Ok();
         }
 
         [HttpGet]

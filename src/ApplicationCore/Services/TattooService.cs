@@ -17,16 +17,19 @@ namespace Inkett.ApplicationCore.Services
         private readonly IAsyncRepository<Like> _likeRepository;
         private readonly IAsyncRepository<TattooStyle> _tattooStyleRepository;
         private readonly IImageService _imageService;
+        private readonly INotificationService _notificationService;
 
         public TattooService(IAsyncRepository<Tattoo> tattooRepository,
             IAsyncRepository<Like> likeRepository,
             IAsyncRepository<TattooStyle> tattooStyleRepository,
-            IImageService imageService)
+            IImageService imageService,
+            INotificationService notificationService)
         {
             _tattooStyleRepository = tattooStyleRepository;
             _tattooRepository = tattooRepository;
             _likeRepository = likeRepository;
             _imageService = imageService;
+            _notificationService = notificationService;
         }
 
         public async Task CreateLike(int profileId, int tattooId)
@@ -50,6 +53,7 @@ namespace Inkett.ApplicationCore.Services
                 tattoo.TattooStyles.Add(new TattooStyle() { Tattoo = tattoo, StyleId = id });
             }
             tattoo = await _tattooRepository.AddAsync(tattoo);
+            await _notificationService.CreateNotifications(profileId, tattoo.TattooPictureUri, tattoo.Id);
         }
 
         public async Task EditTattoo(Tattoo tattoo, string description, IEnumerable<int> styleIds, int albumId)

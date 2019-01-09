@@ -13,12 +13,36 @@ namespace Inkett.ApplicationCore.Services
     public class ProfileService : IProfileService
     {
         private readonly IAsyncRepository<Profile> _profileRepository;
+        private readonly IAsyncRepository<Follow> _followRepository;
         private readonly IAlbumService _albumService;
         public ProfileService(IAsyncRepository<Profile> profileRepository,
+            IAsyncRepository<Follow> followRepository,
             IAlbumService albumService)
         {
             _profileRepository = profileRepository;
             _albumService = albumService;
+            _followRepository = followRepository;
+        }
+
+        public async Task<Profile> CreateProfileAsync(string accountId, string userName, string profileDescription)
+        {
+            var profile = new Profile(accountId, userName, profileDescription);
+            profile = await _profileRepository.AddAsync(profile);
+            await _albumService.CreateAlbum(profile.Id);
+            return profile;
+        }
+
+        public async Task CreateFollow(int followerId, int followedId)
+        {
+            var follow = new Follow(followerId, followedId);
+           await  _followRepository.AddAsync(follow);
+        }
+
+        public async Task RemoveFollow(int followerId, int followedId)
+        {
+            var spec = new FollowSpecification(followerId,followedId);
+            var follow = await _followRepository.GetSingleBySpec(spec);
+            await _followRepository.DeleteAsync(follow);
         }
 
         public async Task UpdateProfilePicture(int profileId, string pictureUrl)
@@ -36,14 +60,6 @@ namespace Inkett.ApplicationCore.Services
             await _profileRepository.UpdateAsync(profile);
         }
 
-        public async Task<Profile> CreateProfileAsync(string accountId, string userName, string profileDescription)
-        {
-            var profile = new Profile(accountId, userName, profileDescription);
-            profile = await _profileRepository.AddAsync(profile);
-            await _albumService.CreateAlbum(profile.Id);
-            return profile;
-        }
-        
         public bool ProfileNameExists(string profileName)
         {
             return _profileRepository.ListAllAsync().Result.Any(x => x.ProfileName == profileName);
@@ -60,7 +76,6 @@ namespace Inkett.ApplicationCore.Services
             var spec = new ProfileWithLikesSpecification(profileId);
             return _profileRepository.GetSingleBySpec(spec);
         }
-
 
         public  Task<Profile> GetProfileById(int profileId)
         {

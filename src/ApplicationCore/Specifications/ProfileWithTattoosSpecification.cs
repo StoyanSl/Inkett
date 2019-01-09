@@ -8,6 +8,7 @@ namespace Inkett.ApplicationCore.Specifications
            : base(profile => profile.Id == profileId)
         {
             AddInclude(profile => profile.Tattoos);
+            AddInclude(profile => profile.Followers);
         }
     }
 }

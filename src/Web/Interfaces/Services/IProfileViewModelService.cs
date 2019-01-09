@@ -9,8 +9,8 @@ namespace Inkett.Web.Interfaces.Services
     {
         ProfileViewModel GetProfileViewModel(Profile profile);
         EditProfileViewModel GetEditProfileViewModel(Profile profile);
-        ProfileAlbumsViewModel GetProfileAlbumsViewModel(Profile profile);
-        ProfileTattoosViewModel GetProfileTattoosViewModel(Profile profile);
-        ProfileTattoosViewModel GetProfileLikedTattoosViewModel(Profile profile);
+        ProfileAlbumsViewModel GetProfileAlbumsViewModel(Profile profile,int userProfileId);
+        ProfileTattoosViewModel GetProfileTattoosViewModel(Profile profile,int userProfileId);
+        ProfileTattoosViewModel GetProfileLikedTattoosViewModel(Profile profile,int userProfileId);
     }
 }

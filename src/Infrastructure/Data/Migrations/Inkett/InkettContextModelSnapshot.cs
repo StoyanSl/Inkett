@@ -68,42 +68,26 @@ namespace Inkett.Infrastructure.Migrations.Inkett
 
             modelBuilder.Entity("Inkett.ApplicationCore.Entitites.Follow", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("ProfileId");
 
-                    b.Property<int?>("FollowedProfileId");
+                    b.Property<int>("FollowedProfileId");
 
-                    b.Property<int>("FollowerId");
-
-                    b.Property<int?>("FollowerProfileId");
-
-                    b.Property<int>("FoollowedId");
-
-                    b.HasKey("Id");
+                    b.HasKey("ProfileId", "FollowedProfileId");
 
                     b.HasIndex("FollowedProfileId");
-
-                    b.HasIndex("FollowerProfileId");
 
                     b.ToTable("Follows");
                 });
 
             modelBuilder.Entity("Inkett.ApplicationCore.Entitites.Like", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("TattooId");
 
                     b.Property<int>("ProfileId");
 
-                    b.Property<int>("TattooId");
-
-                    b.HasKey("Id");
+                    b.HasKey("TattooId", "ProfileId");
 
                     b.HasIndex("ProfileId");
-
-                    b.HasIndex("TattooId");
 
                     b.ToTable("Likes");
                 });
@@ -213,9 +197,9 @@ namespace Inkett.Infrastructure.Migrations.Inkett
                         .HasForeignKey("FollowedProfileId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Inkett.ApplicationCore.Entitites.Profile", "FollowerProfile")
-                        .WithMany("Following")
-                        .HasForeignKey("FollowerProfileId")
+                    b.HasOne("Inkett.ApplicationCore.Entitites.Profile", "Profile")
+                        .WithMany("Follows")
+                        .HasForeignKey("ProfileId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

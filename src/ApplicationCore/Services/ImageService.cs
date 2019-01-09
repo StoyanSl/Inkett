@@ -1,13 +1,8 @@
 ﻿using Inkett.ApplicationCore.Interfaces.Services;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Drawing;
 using Inkett.ApplicationCore.Services.Results;
-using Microsoft.AspNetCore.Hosting.Server;
-using static System.Net.WebRequestMethods;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System;

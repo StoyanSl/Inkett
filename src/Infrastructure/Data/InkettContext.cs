@@ -47,6 +47,7 @@ namespace Inkett.Infrastructure.Data
                 .HasOne(ts => ts.Style)
                 .WithMany(t => t.TattooStyles)
                 .HasForeignKey(ts => ts.StyleId);
+
             modelBuilder.Entity<Tattoo>()
                 .HasOne(b => b.Album)
                 .WithMany(a => a.Tattoos)
@@ -62,25 +63,34 @@ namespace Inkett.Infrastructure.Data
               .WithMany(a => a.Comments)
                .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Like>().Ignore(l => l.Id);
+            modelBuilder.Entity<Like>()
+                .HasKey(l => new { l.TattooId, l.ProfileId });
             modelBuilder.Entity<Like>()
              .HasOne(l => l.Tattoo)
-             .WithMany(a => a.Likes)
+             .WithMany(t => t.Likes)
               .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Like>()
              .HasOne(l => l.Profile)
-             .WithMany(a => a.Likes)
+             .WithMany(p => p.Likes)
+              .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Follow>().Ignore(l => l.Id);
+            modelBuilder.Entity<Follow>()
+             .HasKey(f => new { f.ProfileId, f.FollowedProfileId });
+
+            modelBuilder.Entity<Follow>()
+             .HasOne(f=>f.Profile)
+             .WithMany(p=>p.Follows)
+             .HasForeignKey(f=>f.ProfileId)
               .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Follow>()
-             .HasOne(f=>f.FollowerProfile)
-             .WithMany(p=>p.Following)
-              .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Follow>()
-            .HasOne(f => f.FollowedProfile)
-            .WithMany(p => p.Followers)
-             .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(f => f.FollowedProfile)
+                .WithMany(p => p.Followers)
+                .HasForeignKey(f => f.FollowedProfileId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
