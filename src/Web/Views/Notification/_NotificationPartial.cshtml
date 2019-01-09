@@ -1,12 +1,13 @@
 ﻿@model NotificationViewModel
 <div class=" d-flex col-sm-12 offset-sm-0 flex-wrap " style="margin-bottom:10px">
     <div class="ml-3 mr-2 my-2" style="width:15%">
-        <a href="@Model.Reference">
+        <a class="reference" href="@Model.Reference">
             <img class="img-fluid" style="border-radius:10px" src="@Model.PictureUri" />
         </a>
     </div>
-    <div class="my-2 align-self-start">
+    <div class="my-2 align-self-start reference">
         <a href="@Model.Reference"><h4>@Model.Message</h4></a>
     </div>
+    <input id="notificationId" type="hidden" value="@Model.Id">
 </div>
 <div class="border mx-2"></div>

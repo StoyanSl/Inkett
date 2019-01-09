@@ -1,5 +1,5 @@
 ﻿@model List<NotificationViewModel>
-<div class="container" >
+<div class="container">
     <div class="container d-flex justify-content-center">
         <div class="col-md-12 bg-white py-4" style="border-radius: 40px;">
             <div class="flex-grow d-flex justify-content-start">
@@ -26,4 +26,26 @@
         </div>
     </div>
 </div>
+@section NotificationScripts{
 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var notificationId = $('#notificationId').val();
+            $('.reference')
+                .bind('click', function (event) {
+                    console.log(notificationId)
+                    $.ajax({
+                        url: "/Notification/CheckNotification",
+                        type: 'POST',
+                        dataType: 'html',
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("RequestVerificationToken",
+                                $('input:hidden[name="__RequestVerificationToken"]').val());
+                        },
+                        data: { notificationId: notificationId }
+                    });
+
+                })
+        });
+    </script>
+}

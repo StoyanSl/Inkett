@@ -39,6 +39,9 @@ namespace Inkett.Web.Controllers
             var model = new IndexViewModel
             {
                 Email = user.Email,
+                FirstName=user.FirstName,
+                LastName=user.LastName,
+                BirthdayDate=user.BirthdayDate??DateTime.UtcNow,
                 StatusMessage = StatusMessage
             };
 
@@ -46,29 +49,45 @@ namespace Inkett.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(IndexViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
+
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return new NotFoundResult();
+                return NotFound();
             }
+
             var email = user.Email;
             if (model.Email != email)
             {
                 var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
-                if (setEmailResult.Succeeded)
-                {
-                    StatusMessage = "Your email has been updated";
-                    return RedirectToAction(nameof(Index));
-                }
-                AddErrors(setEmailResult);
+                await _userManager.SetUserNameAsync(user, model.Email);
             }
+
+            var firstName = user.FirstName;
+            if (model.FirstName != firstName)
+            {
+                await _userManager.SetUserFirstNameAsync(user,model.FirstName);
+                
+            }
+            var lastName = user.LastName;
+            if (model.LastName != lastName)
+            {
+                await _userManager.SetUserLastNameAsync(user, model.LastName);
+
+            }
+            var birthdate = user.BirthdayDate;
+            if (model.BirthdayDate != birthdate)
+            {
+                await _userManager.SetUserBirthDayAsync(user, model.BirthdayDate);
+            }
+
+            StatusMessage = "Your profile has been updated";
             return RedirectToAction(nameof(Index));
         }
 
@@ -103,7 +122,7 @@ namespace Inkett.Web.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound();
             }
 
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
@@ -118,47 +137,6 @@ namespace Inkett.Web.Controllers
 
             return RedirectToAction(nameof(ChangePassword));
         }
-
-        [HttpGet]
-        public async Task<IActionResult> SetPassword()
-        {
-            var user = await _userManager.GetUserAsync(User);
-
-            var hasPassword = await _userManager.HasPasswordAsync(user);
-
-            if (hasPassword)
-            {
-                return RedirectToAction(nameof(ChangePassword));
-            }
-
-            var model = new SetPasswordViewModel { StatusMessage = StatusMessage };
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SetPassword(SetPasswordViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            var user = await _userManager.GetUserAsync(User);
-
-            var addPasswordResult = await _userManager.AddPasswordAsync(user, model.NewPassword);
-            if (!addPasswordResult.Succeeded)
-            {
-                AddErrors(addPasswordResult);
-                return View(model);
-            }
-
-            await _signInManager.SignInAsync(user, isPersistent: false);
-            StatusMessage = "Your password has been set.";
-
-            return RedirectToAction(nameof(SetPassword));
-        }
-        
 
         private void AddErrors(IdentityResult result)
         {

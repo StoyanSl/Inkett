@@ -93,28 +93,19 @@ namespace Inkett.Web.Controllers
 
         [Route("LikeTattoo")]
         [HttpPost]
-        public async Task<IActionResult> LikeTattoo([FromBody]LikeBindingModel likeModel)
+        public async Task LikeTattoo([FromBody]LikeBindingModel likeModel)
         {
-            if (!ModelState.IsValid)
-            {
-                return NoContent();
-            }
             var profileId = _userManager.GetProfileId(User);
             await _tattooService.CreateLike(profileId, likeModel.TattooId);
-            return Ok();
         }
 
         [Route("DislikeTattoo")]
         [HttpPost]
-        public async Task<IActionResult> DislikeTattoo([FromBody]LikeBindingModel likeModel)
+        public async Task DislikeTattoo([FromBody]LikeBindingModel likeModel)
         {
-            if (!ModelState.IsValid)
-            {
-                return NoContent();
-            }
+           
             var profileId = _userManager.GetProfileId(User);
             await _tattooService.RemoveLike(profileId, likeModel.TattooId);
-            return Ok();
         }
 
        

@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿
+@{ 
+    string hasNotification = "true";
+    // Context.Session.GetString("_hasNotification");
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -11,6 +16,8 @@
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+
+
 </head>
 <body>
     <div id="wrapper">
@@ -20,9 +27,12 @@
                 <div class="container">
                     <a class="btn btn-secondary" id="sidebarCollapse"><span class="navbar-toggler-icon"></span></a>
                     <a class="navbar-brand" asp-controller="Home" asp-action="Index"><b>Inkett</b></a>
-                    <partial name="_LoginPartial" />
-                    <div class="container">
-                        <div class="notification"></div>
+                    <div class="d-flex justify-content-around">
+                        <a asp-action="Index" asp-controller="Notification" class="btn btn-secondary mr-4">
+                            <img src="~/bell-2x.webp"> @* <span class="badge badge-light">4</span>*@
+                        </a>
+                        <input id="notificationFlag" type="hidden" value="@hasNotification" />
+                        <partial name="_LoginPartial" />
                     </div>
                 </div>
             </nav>
@@ -32,7 +42,6 @@
                     @RenderBody()
                 </main>
             </div>
-
         </div>
         <div class="overlay"></div>
     </div>
@@ -40,7 +49,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"
             asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
             asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
@@ -48,7 +57,12 @@
             integrity="sha256-E/V4cWE4qvAeO5MOhjtGtqDzPndRO1LBk8lJ/PR7CA4=">
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        var test = $('#notificationFlag').val();
+        console.log(test);
+    </script>
     @RenderSection("Scripts", required: false)
     @RenderSection("ProfileScripts", required: false)
+   
 </body>
 </html>

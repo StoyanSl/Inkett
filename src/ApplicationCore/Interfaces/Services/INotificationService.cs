@@ -9,5 +9,6 @@ namespace Inkett.ApplicationCore.Interfaces.Services
         Task CreateNotifications(int senderId, string PictureUri, int tattooId);
         Task<IReadOnlyCollection<Notification>> GetNotCheckedNotifications(int profileUserId);
         Task<IReadOnlyCollection<Notification>> GetCheckedNotifications(int profileUserId);
+        Task CheckNotification( int notificationId);
     }
 }

@@ -49,5 +49,13 @@ namespace Inkett.ApplicationCore.Services
             var spec = new NotificationSpecification(profileUserId, true);
             return await _notificationRepository.ListAsync(spec);
         }
+
+        public async Task CheckNotification(int notificationId)
+        {
+            var notification = await _notificationRepository.GetByIdAsync(notificationId);
+            Guard.Against.Null(notification,nameof(notification));
+            notification.IsChecked = true;
+            await _notificationRepository.UpdateAsync(notification);
+        }
     }
 }

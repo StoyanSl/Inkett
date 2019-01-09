@@ -13,6 +13,7 @@ namespace Inkett.Web.Services
         {
             var notificationsViewModels = notifications.Select(n => new NotificationViewModel()
             {
+                Id = n.Id,
                 Message=n.Message,
                 PictureUri=n.PictureUri,
                 Reference=n.Reference

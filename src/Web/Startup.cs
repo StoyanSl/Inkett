@@ -81,8 +81,14 @@ namespace Web
             services.Configure<AuthMessageSenderOptions>(Configuration);
 
             services.AddMvc(options => { options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()); }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-           
-           
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(30);
+                options.Cookie.HttpOnly = true;
+            });
+
         }
 
 
@@ -100,6 +106,7 @@ namespace Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSession();
             app.UseAuthentication();
 
             app.UseMvc(routes =>

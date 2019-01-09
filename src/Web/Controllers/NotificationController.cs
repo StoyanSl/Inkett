@@ -2,6 +2,7 @@
 using Inkett.Infrastructure.Identity;
 using Inkett.Web.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -25,12 +26,14 @@ namespace Inkett.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+           // HttpContext.Session.SetString("_hasNotification", "true");
             var userProfileId = _inkettUserManager.GetProfileId(User);
             var notCheckedNotifications = await _notificationService.GetNotCheckedNotifications(userProfileId);
 
             var viewModels =  _notificationViewModelService.GetNotificationsViewModels(notCheckedNotifications);
             return View(viewModels);
         }
+
         [HttpGet]
         public async Task<IActionResult> Checked()
         {
@@ -39,6 +42,13 @@ namespace Inkett.Web.Controllers
 
             var viewModels = _notificationViewModelService.GetNotificationsViewModels(checkedNotifications);
             return View(viewModels);
+        }
+
+        [HttpPost]
+        public async Task CheckNotification(int notificationId)
+        {
+            var userProfileId = _inkettUserManager.GetProfileId(User);
+           await _notificationService.CheckNotification(notificationId);
         }
     }
 }
