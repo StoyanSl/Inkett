@@ -4,14 +4,16 @@ using Inkett.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Inkett.Infrastructure.Migrations.Inkett
 {
     [DbContext(typeof(InkettContext))]
-    partial class InkettContextModelSnapshot : ModelSnapshot
+    [Migration("20190109011643_AddedNotifications")]
+    partial class AddedNotifications
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,12 +100,12 @@ namespace Inkett.Infrastructure.Migrations.Inkett
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ImageUri")
+                        .IsRequired();
+
                     b.Property<bool>("IsChecked");
 
                     b.Property<string>("Message")
-                        .IsRequired();
-
-                    b.Property<string>("PictureUri")
                         .IsRequired();
 
                     b.Property<int>("ProfileId");

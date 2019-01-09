@@ -67,6 +67,7 @@ namespace Inkett.Web.Controllers
             {
                 var profileId = _userManager.GetProfileId(User);
                 await _tattooViewModelService.CreateTattooByViewModel(viewModel, profileId);
+                return RedirectToAction("Tattoos","Profile", new { id=profileId});
             }
             return View(viewModel);
         }

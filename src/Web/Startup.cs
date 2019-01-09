@@ -68,10 +68,12 @@ namespace Web
             services.AddScoped<IAlbumService, AlbumService>();
             services.AddScoped<ITattooService, TattooService>();
             services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IImageUploader, ImageUploader>();
             services.AddScoped<IProfileViewModelService, ProfileViewModelService>();
             services.AddScoped<IAlbumViewModelService, AlbumViewModelService>();
             services.AddScoped<ITattooViewModelService, TattooViewModelService>();
+            services.AddScoped<INotificationViewModelService, NotificationViewModelService>();
             services.AddScoped<IStyleService, StyleService>();
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IStyleViewModelService, StyleViewModelService>();

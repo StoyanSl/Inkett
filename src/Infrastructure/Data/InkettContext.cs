@@ -30,6 +30,8 @@ namespace Inkett.Infrastructure.Data
 
         public DbSet<Follow> Follows { get; set; }
 
+        public DbSet<Notification> Notifications { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -91,6 +93,13 @@ namespace Inkett.Infrastructure.Data
                 .WithMany(p => p.Followers)
                 .HasForeignKey(f => f.FollowedProfileId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Notification>()
+               .HasOne(f => f.Profile)
+               .WithMany(p => p.Notifications)
+               .HasForeignKey(f => f.ProfileId)
+               .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

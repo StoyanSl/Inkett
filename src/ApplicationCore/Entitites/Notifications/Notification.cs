@@ -1,17 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Inkett.ApplicationCore.Entitites.Notifications
-{
+namespace Inkett.ApplicationCore.Entitites
+{ 
     public class Notification : BaseEntity
     {
         public Notification()
         {
                 
         }
-        public Notification(int profileId,string imageUri, string reference, string message)
+        public Notification(int profileId,string pictureUri, string reference, string message)
         {
             ProfileId = profileId;
-            ImageUri = imageUri;
+            PictureUri = pictureUri;
             Reference = reference;
             Message = message;
         }
@@ -22,7 +22,7 @@ namespace Inkett.ApplicationCore.Entitites.Notifications
         public Profile Profile { get; set; }
 
         [Required]
-        public string ImageUri { get; set; }
+        public string PictureUri { get; set; }
 
         [Required]
         public string Reference { get; set; }

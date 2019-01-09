@@ -24,6 +24,7 @@ namespace Web
                 var inkettContext = services.GetRequiredService<InkettContext>();
                 InkettContextSeed.SeedAsync(inkettContext).Wait();
             }
+
             host.Run();
         }
 

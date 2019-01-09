@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Inkett.ApplicationCore.Entitites;
-using Inkett.ApplicationCore.Entitites.Notifications;
 using Inkett.ApplicationCore.Interfaces.Repositories;
 using Inkett.ApplicationCore.Interfaces.Services;
+using Inkett.ApplicationCore.Specifications;
 
 namespace Inkett.ApplicationCore.Services
 {
@@ -34,9 +34,20 @@ namespace Inkett.ApplicationCore.Services
 
             foreach (var follower in profile.Followers)
             {
-                notifications.Add( new Notification(profile.Id,PictureUri,notificationReference,message));
+                notifications.Add( new Notification(follower.ProfileId,PictureUri,notificationReference,message));
             }
             await _notificationRepository.AddRangeAsync(notifications);
+        }
+
+        public async Task<IReadOnlyCollection<Notification>> GetNotCheckedNotifications(int profileUserId)
+        {
+            var spec = new NotificationSpecification(profileUserId,false);
+            return await _notificationRepository.ListAsync(spec);
+        }
+        public async Task<IReadOnlyCollection<Notification>> GetCheckedNotifications(int profileUserId)
+        {
+            var spec = new NotificationSpecification(profileUserId, true);
+            return await _notificationRepository.ListAsync(spec);
         }
     }
 }

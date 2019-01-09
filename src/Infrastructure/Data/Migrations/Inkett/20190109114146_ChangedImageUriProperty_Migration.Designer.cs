@@ -4,14 +4,16 @@ using Inkett.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Inkett.Infrastructure.Migrations.Inkett
 {
     [DbContext(typeof(InkettContext))]
-    partial class InkettContextModelSnapshot : ModelSnapshot
+    [Migration("20190109114146_ChangedImageUriProperty_Migration")]
+    partial class ChangedImageUriProperty_Migration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

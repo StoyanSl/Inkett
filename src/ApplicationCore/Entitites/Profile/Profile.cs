@@ -48,5 +48,7 @@ namespace Inkett.ApplicationCore.Entitites
         public List<Follow> Followers { get; set; }
 
         public List<Follow> Follows { get; set;  }
+
+        public List<Notification> Notifications { get; set; }
     }
 }
