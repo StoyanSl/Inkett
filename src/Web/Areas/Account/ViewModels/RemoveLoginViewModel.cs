@@ -1,4 +1,5 @@
-﻿namespace Inkett.Web.Viewmodels.Manage
+﻿
+namespace Inkett.Web.Areas.Account.ViewModels
 {
     public class RemoveLoginViewModel
     {

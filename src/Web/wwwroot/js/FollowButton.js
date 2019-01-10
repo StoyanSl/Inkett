@@ -3,7 +3,6 @@ $(document).ready(function () {
     $('#followButton').click(function () {
         $("#followButton").toggleClass("liked");
         let profileId = $('#profileId').val();
-        console.log(profileId);
         if ($(".button-like").hasClass("liked")) {
             $.ajax({
                 url: "/FollowProfile",

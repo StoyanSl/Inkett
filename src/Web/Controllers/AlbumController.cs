@@ -2,11 +2,10 @@
 using Inkett.Infrastructure.Identity;
 using Inkett.Web.Interfaces.Services;
 using Inkett.Web.Viewmodels.Album;
-using Inkett.Web.Exceptions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Inkett.Web.Common;
+using System.Linq;
 
 namespace Inkett.Web.Controllers
 {
@@ -43,16 +42,15 @@ namespace Inkett.Web.Controllers
             {
                 return NotFound();
             }
-            var profile = await _profileService.GetProfileById(album.ProfileId);
+            var profile = await _profileService.GetProfileWithAlbums(album.ProfileId);
+            var userProfileId = _userManager.GetProfileId(User);
             var authorization = _authorizationService.AuthorizeAsync(User, album, "EditPolicy");
             var viewModel = _albumViewModelService.GetIndexAlbumViewModel(album);
             var authResult = await authorization;
-            if (authResult.Succeeded)
-            {
-                viewModel.isOwner = true;
-            }
-
+            viewModel.isOwner = authResult.Succeeded;
             viewModel.Profile = _profileViewModelService.GetProfileViewModel(profile);
+            viewModel.Profile.IsOwner = authResult.Succeeded;
+            viewModel.Profile.IsFollowed = profile.Followers.Any(f => f.ProfileId == userProfileId);
             return View(viewModel);
 
         }

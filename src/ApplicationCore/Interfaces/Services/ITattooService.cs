@@ -11,6 +11,7 @@ namespace Inkett.ApplicationCore.Interfaces.Services
         Task EditTattoo(Tattoo tattoo, string description, IEnumerable<int> styleIds, int albumId);
         Task<Tattoo> GetTattooById(int id);
         Task<Tattoo> GetTattooWithStyles(int id);
+        Task<IReadOnlyCollection<Tattoo>> GetTattoos(int page, int itemsPerPage);
         Task<IReadOnlyCollection<Tattoo>> GetTopTattoos(int page,int itemsPerPage);
         Task<IReadOnlyCollection<Tattoo>> GetTattoosByStyle(int pageIndex,int itemsPerPage,int id);
         Task CreateLike(int profileId, int tattooId);

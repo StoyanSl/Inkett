@@ -1,7 +1,4 @@
 ﻿using Inkett.ApplicationCore.Entitites;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Inkett.ApplicationCore.Specifications
 {

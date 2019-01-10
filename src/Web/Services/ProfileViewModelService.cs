@@ -7,6 +7,7 @@ using Ardalis.GuardClauses;
 using Inkett.ApplicationCore.Interfaces.Repositories;
 using Inkett.ApplicationCore.Specifications;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Inkett.Web.Services
 {
@@ -36,6 +37,19 @@ namespace Inkett.Web.Services
                 CoverPictureUri = profile.CoverPicture
             };
             return profileViewModel;
+        }
+
+        public List<ProfileViewModel> GetProfilesViewModels(IReadOnlyCollection<Profile> profiles)
+        {
+            var viewModels = profiles.Select(x => new ProfileViewModel()
+            {
+                Id = x.Id,
+                ProfileName = x.ProfileName,
+                ProfileDescription = x.ProfileDescription,
+                ProfilePictureUri = x.ProfilePicture,
+                CoverPictureUri = x.CoverPicture
+            }).ToList();
+            return viewModels;
         }
 
         public  EditProfileViewModel GetEditProfileViewModel(Profile profile)
@@ -109,5 +123,7 @@ namespace Inkett.Web.Services
             }
             return viewModel;
         }
+
+        
     }
 }

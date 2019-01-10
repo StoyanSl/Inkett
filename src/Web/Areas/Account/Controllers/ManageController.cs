@@ -5,12 +5,12 @@ using System;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Inkett.Infrastructure.Identity;
-using Inkett.Web.Viewmodels.Manage;
+using Inkett.Web.Areas.Account.ViewModels;
 
-namespace Inkett.Web.Controllers
+namespace Inkett.Web.Areas.Account.Controllers
 {
     [Authorize]
-    [Route("[controller]/[action]")]
+    [Area("Account")]
     public class ManageController : Controller
     {
         private readonly InkettUserManager _userManager;
@@ -65,8 +65,15 @@ namespace Inkett.Web.Controllers
             var email = user.Email;
             if (model.Email != email)
             {
-                var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
-                await _userManager.SetUserNameAsync(user, model.Email);
+               var result =  await _userManager.SetUserNameAsync(user, model.Email);
+                if (!result.Succeeded)
+                {
+                    AddErrors(result);
+                }
+                else
+                {
+                    await _userManager.SetEmailAsync(user, model.Email);
+                }
             }
 
             var firstName = user.FirstName;
@@ -86,9 +93,11 @@ namespace Inkett.Web.Controllers
             {
                 await _userManager.SetUserBirthDayAsync(user, model.BirthdayDate);
             }
-
-            StatusMessage = "Your profile has been updated";
-            return RedirectToAction(nameof(Index));
+            if (ModelState.ErrorCount==0)
+            {
+                StatusMessage = "Your profile has been updated";
+            }
+            return View(model);
         }
 
         [HttpGet]
@@ -101,10 +110,6 @@ namespace Inkett.Web.Controllers
             }
 
             var hasPassword = await _userManager.HasPasswordAsync(user);
-            if (!hasPassword)
-            {
-                return RedirectToAction(nameof(SetPassword));
-            }
 
             var model = new ChangePasswordViewModel { StatusMessage = StatusMessage };
             return View(model);
@@ -142,7 +147,11 @@ namespace Inkett.Web.Controllers
         {
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError(string.Empty, error.Description);
+                if (error.Code == "DuplicateUserName")
+                {
+                    error.Description = error.Description.Replace("User name", "");
+                }
+                ModelState.AddModelError("", error.Description);
             }
         }
 

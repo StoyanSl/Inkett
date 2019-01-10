@@ -87,5 +87,11 @@ namespace Inkett.ApplicationCore.Services
             var spec = new ProfileWithTattoosSpecification(profileId);
             return _profileRepository.GetSingleBySpec(spec);
         }
+
+        public async Task<IReadOnlyCollection<Profile>> GetTopProfiles(int pageIndex, int itemsPerPage)
+        {
+            var spec = new ProfileByFollowersSpecification(pageIndex * itemsPerPage, itemsPerPage);
+            return await _profileRepository.ListAsync(spec);
+        }
     }
 }

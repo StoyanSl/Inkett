@@ -1,0 +1,14 @@
+﻿@model ProfileViewModel
+<div class=" d-flex col-sm-12 justify-content-start " style="margin-bottom:10px">
+    <div class="ml-3 mr-2 my-2" style="width:15%">
+        <a class="reference" href="/Profile/Index/@Model.Id">
+            <img class="img-fluid" style="border-radius:10px" src="@Model.ProfilePictureUri" />
+        </a>
+    </div>
+    <div class="my-2 align-self-center reference">
+        <a href="/Profile/Index/@Model.Id"><h2>@Model.ProfileName</h2></a>
+    </div>
+    
+    <input id="notificationId" type="hidden" value="@Model.Id">
+</div>
+<div class="border mx-2"></div>

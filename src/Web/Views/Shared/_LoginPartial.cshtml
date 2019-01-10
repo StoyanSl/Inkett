@@ -5,7 +5,7 @@
         <img src="~/list-3x.webp">
         </button>
         <div class=" dropdown-menu dropdown-menu-right " aria-labelledby="dropdownMenuButton">
-            <a asp-area="" asp-controller="Manage" asp-action="Index" class="dropdown-item">
+            <a asp-area="Account" asp-controller="Manage" asp-action="Index" class="dropdown-item">
                 <img src="~/person.svg"> Account
             </a>
             <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post" id="logoutForm">
