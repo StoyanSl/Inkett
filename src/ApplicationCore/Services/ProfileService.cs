@@ -1,4 +1,5 @@
-﻿using Inkett.ApplicationCore.Entitites;
+﻿using Ardalis.GuardClauses;
+using Inkett.ApplicationCore.Entitites;
 using Inkett.ApplicationCore.Interfaces.Repositories;
 using Inkett.ApplicationCore.Interfaces.Services;
 using Inkett.ApplicationCore.Specifications;
@@ -92,6 +93,13 @@ namespace Inkett.ApplicationCore.Services
         {
             var spec = new ProfileByFollowersSpecification(pageIndex * itemsPerPage, itemsPerPage);
             return await _profileRepository.ListAsync(spec);
+        }
+
+        public async Task UpdateProfileDescription(int profileId, string description)
+        {
+            var profile = await _profileRepository.GetByIdAsync(profileId);
+            profile.ProfileDescription = description;
+            await _profileRepository.UpdateAsync(profile);
         }
     }
 }

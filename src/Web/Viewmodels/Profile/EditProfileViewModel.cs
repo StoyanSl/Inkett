@@ -15,5 +15,8 @@ namespace Inkett.Web.Viewmodels.Profile
         [ImageValidation]
         public IFormFile ProfilePictureFile { get; set; }
 
+        [MaxLength(255)]
+        public string Description { get; set; }
+
     }
 }

@@ -12,6 +12,7 @@ namespace Inkett.ApplicationCore.Interfaces.Services
         bool ProfileNameExists(string profileName);
         Task UpdateProfilePicture(int profileId, string pictureUrl);
         Task UpdateCoverPicture(int profileId, string pictureUrl);
+        Task UpdateProfileDescription(int profileId, string description);
         Task<IReadOnlyCollection<Profile>> GetTopProfiles(int page, int itemsPerPage);
         Task<Profile> GetProfileWithAlbums(int profileId);
         Task<Profile> GetProfileWithLikes(int profileId);

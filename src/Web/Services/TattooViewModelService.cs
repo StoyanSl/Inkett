@@ -127,7 +127,6 @@ namespace Inkett.Web.Services
             viewModel.StylesCheckBoxes = await GetStylesCheckboxes(tattoo.TattooStyles);
             viewModel.Albums = GetAlbumsSelectList(tattoo.Profile.Albums, tattoo.AlbumId);
             return viewModel;
-
         }
 
         public CommentViewModel GetCommentViewModel(ProfileViewModel profileViewModel, string text)

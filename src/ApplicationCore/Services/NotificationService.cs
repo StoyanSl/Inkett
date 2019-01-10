@@ -22,10 +22,10 @@ namespace Inkett.ApplicationCore.Services
 
         public async Task CreateNotifications(int senderId, string PictureUri, int tattooID)
         {
-            var profile =await _profileService.GetProfileWithLikes(senderId);
+            var profile = await _profileService.GetProfileWithLikes(senderId);
 
             Guard.Against.NullOrEmpty(PictureUri, nameof(PictureUri));
-            Guard.Against.Null(profile,nameof(profile));
+            Guard.Against.Null(profile, nameof(profile));
 
             var notificationReference = @"/Tattoo/Index/" + tattooID.ToString();
             var message = $"{profile.ProfileName} added new Tattoo, check it out!";
@@ -34,14 +34,14 @@ namespace Inkett.ApplicationCore.Services
 
             foreach (var follower in profile.Followers)
             {
-                notifications.Add( new Notification(follower.ProfileId,PictureUri,notificationReference,message));
+                notifications.Add(new Notification(follower.ProfileId, PictureUri, notificationReference, message));
             }
             await _notificationRepository.AddRangeAsync(notifications);
         }
 
         public async Task<IReadOnlyCollection<Notification>> GetNotCheckedNotifications(int profileUserId)
         {
-            var spec = new NotificationSpecification(profileUserId,false);
+            var spec = new NotificationSpecification(profileUserId, false);
             return await _notificationRepository.ListAsync(spec);
         }
         public async Task<IReadOnlyCollection<Notification>> GetCheckedNotifications(int profileUserId)
@@ -53,9 +53,23 @@ namespace Inkett.ApplicationCore.Services
         public async Task CheckNotification(int notificationId)
         {
             var notification = await _notificationRepository.GetByIdAsync(notificationId);
-            Guard.Against.Null(notification,nameof(notification));
+            Guard.Against.Null(notification, nameof(notification));
             notification.IsChecked = true;
             await _notificationRepository.UpdateAsync(notification);
+        }
+
+        public async Task<bool> GetNotificationStatus(int profileUserId)
+        {
+            var spec = new NotificationSpecification(profileUserId, false);
+            var notifications = await _notificationRepository.ListAsync(spec);
+            if (notifications.Count>0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

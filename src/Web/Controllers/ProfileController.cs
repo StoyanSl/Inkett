@@ -43,15 +43,14 @@ namespace Inkett.Web.Controllers
                 id = _userManager.GetProfileId(User);
             }
             var userProfileId = _userManager.GetProfileId(User);
-            var profile = await _profileService.GetProfileWithLikes(id);
+            var profile = await _profileService.GetProfileWithTattoos(id);
             if (profile == null)
             {
                 return NotFound();
             }
-            var profileViewModel = _profileViewModelService.GetProfileViewModel(profile);
-            profileViewModel.IsOwner = profileViewModel.Id == _userManager.GetProfileId(User);
-            profileViewModel.IsFollowed = profile.Followers.Any(f => f.ProfileId == userProfileId);
-            return View(profileViewModel);
+            var profileTattoosViewModel = _profileViewModelService
+                .GetProfileTattoosViewModel(profile, _userManager.GetProfileId(User));
+            return View(profileTattoosViewModel);
         }
 
         [HttpGet]
@@ -68,7 +67,7 @@ namespace Inkett.Web.Controllers
             }
             var profileTattoosViewModel = _profileViewModelService
                 .GetProfileTattoosViewModel(profile, _userManager.GetProfileId(User));
-           
+
             return View(profileTattoosViewModel);
         }
 
@@ -82,8 +81,8 @@ namespace Inkett.Web.Controllers
                 return NotFound();
             }
             var profileTattoosViewModel = _profileViewModelService
-                .GetProfileLikedTattoosViewModel(profile,_userManager.GetProfileId(User));
-            
+                .GetProfileLikedTattoosViewModel(profile, _userManager.GetProfileId(User));
+
             return View(profileTattoosViewModel);
         }
 
@@ -100,7 +99,7 @@ namespace Inkett.Web.Controllers
                 return NotFound();
             }
             var profileAlbumsViewModel = _profileViewModelService.GetProfileAlbumsViewModel(profile, _userManager.GetProfileId(User));
-           
+
             return View(profileAlbumsViewModel);
         }
 
@@ -109,7 +108,7 @@ namespace Inkett.Web.Controllers
         public async Task<IActionResult> FollowProfile(int profileId)
         {
             var followerId = _userManager.GetProfileId(User);
-            if (profileId==followerId)
+            if (profileId == followerId)
             {
                 return NotFound();
             }
@@ -167,6 +166,7 @@ namespace Inkett.Web.Controllers
                     await _profileService.UpdateProfilePicture(profileId, result.ImageUri);
                 }
             }
+            await _profileService.UpdateProfileDescription(profileId, profileBindingModel.Description);
             return RedirectToAction("Index");
         }
     }

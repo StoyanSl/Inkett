@@ -10,5 +10,6 @@ namespace Inkett.ApplicationCore.Interfaces.Services
         Task<IReadOnlyCollection<Notification>> GetNotCheckedNotifications(int profileUserId);
         Task<IReadOnlyCollection<Notification>> GetCheckedNotifications(int profileUserId);
         Task CheckNotification( int notificationId);
+        Task<bool> GetNotificationStatus(int profileUserId);
     }
 }

@@ -1,5 +1,5 @@
 ﻿<nav id="sidebar">
-    <ul class="list-unstyled components">
+    <ul class="list-unstyled components mr-3">
         <li>
             <a href="/Profile">Profile</a>
         </li>
@@ -9,8 +9,13 @@
         <li>
             <a asp-controller="Profile" asp-action="LikedTattoos">Liked Tattoos</a>
         </li>
+        <li>
+            <a asp-controller="Tattoo" asp-action="Create">Upload Tattoo </a>
+        </li>
+
     </ul>
-    <ul class="list-unstyled components">
+    <ul class="list-unstyled components mr-3">
+        <h5 class="ml-1"> Browse </h5>
         <li>
             <a asp-controller="Home" asp-action="Tattoos">Tattoos</a>
         </li>

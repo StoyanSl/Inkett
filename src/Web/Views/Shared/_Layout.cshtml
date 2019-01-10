@@ -1,7 +1,6 @@
-﻿
+﻿@inject INotificationService notificationService;
 @{
-    string hasNotification = "true";
-    // Context.Session.GetString("_hasNotification");
+    int profileId = int.Parse(User.Claims.First(c => c.Type == "ProfileId").Value);
 }
 <!DOCTYPE html>
 <html>
@@ -30,13 +29,11 @@
                     <div class="d-flex justify-content-around">
                         <a asp-action="Index" asp-controller="Notification" class="btn btn-secondary mr-4">
                             <img src="~/bell-2x.webp">
-                            @if (User.Claims.Any(x=>x.Type=="ProfileId"))
+                            @if (await notificationService.GetNotificationStatus(profileId))
                             {
-                            <span class="badge badge-light"></span>
+                                <span class="badge badge-light"> ! </span>
                             }
-                            
                         </a>
-                        <input id="notificationFlag" type="hidden" value="@hasNotification" />
                         <partial name="_LoginPartial" />
                     </div>
                 </div>

@@ -9,6 +9,7 @@ namespace Inkett.ApplicationCore.Interfaces.Services
     {
         Task CreateTattoo(string description, IFormFile tattooPicture, IEnumerable<int> styleIds,int profileId,int albumId);
         Task EditTattoo(Tattoo tattoo, string description, IEnumerable<int> styleIds, int albumId);
+        Task RemoveTattoo(Tattoo tattoo);
         Task<Tattoo> GetTattooById(int id);
         Task<Tattoo> GetTattooWithStyles(int id);
         Task<IReadOnlyCollection<Tattoo>> GetTattoos(int page, int itemsPerPage);

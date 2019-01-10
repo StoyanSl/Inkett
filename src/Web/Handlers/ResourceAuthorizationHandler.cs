@@ -10,12 +10,11 @@ namespace Inkett.Web.Handlers
 {
     public class ResourceAuthorizationHandler:AuthorizationHandler<SameProfileRequirement, IProfileAuthorizable>
     {
-        private readonly IProfileService _profileService;
+        
         InkettUserManager _userManager;
-        public ResourceAuthorizationHandler(IProfileService profileService,
+        public ResourceAuthorizationHandler(
             InkettUserManager userManager)
         {
-            _profileService = profileService;
             _userManager = userManager;
         }
 

@@ -26,7 +26,6 @@ namespace Inkett.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-           // HttpContext.Session.SetString("_hasNotification", "true");
             var userProfileId = _inkettUserManager.GetProfileId(User);
             var notCheckedNotifications = await _notificationService.GetNotCheckedNotifications(userProfileId);
 
@@ -48,6 +47,7 @@ namespace Inkett.Web.Controllers
         public async Task CheckNotification(int notificationId)
         {
             var userProfileId = _inkettUserManager.GetProfileId(User);
+            var userId = _inkettUserManager.GetUserId(User);
            await _notificationService.CheckNotification(notificationId);
         }
     }

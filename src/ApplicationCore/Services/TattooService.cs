@@ -118,6 +118,9 @@ namespace Inkett.ApplicationCore.Services
             return await _tattooRepository.ListAsync(spec);
         }
 
-      
+        public async Task RemoveTattoo(Tattoo tattoo)
+        {
+           await _tattooRepository.DeleteAsync(tattoo);
+        }
     }
 }

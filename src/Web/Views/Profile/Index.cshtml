@@ -1,7 +1,44 @@
-﻿@model ProfileViewModel
+﻿@model ProfileTattoosViewModel
 
 <div class="container" style="padding-right:135px">
-    <partial name="_ProfilePartial" model="Model" />
+    <partial name="_ProfilePartial" model="Model.Profile" />
+    <div class="row">
+        <div class="col-md-4 ">
+            <div class="bg-white p-3 justify-content-center" style="border-radius: 10px;">
+                <h3>Description:</h3>
+                <div class="border mx-2"></div>
+                <div class="align-self-end">
+                    <p><h4> @Model.Profile.ProfileDescription</h4></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="container d-flex justify-content-center">
+                <div class="d-flex col-md-12 bg-white py-4 justify-content-center" style="border-radius: 40px;">
+                    @if (Model.Tattoos.Count == 0)
+                    {
+                        if (Model.Profile.IsOwner)
+                        {
+                            <h1>You has no tattoos to show.</h1>
+                        }
+                        else
+                        {
+                            <h1>The user has no Tattoos.</h1>
+                        }
+                    }
+
+                    @foreach (var item in Model.Tattoos.Take(3))
+                    {
+                        <div class="p-md-2" style="width:45%">
+                            <a href="/Tattoo/Index/@item.Id">
+                                <img class="border border-3 img-fluid" src="@item.PictureUri">
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @section ProfileScripts{
     <script src="~/js/FollowButton.js" asp-append-version="true"></script>

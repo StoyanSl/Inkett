@@ -58,7 +58,8 @@ namespace Inkett.Web.Services
 
             var editProfileViewModel = new EditProfileViewModel()
             {
-                Profile = profileViewModel
+                Profile = profileViewModel,
+                Description=profile.ProfileDescription
             };
 
             return editProfileViewModel;

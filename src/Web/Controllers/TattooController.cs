@@ -21,6 +21,7 @@ namespace Inkett.Web.Controllers
         private readonly IAuthorizationService _authorizationService;
         private readonly ITattooService _tattooService;
         private readonly ICommentService _commentService;
+        private readonly INotificationService _notificationService;
 
         public TattooController(ITattooViewModelService tattooViewModelService,
            InkettUserManager userManager,
@@ -28,7 +29,8 @@ namespace Inkett.Web.Controllers
             ITattooService tattooService,
             IProfileViewModelService profileViewModelService,
             ICommentService commentService,
-            IProfileService profileService)
+            IProfileService profileService,
+            INotificationService notificationService)
         {
             _tattooViewModelService = tattooViewModelService;
             _userManager = userManager;
@@ -37,6 +39,7 @@ namespace Inkett.Web.Controllers
             _profileViewModelService = profileViewModelService;
             _commentService = commentService;
             _profileService = profileService;
+            _notificationService = notificationService;
         }
 
         [HttpGet]
@@ -122,7 +125,7 @@ namespace Inkett.Web.Controllers
             var viewModelTask = _tattooViewModelService.GetEditTattooViewModel(tattoo);
             if (!authorizeResultTask.GetAwaiter().GetResult().Succeeded)
             {
-                return NotFound();
+                return Forbid();
             }
             return View(viewModelTask.GetAwaiter().GetResult());
         }
@@ -130,13 +133,55 @@ namespace Inkett.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int id,EditTattooViewModel viewModel)
         {
+            var tattoo = await _tattooService.GetTattooWithStyles(id);
             if (ModelState.IsValid)
             {
                 var profileId = _userManager.GetProfileId(User);
-                var tattoo = await _tattooService.GetTattooWithStyles(id);
                 await _tattooViewModelService.EditTattooByViewModel(viewModel, tattoo);
+            }
+             viewModel = await _tattooViewModelService.GetEditTattooViewModel(tattoo);
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var profileId = _userManager.GetProfileId(User);
+            var tattoo = await _tattooService.GetTattooById(id);
+            if (tattoo == null)
+            {
+                return NotFound();
+            }
+            var authorizeResultTask = _authorizationService.AuthorizeAsync(User, tattoo, "EditPolicy");
+            var viewModelTask = _tattooViewModelService.GetListedTattooViewModel(tattoo);
+            if (!authorizeResultTask.GetAwaiter().GetResult().Succeeded)
+            {
+                return Forbid();
+            }
+            return View(viewModelTask);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(ListedTattooViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var profileId = _userManager.GetProfileId(User);
+                var tattoo = await _tattooService.GetTattooById(viewModel.Id);
+                if (tattoo == null)
+                {
+                    return NotFound();
+                }
+                var authorization = await _authorizationService.AuthorizeAsync(User, tattoo, "EditPolicy");
+                if (!authorization.Succeeded)
+                {
+                    return Forbid();
+                }
+                await _tattooService.RemoveTattoo(tattoo);
+                return RedirectToAction("Index", "Profile");
             }
             return View(viewModel);
         }
+            
     }
 }

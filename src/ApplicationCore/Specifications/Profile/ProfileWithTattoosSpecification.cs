@@ -9,6 +9,7 @@ namespace Inkett.ApplicationCore.Specifications
         {
             AddInclude(profile => profile.Tattoos);
             AddInclude(profile => profile.Followers);
+            AddInclude($"Followers.Profile");
         }
     }
 }

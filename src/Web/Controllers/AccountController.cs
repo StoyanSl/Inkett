@@ -31,6 +31,10 @@ namespace Inkett.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login()
         {
+            if (_signInManager.IsSignedIn(User))
+            {
+                return RedirectToAction("Index","Home");
+            }
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
             return View();
         }
@@ -72,6 +76,10 @@ namespace Inkett.Web.Controllers
         [AllowAnonymous]
         public IActionResult Register()
         {
+            if (_signInManager.IsSignedIn(User))
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
