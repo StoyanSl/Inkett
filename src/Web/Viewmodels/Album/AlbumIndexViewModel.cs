@@ -16,6 +16,8 @@ namespace Inkett.Web.Viewmodels.Album
 
         public List<ListedTattooViewModel> Tattoos { get; set; } = new List<ListedTattooViewModel>();
 
+        public string Description { get; set; }
+
         public bool isOwner = false;
     }
 }

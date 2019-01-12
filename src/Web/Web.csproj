@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <RootNamespace>Inkett.Web</RootNamespace>
+    <UserSecretsId>5dd80447-c909-4dda-a6e1-81f8a69ffe10</UserSecretsId>
   </PropertyGroup>
 
 

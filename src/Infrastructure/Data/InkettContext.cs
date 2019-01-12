@@ -1,9 +1,5 @@
 ﻿using Inkett.ApplicationCore.Entitites;
-using Inkett.Infrastructure.Data.ModelConfig;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Inkett.Infrastructure.Data
 {

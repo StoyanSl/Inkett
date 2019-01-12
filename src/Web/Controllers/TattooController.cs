@@ -106,7 +106,6 @@ namespace Inkett.Web.Controllers
         [HttpPost]
         public async Task DislikeTattoo([FromBody]LikeBindingModel likeModel)
         {
-           
             var profileId = _userManager.GetProfileId(User);
             await _tattooService.RemoveLike(profileId, likeModel.TattooId);
         }

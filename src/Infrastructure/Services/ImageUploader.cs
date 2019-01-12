@@ -2,6 +2,8 @@
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Inkett.ApplicationCore.Interfaces.Services;
+using Inkett.ApplicationCore.Services.Options;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -12,22 +14,21 @@ namespace Inkett.Infrastructure.Services
 {
     public class ImageUploader : IImageUploader
     {
-        private const string cloudName = "inkettimgs";
-        private const string apiKey = "291351422639137";
-        private const string apiSecret = "EvDuWYGlZFActWoWpxVaVtbrfY8";
-
+        private readonly CloudinaryApiDetails _cloudinaryApiDetails;
         private readonly Cloudinary _cloudinary;
 
-        public ImageUploader()
+        public ImageUploader(IOptions<CloudinaryApiDetails> cloudinaryApiDetails)
         {
+            _cloudinaryApiDetails = cloudinaryApiDetails.Value;
             Account account = new Account(
-                                       cloudName,
-                                       apiKey,
-                                       apiSecret);
+                                       _cloudinaryApiDetails.CloudName,
+                                        _cloudinaryApiDetails.ApiKey,
+                                       _cloudinaryApiDetails.ApiSecret);
 
             _cloudinary = new Cloudinary(account);
 
         }
+
         public UploadResult ImageUpload(Stream stream)
         {
             var uploadParams = new ImageUploadParams()
@@ -47,6 +48,7 @@ namespace Inkett.Infrastructure.Services
             var uploadResult = _cloudinary.Upload(uploadParams);
             return uploadResult;
         }
+
         private static Bitmap ByteToImage(byte[] blob)
         {
             using (MemoryStream mStream = new MemoryStream())
@@ -63,7 +65,6 @@ namespace Inkett.Infrastructure.Services
         {
             return new Bitmap(imgToResize,186,186);
         }
-
         private static byte[] BitmapToBytes(Bitmap Bitmap)
         {
             MemoryStream ms = null;

@@ -45,6 +45,7 @@ namespace Inkett.Web.Services
             var viewModel = new AlbumIndexViewModel();
             viewModel.Id = album.Id;
             viewModel.Title = album.Title;
+            viewModel.Description = album.Description;
             foreach (var tattoo in album.Tattoos)
             {
                 viewModel.Tattoos.Add(GetListedTattooViewModel(tattoo));
