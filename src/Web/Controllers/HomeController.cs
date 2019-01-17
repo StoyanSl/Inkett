@@ -29,6 +29,7 @@ namespace Inkett.Web.Controllers
             _profileViewModelService = profileViewModelService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var page = 0;
@@ -40,6 +41,7 @@ namespace Inkett.Web.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Tattoos()
         {
             var page = 0;
@@ -48,6 +50,7 @@ namespace Inkett.Web.Controllers
             return View(viewModels);
         }
 
+        [HttpGet]
         public async Task<IActionResult> TopTattoos()
         {
             var page = 0;
@@ -56,6 +59,7 @@ namespace Inkett.Web.Controllers
             return View(viewModels);
         }
 
+        [HttpGet]
         public async Task<IActionResult> TopProfiles()
         {
             var page = 0;
@@ -87,9 +91,9 @@ namespace Inkett.Web.Controllers
             return PartialView("~/Views/Shared/_ListedTattoosContainer.cshtml", viewModel);
         }
 
-
-
+        
         [AllowAnonymous]
+        [HttpGet]
         public IActionResult Error()
         {
             return View(new ErrorViewModel

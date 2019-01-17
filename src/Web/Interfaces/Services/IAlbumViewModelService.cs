@@ -10,7 +10,6 @@ namespace Inkett.Web.Interfaces.Services
     public interface IAlbumViewModelService
     {
         AlbumViewModel GetAlbumViewModel(Album album);
-        Task<AlbumViewModel> GetAlbumViewModel(int albumId);
         AlbumIndexViewModel GetIndexAlbumViewModel(Album album);
         Task<AlbumViewModel> UpdateAlbum(Album album, AlbumViewModel albumViewModel);
     }

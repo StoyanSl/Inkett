@@ -35,10 +35,7 @@ namespace Inkett.Web.Services
             };
         }
 
-        public Task<AlbumViewModel> GetAlbumViewModel(int albumId)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public AlbumIndexViewModel GetIndexAlbumViewModel(Album album)
         {

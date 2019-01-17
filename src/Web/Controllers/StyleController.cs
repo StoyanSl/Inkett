@@ -26,12 +26,15 @@ namespace Inkett.Web.Controllers
             _tattooService = tattooService;
             _tattooViewModelService = tattooViewModelService;
         }
+
+        [HttpGet]
         public async Task<IActionResult> Listing()
         {
             var styles = await _styleService.GetStyles();
             var stylesViewModels = _styleViewModelService.GetStylesViewModels(styles);
             return View(stylesViewModels);
         }
+
         [HttpGet]
         public async Task<IActionResult> Index(int id, int? page)
         {

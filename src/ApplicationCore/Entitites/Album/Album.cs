@@ -21,16 +21,18 @@ namespace Inkett.ApplicationCore.Entitites
             this.Description = defaultAlbumDescription;
             this.AlbumPictureUri = defaultPictureUri;
         }
-        public Album(int profileId, string title, string description, string pictureUri= defaultPictureUri)
+        public Album(int profileId, string title, string description, string pictureUri = defaultPictureUri)
         {
             this.ProfileId = profileId;
             this.Title = title;
             this.Description = description;
-            this.AlbumPictureUri = pictureUri??defaultPictureUri;
+            this.AlbumPictureUri = pictureUri ?? defaultPictureUri;
         }
 
         [Required]
         public int ProfileId { get; set; }
+
+        public Profile Profile { get; set; }
 
         [Required]
         [StringLength(50, MinimumLength = 1)]

@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Inkett.ApplicationCore.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace Inkett.Web.Viewmodels.Profile
 {
-    public class ProfileViewModel
+    public class ProfileViewModel 
     {
         public int Id { get; set; }
-
+        
         [Display(Name = "Profile Name")]
         public string ProfileName { get; set; }
 

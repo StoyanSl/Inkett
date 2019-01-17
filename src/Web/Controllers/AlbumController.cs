@@ -35,6 +35,7 @@ namespace Inkett.Web.Controllers
             _profileViewModelService = profileViewModelService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index(int id)
         {
             var album = await _albumService.GetAlbumWithTattoos(id);
@@ -55,6 +56,7 @@ namespace Inkett.Web.Controllers
 
         }
 
+        [HttpGet]
         public IActionResult Create()
         {
             return this.View();
@@ -72,6 +74,7 @@ namespace Inkett.Web.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var album = await _albumService.GetAlbumById(id);
@@ -109,6 +112,7 @@ namespace Inkett.Web.Controllers
             return this.View(albumViewModel);
 
         }
+
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {

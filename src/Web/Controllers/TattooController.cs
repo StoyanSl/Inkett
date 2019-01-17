@@ -56,6 +56,7 @@ namespace Inkett.Web.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
             var profileId = _userManager.GetProfileId(User);
@@ -109,7 +110,6 @@ namespace Inkett.Web.Controllers
             var profileId = _userManager.GetProfileId(User);
             await _tattooService.RemoveLike(profileId, likeModel.TattooId);
         }
-
        
         [HttpGet]
         public async Task<IActionResult> Edit(int id)

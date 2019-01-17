@@ -81,6 +81,11 @@ namespace Inkett.Infrastructure.Data
         {
             return await ApplySpecification(spec).ToListAsync();
         }
+        public Task<IQueryable<T>> QueryableAsync(ISpecification<T> spec)
+        {
+            var task = Task.Run(()=>ApplySpecification(spec));
+            return task;
+        }
 
         public async Task<T> GetSingleBySpec(ISpecification<T> spec)
         {

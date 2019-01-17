@@ -1,4 +1,5 @@
-﻿using Inkett.Web.Viewmodels.Profile;
+﻿using Inkett.ApplicationCore.Interfaces;
+using Inkett.Web.Viewmodels.Profile;
 using System.Collections.Generic;
 
 namespace Inkett.Web.Viewmodels.Tattoo
@@ -26,5 +27,6 @@ namespace Inkett.Web.Viewmodels.Tattoo
         public bool IsOwner { get; set; }
 
         public string PictureUri { get; set; }
+        
     }
 }

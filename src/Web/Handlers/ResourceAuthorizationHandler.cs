@@ -1,9 +1,6 @@
-﻿using Inkett.ApplicationCore.Entitites;
-using Inkett.ApplicationCore.Interfaces;
-using Inkett.ApplicationCore.Interfaces.Services;
+﻿using Inkett.ApplicationCore.Interfaces;
 using Inkett.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
 namespace Inkett.Web.Handlers
