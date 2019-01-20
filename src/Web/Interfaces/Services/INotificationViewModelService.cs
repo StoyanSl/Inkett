@@ -1,7 +1,6 @@
 ﻿using Inkett.ApplicationCore.Entitites;
-using Inkett.Web.Viewmodels.Notification;
+using Inkett.Web.Models.ViewModels.Notifications;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Inkett.Web.Interfaces.Services
 {

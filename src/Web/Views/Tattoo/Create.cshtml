@@ -1,4 +1,4 @@
-﻿@model TattooViewModel
+﻿@model TattooCreateInputModel
 <div class="container p-3">
     <div class="row m-5 justify-content-center">
         <div class="col-sm-7 bg-white p-4" style="border-radius:10px">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Album" class="control-label form-label"> Albums </label>
-                    <select class="custom-select" asp-for="Album" asp-items="Model.Albums"></select>
+                    <select class="custom-select"  asp-for="Album" asp-items="Model.Albums"></select>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-default btn-brand btn-brand-big">&nbsp;Upload&nbsp;</button>

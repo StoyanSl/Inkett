@@ -4,7 +4,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
-using Inkett.Web.Viewmodels.Account;
+using Inkett.Web.Models.InputModels.Account;
 using Inkett.Infrastructure.Identity;
 using Inkett.ApplicationCore.Interfaces.Services;
 using System.Security.Claims;
@@ -70,7 +70,7 @@ namespace Inkett.Web.Controllers
         {
             await _signInManager.SignOutAsync();
 
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction(nameof(ProfileController.Index), "Home");
         }
 
         [AllowAnonymous]
@@ -110,7 +110,7 @@ namespace Inkett.Web.Controllers
         {
             if (returnUrl is null)
             {
-               return RedirectToAction(nameof(HomeController.Index), "Home");
+               return RedirectToAction(nameof(ProfileController.Index), "Home");
             }
             if (Url.IsLocalUrl(returnUrl))
             {
@@ -118,7 +118,7 @@ namespace Inkett.Web.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(ProfileController.Index), "Home");
             }
         }
 

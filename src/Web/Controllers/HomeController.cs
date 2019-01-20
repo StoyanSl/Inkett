@@ -5,7 +5,7 @@ using Inkett.Web.Models;
 using Inkett.ApplicationCore.Interfaces.Services;
 using Inkett.Web.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
-using Inkett.Web.Viewmodels.Home;
+using System.Linq;
 
 namespace Inkett.Web.Controllers
 {
@@ -14,30 +14,31 @@ namespace Inkett.Web.Controllers
     {
         private const int ItemsPerPage = 9;
         private readonly ITattooService _tattooService;
+        private readonly IProfileService _profileService;
+        private readonly IHomeViewModelService _homeViewModelService;
         private readonly ITattooViewModelService _tattooViewModelService;
         private readonly IProfileViewModelService _profileViewModelService;
-        private readonly IProfileService _profileService;
 
         public HomeController(ITattooService tattooService,
-          ITattooViewModelService tattooViewModelService,
-          IProfileService profileService,
+          IProfileService profileService ,
+          IHomeViewModelService homeViewModelService,
+           ITattooViewModelService tattooViewModelService,
            IProfileViewModelService profileViewModelService)
         {
             _tattooService = tattooService;
-            _tattooViewModelService = tattooViewModelService;
             _profileService = profileService;
-            _profileViewModelService = profileViewModelService;
+            _homeViewModelService = homeViewModelService;
+            _tattooViewModelService = tattooViewModelService;
+            _profileViewModelService = profileViewModelService; 
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var page = 0;
-            var viewModel = new HomeIndexViewModel();
             var tattoos = await _tattooService.GetTopTattoos(page, ItemsPerPage);
             var profiles = await _profileService.GetTopProfiles(page, ItemsPerPage);
-            viewModel.ListedTattooViewModels = _tattooViewModelService.GetListedTattooViewModel(tattoos);
-            viewModel.ProfileViewModels = _profileViewModelService.GetProfilesViewModels(profiles);
+            var viewModel = _homeViewModelService.GetHomeIndexViewModel(profiles, tattoos);
             return View(viewModel);
         }
 
@@ -46,7 +47,7 @@ namespace Inkett.Web.Controllers
         {
             var page = 0;
             var tattoos = await _tattooService.GetTattoos(page, ItemsPerPage);
-            var viewModels = _tattooViewModelService.GetListedTattooViewModel(tattoos);
+            var viewModels = tattoos.Select(x => _tattooViewModelService.GetTattooListedViewModel(x)).ToList();
             return View(viewModels);
         }
 
@@ -55,7 +56,7 @@ namespace Inkett.Web.Controllers
         {
             var page = 0;
             var tattoos = await _tattooService.GetTopTattoos(page, ItemsPerPage);
-            var viewModels = _tattooViewModelService.GetListedTattooViewModel(tattoos);
+            var viewModels = tattoos.Select(x => _tattooViewModelService.GetTattooListedViewModel(x)).ToList();
             return View(viewModels);
         }
 
@@ -72,10 +73,10 @@ namespace Inkett.Web.Controllers
         public async Task<PartialViewResult> GetTopTattoos(int? page)
         {
             var tattoos = await _tattooService.GetTopTattoos(page ?? 0, ItemsPerPage);
-            var viewModel = _tattooViewModelService.GetListedTattooViewModel(tattoos);
+            var viewModel = tattoos.Select(x => _tattooViewModelService.GetTattooListedViewModel(x)).ToList();
             return PartialView("~/Views/Shared/_ListedTattoosContainer.cshtml", viewModel);
         }
-
+        
         [HttpPost]
         public async Task<PartialViewResult> GetTopProfiles(int? page)
         {
@@ -83,14 +84,14 @@ namespace Inkett.Web.Controllers
             var viewModels = _profileViewModelService.GetProfilesViewModels(profiles);
             return PartialView("~/Views/Home/_ListedProfilesContainer.cshtml", viewModels);
         }
+
         [HttpPost]
         public async Task<PartialViewResult> GetTattoos(int? page)
         {
             var tattoos = await _tattooService.GetTattoos(page ?? 0, ItemsPerPage);
-            var viewModel = _tattooViewModelService.GetListedTattooViewModel(tattoos);
+            var viewModel = tattoos.Select(x => _tattooViewModelService.GetTattooListedViewModel(x)).ToList();
             return PartialView("~/Views/Shared/_ListedTattoosContainer.cshtml", viewModel);
         }
-
         
         [AllowAnonymous]
         [HttpGet]

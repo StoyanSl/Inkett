@@ -7,7 +7,7 @@ namespace Inkett.ApplicationCore.Entitites
     public class Tattoo : BaseEntity, IProfileAuthorizable
     {
         [Required]
-        public string TattooPictureUri { get; set; }
+        public string PictureUri { get; set; }
 
         public string Description { get; set; }
 

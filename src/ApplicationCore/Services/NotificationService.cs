@@ -28,7 +28,7 @@ namespace Inkett.ApplicationCore.Services
             Guard.Against.Null(profile, nameof(profile));
 
             var notificationReference = @"/Tattoo/Index/" + tattooID.ToString();
-            var message = $"{profile.ProfileName} added new Tattoo, check it out!";
+            var message = $"{profile.Name} added new Tattoo, check it out!";
 
             var notifications = new List<Notification>();
 

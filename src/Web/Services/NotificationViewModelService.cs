@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Inkett.ApplicationCore.Entitites;
 using Inkett.Web.Interfaces.Services;
-using Inkett.Web.Viewmodels.Notification;
+using Inkett.Web.Models.ViewModels.Notifications;
 
 namespace Inkett.Web.Services
 {
@@ -11,14 +12,7 @@ namespace Inkett.Web.Services
     {
         public List<NotificationViewModel> GetNotificationsViewModels(IReadOnlyCollection<Notification> notifications)
         {
-            var notificationsViewModels = notifications.Select(n => new NotificationViewModel()
-            {
-                Id = n.Id,
-                Message=n.Message,
-                PictureUri=n.PictureUri,
-                Reference=n.Reference
-            }).ToList();
-            return notificationsViewModels;
+            return Mapper.Map<IReadOnlyCollection<Notification>,List<NotificationViewModel>>(notifications);
         }
     }
 }

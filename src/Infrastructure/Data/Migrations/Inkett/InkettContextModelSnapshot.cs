@@ -25,11 +25,11 @@ namespace Inkett.Infrastructure.Migrations.Inkett
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AlbumPictureUri")
-                        .IsRequired();
-
                     b.Property<string>("Description")
                         .HasMaxLength(255);
+
+                    b.Property<string>("PictureUri")
+                        .IsRequired();
 
                     b.Property<int>("ProfileId");
 
@@ -127,16 +127,16 @@ namespace Inkett.Infrastructure.Migrations.Inkett
                     b.Property<string>("AccountId")
                         .IsRequired();
 
-                    b.Property<string>("CoverPicture")
+                    b.Property<string>("CoverPictureUri")
                         .IsRequired();
 
-                    b.Property<string>("ProfileDescription");
+                    b.Property<string>("Description");
 
-                    b.Property<string>("ProfileName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(25);
 
-                    b.Property<string>("ProfilePicture")
+                    b.Property<string>("ProfilePictureUri")
                         .IsRequired();
 
                     b.HasKey("Id");
@@ -168,10 +168,10 @@ namespace Inkett.Infrastructure.Migrations.Inkett
 
                     b.Property<string>("Description");
 
-                    b.Property<int>("ProfileId");
-
-                    b.Property<string>("TattooPictureUri")
+                    b.Property<string>("PictureUri")
                         .IsRequired();
+
+                    b.Property<int>("ProfileId");
 
                     b.HasKey("Id");
 

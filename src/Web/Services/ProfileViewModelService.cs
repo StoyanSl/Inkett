@@ -1,13 +1,12 @@
 ﻿using Inkett.Web.Interfaces.Services;
-using Inkett.Web.Viewmodels.Profile;
-using Inkett.ApplicationCore.Interfaces.Services;
-using System.Threading.Tasks;
-using Inkett.ApplicationCore.Entitites;
-using Ardalis.GuardClauses;
 using Inkett.ApplicationCore.Interfaces.Repositories;
-using Inkett.ApplicationCore.Specifications;
-using System.Linq;
 using System.Collections.Generic;
+using Inkett.Web.Models.ViewModels.Profiles;
+using AutoMapper;
+using System.Linq;
+
+using Profile = Inkett.ApplicationCore.Entitites.Profile;
+using Inkett.ApplicationCore.Entitites;
 
 namespace Inkett.Web.Services
 {
@@ -26,75 +25,59 @@ namespace Inkett.Web.Services
             _albumViewModelService = albumViewModelService;
         }
 
-        public  ProfileViewModel GetProfileViewModel(Profile profile)
+        public ProfileAlbumsViewModel GetProfileAlbumsViewModel(Profile profile, int userProfileId)
         {
-            var profileViewModel = new ProfileViewModel
+            var viewModel = Mapper.Map<Profile, ProfileAlbumsViewModel>(profile);
+            if (profile.Id == userProfileId)
             {
-                Id = profile.Id,
-                ProfileName = profile.ProfileName,
-                ProfileDescription = profile.ProfileDescription,
-                ProfilePictureUri = profile.ProfilePicture,
-                CoverPictureUri = profile.CoverPicture
-            };
-            return profileViewModel;
+                viewModel.Profile.IsOwner = true;
+            }
+            if (profile.Followers.Any(x => x.ProfileId == userProfileId))
+            {
+                viewModel.Profile.IsFollowed = true;
+            }
+            return viewModel;
+        }
+
+        public ProfileAlbumViewModel GetProfileAlbumViewModel(Album album, int userProfileId)
+        {
+            var viewModel = Mapper.Map<Album, ProfileAlbumViewModel>(album);
+            if (viewModel.Profile.Id==userProfileId)
+            {
+                viewModel.Profile.IsOwner = true;
+            }
+            return viewModel;
+        }
+
+        public ProfileIndexViewModel GetProfileIndexViewModel(Profile profile, int userProfileId)
+        {
+            var viewModel = Mapper.Map<Profile, ProfileIndexViewModel>(profile);
+            if (profile.Id==userProfileId)
+            {
+                viewModel.Profile.IsOwner = true;
+            }
+            if (profile.Followers.Any(x => x.ProfileId == userProfileId))
+            {
+                viewModel.Profile.IsFollowed = true;
+            }
+            return viewModel;
+        }
+
+        public ProfileTattoosViewModel GetProfileLikedTattoosViewModel(Profile profile)
+        {
+            var viewModel = Mapper.Map<Profile, ProfileTattoosViewModel>(profile);
+            viewModel.Profile.IsOwner = true;
+            return viewModel;
         }
 
         public List<ProfileViewModel> GetProfilesViewModels(IReadOnlyCollection<Profile> profiles)
         {
-            var viewModels = profiles.Select(x => new ProfileViewModel()
-            {
-                Id = x.Id,
-                ProfileName = x.ProfileName,
-                ProfileDescription = x.ProfileDescription,
-                ProfilePictureUri = x.ProfilePicture,
-                CoverPictureUri = x.CoverPicture
-            }).ToList();
-            return viewModels;
-        }
-
-        public  EditProfileViewModel GetEditProfileViewModel(Profile profile)
-        {
-            var profileViewModel = this.GetProfileViewModel(profile);
-
-            var editProfileViewModel = new EditProfileViewModel()
-            {
-                Profile = profileViewModel,
-                Description=profile.ProfileDescription
-            };
-
-            return editProfileViewModel;
-        }
-
-        public ProfileAlbumsViewModel GetProfileAlbumsViewModel(Profile profile, int userProfileId)
-        {
-            var viewModel = new ProfileAlbumsViewModel
-            {
-                Profile = this.GetProfileViewModel(profile)
-            };
-            foreach (var album in profile.Albums)
-            {
-                viewModel.ProfileAlbums.Add(_albumViewModelService.GetAlbumViewModel(album));
-            }
-            if (profile.Id==userProfileId)
-            {
-                viewModel.Profile.IsOwner = true ;
-            }
-            if (profile.Followers.Any(x=>x.ProfileId==userProfileId))
-            {
-                viewModel.Profile.IsFollowed = true;
-            }
-            return viewModel;
+            return profiles.Select(x => Mapper.Map<Profile, ProfileViewModel>(x)).ToList();
         }
 
         public ProfileTattoosViewModel GetProfileTattoosViewModel(Profile profile, int userProfileId)
         {
-            
-            var viewModel = new ProfileTattoosViewModel();
-            viewModel.Profile = this.GetProfileViewModel(profile);
-            foreach (var tattoo in profile.Tattoos)
-            {
-                viewModel.Tattoos.Add(_tattooViewModelService.GetListedTattooViewModel(tattoo));
-            }
+            var viewModel = Mapper.Map<Profile, ProfileTattoosViewModel>(profile);
             if (profile.Id == userProfileId)
             {
                 viewModel.Profile.IsOwner = true;
@@ -106,25 +89,11 @@ namespace Inkett.Web.Services
             return viewModel;
         }
 
-        public ProfileTattoosViewModel GetProfileLikedTattoosViewModel(Profile profile, int userProfileId)
+        public ProfileViewModel GetProfileViewModel(Profile profile)
         {
-            var viewModel = new ProfileTattoosViewModel();
-            viewModel.Profile = this.GetProfileViewModel(profile);
-            foreach (var like in profile.Likes)
-            {
-                viewModel.Tattoos.Add(_tattooViewModelService.GetListedTattooViewModel(like.Tattoo));
-            }
-            if (profile.Id == userProfileId)
-            {
-                viewModel.Profile.IsOwner = true;
-            }
-            if (profile.Followers.Any(x => x.ProfileId == userProfileId))
-            {
-                viewModel.Profile.IsFollowed = true;
-            }
+            var viewModel = Mapper.Map<Profile, ProfileViewModel>(profile);
+            viewModel.IsOwner = true;
             return viewModel;
         }
-
-        
     }
 }

@@ -1,12 +1,9 @@
-﻿using Ardalis.GuardClauses;
-using Inkett.ApplicationCore.Entitites;
+﻿using Inkett.ApplicationCore.Entitites;
 using Inkett.ApplicationCore.Interfaces.Repositories;
 using Inkett.ApplicationCore.Interfaces.Services;
 using Inkett.ApplicationCore.Specifications;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Inkett.ApplicationCore.Services
@@ -49,21 +46,20 @@ namespace Inkett.ApplicationCore.Services
         public async Task UpdateProfilePicture(int profileId, string pictureUrl)
         {
             var profile = await _profileRepository.GetByIdAsync(profileId);
-            profile.ProfilePicture = pictureUrl;
+            profile.ProfilePictureUri = pictureUrl;
             await _profileRepository.UpdateAsync(profile);
         }
 
         public async Task UpdateCoverPicture(int profileId, string pictureUrl)
         {
-
             var profile = await _profileRepository.GetByIdAsync(profileId);
-            profile.CoverPicture = pictureUrl;
+            profile.CoverPictureUri = pictureUrl;
             await _profileRepository.UpdateAsync(profile);
         }
 
         public bool ProfileNameExists(string profileName)
         {
-            return _profileRepository.ListAllAsync().Result.Any(x => x.ProfileName == profileName);
+            return _profileRepository.ListAllAsync().Result.Any(x => x.Name == profileName);
         }
 
         public  Task<Profile> GetProfileWithAlbums(int profileId)
@@ -98,7 +94,7 @@ namespace Inkett.ApplicationCore.Services
         public async Task UpdateProfileDescription(int profileId, string description)
         {
             var profile = await _profileRepository.GetByIdAsync(profileId);
-            profile.ProfileDescription = description;
+            profile.Description = description;
             await _profileRepository.UpdateAsync(profile);
         }
     }

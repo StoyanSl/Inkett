@@ -55,7 +55,7 @@ namespace Inkett.ApplicationCore.Services
                 {
                     return null;
                 }
-                album.AlbumPictureUri = result.ImageUri;
+                album.PictureUri = result.ImageUri;
             }
             album.Title = title;
             album = await _albumRepository.UpdateAsync(album);

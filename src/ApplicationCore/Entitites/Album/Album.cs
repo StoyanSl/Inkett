@@ -19,14 +19,14 @@ namespace Inkett.ApplicationCore.Entitites
             this.ProfileId = profileId;
             this.Title = defaultAlbumTitle;
             this.Description = defaultAlbumDescription;
-            this.AlbumPictureUri = defaultPictureUri;
+            this.PictureUri = defaultPictureUri;
         }
         public Album(int profileId, string title, string description, string pictureUri = defaultPictureUri)
         {
             this.ProfileId = profileId;
             this.Title = title;
             this.Description = description;
-            this.AlbumPictureUri = pictureUri ?? defaultPictureUri;
+            this.PictureUri = pictureUri ?? defaultPictureUri;
         }
 
         [Required]
@@ -42,7 +42,7 @@ namespace Inkett.ApplicationCore.Entitites
         public string Description { get; set; }
 
         [Required]
-        public string AlbumPictureUri { get; set; }
+        public string PictureUri { get; set; }
 
         public List<Tattoo> Tattoos { get; set; }
     }

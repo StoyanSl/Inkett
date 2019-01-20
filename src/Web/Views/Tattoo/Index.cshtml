@@ -1,4 +1,4 @@
-﻿@model IndexTattooViewModel
+﻿@model TattooIndexViewModel
 @{
     string like = Model.IsLiked ? "liked" : "";
 }
@@ -34,7 +34,7 @@
                         </a>
                     </div>
                     <div class="my-2 align-self-start">
-                        <a href="/Profile/Index/@Model.Profile.Id"><h4>@Model.Profile.ProfileName</h4></a>
+                        <a href="/Profile/Index/@Model.Profile.Id"><h4>@Model.Profile.Name</h4></a>
                     </div>
                     <div class="d-flex flex-grow-1 align-self-start justify-content-end pr-3">
                         <div>
@@ -69,7 +69,7 @@
                                                 </a>
                                             </div>
                                             <div class="mt-2">
-                                                <a href="/Profile/Index/@comment.Profile.Id"><h5>@comment.Profile.ProfileName</h5></a>
+                                                <a href="/Profile/Index/@comment.Profile.Id"><h5>@comment.Profile.Name</h5></a>
                                             </div>
                                         </div>
                                         <div class="mx-5"><p> @comment.Text</p></div>

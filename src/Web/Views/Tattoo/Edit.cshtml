@@ -1,4 +1,13 @@
-﻿@model EditTattooViewModel
+﻿@model TattooEditViewModel
+@{
+
+    foreach (var style in Model.CheckedStyles)
+    {
+        Model.StylesCheckBoxes.Find(x => x.Value == style.Id).Checked = true;
+    }
+
+
+}
 <div class="container p-3">
     <div class="row m-5 justify-content-center">
         <div class="col-sm-7 bg-white p-4" style="border-radius:10px">

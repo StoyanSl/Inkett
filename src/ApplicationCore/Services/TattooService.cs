@@ -46,14 +46,14 @@ namespace Inkett.ApplicationCore.Services
                 ProfileId = profileId,
                 Description = description,
                 AlbumId = albumId != 0 ? albumId : (int?)null,
-                TattooPictureUri = result.ImageUri
+                PictureUri = result.ImageUri
             };
             foreach (var id in styleIds)
             {
                 tattoo.TattooStyles.Add(new TattooStyle() { Tattoo = tattoo, StyleId = id });
             }
             tattoo = await _tattooRepository.AddAsync(tattoo);
-            await _notificationService.CreateNotifications(profileId, tattoo.TattooPictureUri, tattoo.Id);
+            await _notificationService.CreateNotifications(profileId, tattoo.PictureUri, tattoo.Id);
         }
 
         public async Task EditTattoo(Tattoo tattoo, string description, IEnumerable<int> styleIds, int albumId)

@@ -4,6 +4,7 @@ using Inkett.Web.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Inkett.Web.Controllers
@@ -39,14 +40,17 @@ namespace Inkett.Web.Controllers
         public async Task<IActionResult> Index(int id, int? page)
         {
             int tattoosPerPage = 9;
-            var style = await _styleService.GetStyleById(id);
-            if (style==null)
+            var styleName = _styleService.GetStyles().GetAwaiter().GetResult().FirstOrDefault(x => x.Id == id).Name;
+            if (styleName==null)
             {
                 return NotFound();
             }
-            var tattoos = await _tattooService.GetTattoosByStyle(page??0,tattoosPerPage,id);
-            var viewModel = _styleViewModelService.GetIndexStyleViewModel(style);
-            viewModel.Tattoos =  _tattooViewModelService.GetListedTattooViewModel(tattoos);
+            var tattoos = await _tattooService.GetTattoosByStyle(page ?? 0, tattoosPerPage, id);
+            if (tattoos == null)
+            {
+                return NotFound();
+            }
+            var viewModel = _styleViewModelService.GetIndexStyleViewModel(tattoos,id,styleName);
             return View(viewModel);
         }
 
@@ -54,13 +58,12 @@ namespace Inkett.Web.Controllers
         public async Task<PartialViewResult> GetTattoos(int id, int? page)
         {
             int tattoosPerPage = 9;
-            var style =await _styleService.GetStyleById(id);
-            var tattoos = await  _tattooService.GetTattoosByStyle(page ?? 0, tattoosPerPage, id);
-            var viewModel = _styleViewModelService.GetIndexStyleViewModel(style);
-            viewModel.Tattoos = _tattooViewModelService.GetListedTattooViewModel(tattoos);
-            var partial= PartialView("~/Views/Shared/_ListedTattoosContainer.cshtml", viewModel.Tattoos);
+            var style = await _styleService.GetStyleById(id);
+            var tattoos = await _tattooService.GetTattoosByStyle(page ?? 0, tattoosPerPage, id);
+            var tattoosViewModels = tattoos.Select(x => _tattooViewModelService.GetTattooListedViewModel(x)).ToList();
+            var partial = PartialView("~/Views/Shared/_ListedTattoosContainer.cshtml", tattoosViewModels);
             return partial;
         }
-        
+
     }
 }

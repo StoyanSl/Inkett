@@ -1,11 +1,13 @@
 ﻿using Inkett.ApplicationCore.Interfaces.Services;
 using Inkett.Infrastructure.Identity;
 using Inkett.Web.Interfaces.Services;
-using Inkett.Web.Viewmodels.Album;
-using System.Threading.Tasks;
+using Inkett.Web.Models.InputModels.Albums;
+using Inkett.Web.Models.ViewModels.Albums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
+
 
 namespace Inkett.Web.Controllers
 {
@@ -14,8 +16,6 @@ namespace Inkett.Web.Controllers
     {
         private readonly InkettUserManager _userManager;
         private readonly IAlbumService _albumService;
-        private readonly IProfileService _profileService;
-        private readonly IProfileViewModelService _profileViewModelService;
         private readonly IAlbumViewModelService _albumViewModelService;
         private readonly IAuthorizationService _authorizationService;
 
@@ -24,36 +24,12 @@ namespace Inkett.Web.Controllers
             IAlbumService albumService,
             IProfileService profileService,
             IAlbumViewModelService albumViewModelService,
-            IAuthorizationService authorizationService,
-            IProfileViewModelService profileViewModelService)
+            IAuthorizationService authorizationService)
         {
             _albumService = albumService;
-            _profileService = profileService;
             _userManager = userManager;
             _albumViewModelService = albumViewModelService;
             _authorizationService = authorizationService;
-            _profileViewModelService = profileViewModelService;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Index(int id)
-        {
-            var album = await _albumService.GetAlbumWithTattoos(id);
-            if (album == null)
-            {
-                return NotFound();
-            }
-            var profile = await _profileService.GetProfileWithAlbums(album.ProfileId);
-            var userProfileId = _userManager.GetProfileId(User);
-            var authorization = _authorizationService.AuthorizeAsync(User, album, "EditPolicy");
-            var viewModel = _albumViewModelService.GetIndexAlbumViewModel(album);
-            var authResult = await authorization;
-            viewModel.isOwner = authResult.Succeeded;
-            viewModel.Profile = _profileViewModelService.GetProfileViewModel(profile);
-            viewModel.Profile.IsOwner = authResult.Succeeded;
-            viewModel.Profile.IsFollowed = profile.Followers.Any(f => f.ProfileId == userProfileId);
-            return View(viewModel);
-
         }
 
         [HttpGet]
@@ -63,15 +39,15 @@ namespace Inkett.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(AlbumViewModel viewModel)
+        public async Task<IActionResult> Create(AlbumCreateInputModel inputModel)
         {
             if (ModelState.IsValid)
             {
                 var profileId = _userManager.GetProfileId(User);
-                await _albumService.CreateAlbum(profileId, viewModel.Title, viewModel.Description, viewModel.Picture);
+                await _albumService.CreateAlbum(profileId, inputModel.Title, inputModel.Description, inputModel.Picture);
                 return RedirectToAction("Albums", "Profile");
             }
-            return View(viewModel);
+            return View(inputModel);
         }
 
         [HttpGet]
@@ -87,13 +63,12 @@ namespace Inkett.Web.Controllers
             {
                 return new ForbidResult();
             }
-
-            var albumViewModel = _albumViewModelService.GetAlbumViewModel(album);
+            var albumViewModel = _albumViewModelService.GetAlbumViewModel<AlbumEditViewModel>(album);
             return this.View(albumViewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, AlbumViewModel albumViewModel)
+        public async Task<IActionResult> Edit(int id, AlbumEditInputModel albumEditInputModel)
         {
             if (ModelState.IsValid)
             {
@@ -107,9 +82,10 @@ namespace Inkett.Web.Controllers
                 {
                     return new ForbidResult();
                 }
-                albumViewModel = await _albumViewModelService.UpdateAlbum(album, albumViewModel);
+               
             }
-            return this.View(albumViewModel);
+            var viewModel = Mapper.Map<AlbumEditInputModel, AlbumEditViewModel>(albumEditInputModel);
+            return this.View(viewModel);
 
         }
 
@@ -126,14 +102,14 @@ namespace Inkett.Web.Controllers
             {
                 return new ForbidResult();
             }
-            var albumViewModel = _albumViewModelService.GetAlbumViewModel(album);
+            var albumViewModel = _albumViewModelService.GetAlbumViewModel<AlbumDeleteViewModel>(album);
             return this.View(albumViewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(AlbumViewModel viewModel)
+        public async Task<IActionResult> Delete(AlbumDeleteInputModel inputModel)
         {
-            var album = await _albumService.GetAlbumById(viewModel.Id);
+            var album = await _albumService.GetAlbumById(inputModel.Id);
             if (album == null)
             {
                 return new NotFoundResult();

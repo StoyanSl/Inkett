@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Inkett.ApplicationCore.Interfaces.Repositories;
 using System.Linq;
+using Inkett.ApplicationCore.Specifications;
 
 namespace Inkett.ApplicationCore.Services
 {
@@ -36,6 +37,11 @@ namespace Inkett.ApplicationCore.Services
             var styles = await GetStyles();
 
             return styles.FirstOrDefault(s=>s.Id==id);
+        }
+        public async Task<Style> GetStyleWithTattoos(int id)
+        {
+            var spec = new StyleWithTattoosSpecification(id);
+            return await _styleRepository.GetSingleBySpec(spec);
         }
     }
 }

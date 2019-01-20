@@ -12,14 +12,14 @@ namespace Inkett.ApplicationCore.Services
         {
             _commentRepository = commentRepository;
         }
-        public async Task CreateComment(int profileId, int tattoId, string text)
+        public async Task<Comment> CreateComment(int profileId, int tattoId, string text)
         {
             var comment = new Comment() {
                 ProfileId = profileId,
                 TattooId = tattoId,
                 Text = text
             };
-           await _commentRepository.AddAsync(comment);
+          return await _commentRepository.AddAsync(comment);
         }
     }
 }

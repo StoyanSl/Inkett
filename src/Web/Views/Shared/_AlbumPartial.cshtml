@@ -1,9 +1,9 @@
-﻿@model AlbumViewModel
+﻿@model AlbumListedViewModel
 
 <div class="col-auto my-2" style="padding-left:0; padding-right:0;">
     <div class="card border border-3" style="width: 18rem;">
         <img class="card-img-top img-fluid" src="@Model.PictureUri" style=" max-height:150px">
-        <a href="/Album/Index/@Model.Id">
+        <a href="/Profile/Album/@Model.Id">
             <div class="card-img-overlay p-2" >
                 <h4 class="card-title">@Model.Title</h4>
             </div>

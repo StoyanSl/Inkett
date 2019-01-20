@@ -1,5 +1,4 @@
 ﻿using Inkett.ApplicationCore.Entitites;
-using System.Collections.Generic;
 
 namespace Inkett.ApplicationCore.Specifications
 {
@@ -8,6 +7,8 @@ namespace Inkett.ApplicationCore.Specifications
         public TattooWithStylesSpecification(int tattooId) : base(t => t.Id == tattooId)
         {
             AddInclude(t => t.TattooStyles);
+            AddInclude("TattooStyles.Tattoo");
+            AddInclude("TattooStyles.Style");
             AddInclude(t => t.Profile);
             AddInclude(t => t.Profile.Albums);
             AddInclude($"Comments.Profile");

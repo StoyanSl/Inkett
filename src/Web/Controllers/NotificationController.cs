@@ -14,6 +14,8 @@ namespace Inkett.Web.Controllers
         private readonly InkettUserManager _inkettUserManager;
         private readonly INotificationService _notificationService;
         private readonly INotificationViewModelService _notificationViewModelService;
+
+
         public NotificationController(INotificationViewModelService notificationViewModelService,
             InkettUserManager inkettUserManager,
             INotificationService notificationService)
@@ -29,7 +31,7 @@ namespace Inkett.Web.Controllers
             var userProfileId = _inkettUserManager.GetProfileId(User);
             var notCheckedNotifications = await _notificationService.GetNotCheckedNotifications(userProfileId);
 
-            var viewModels =  _notificationViewModelService.GetNotificationsViewModels(notCheckedNotifications);
+            var viewModels = _notificationViewModelService.GetNotificationsViewModels(notCheckedNotifications);
             return View(viewModels);
         }
 
@@ -48,7 +50,7 @@ namespace Inkett.Web.Controllers
         {
             var userProfileId = _inkettUserManager.GetProfileId(User);
             var userId = _inkettUserManager.GetUserId(User);
-           await _notificationService.CheckNotification(notificationId);
+            await _notificationService.CheckNotification(notificationId);
         }
     }
 }

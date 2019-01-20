@@ -7,8 +7,16 @@
     <UserSecretsId>5dd80447-c909-4dda-a6e1-81f8a69ffe10</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Views\Manage\**" />
+    <Content Remove="Views\Manage\**" />
+    <EmbeddedResource Remove="Views\Manage\**" />
+    <None Remove="Views\Manage\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
@@ -25,7 +33,7 @@
   <ItemGroup>
     <Folder Include="Areas\Account\Data\" />
     <Folder Include="Areas\Account\Views\Shared\" />
-    <Folder Include="Views\Manage\" />
+    <Folder Include="Models\ViewModels\Comments\" />
     <Folder Include="wwwroot\tempImages\" />
   </ItemGroup>
 

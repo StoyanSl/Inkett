@@ -1,5 +1,4 @@
-﻿
-@model HomeIndexViewModel
+﻿@model HomeIndexViewModel
 <div class="container-fluid" style="margin-top:100px">
     <div class="container d-flex justify-content-center">
         <div class="col-md-7 bg-white py-4 mx-4" style="border-radius: 40px;">
@@ -12,7 +11,7 @@
             <div class="d-flex  align-items-center col-sm-12 px-2 pt-2" style="margin-bottom:10px; border-radius:10px">
 
                 <div id="tattooContainer" class="row">
-                    <partial name="_ListedTattoosContainer" model="Model.ListedTattooViewModels" />
+                    <partial name="_ListedTattoosContainer" model="Model.TattoosListedViewModels" />
                 </div>
             </div>
         </div>
@@ -30,40 +29,41 @@
                     {
                         <partial name="_ListedProfilePartial" model="item" />
                     }
+
                 </div>
             </div>
 
         </div>
     </div>
 </div>
-        @*
-            @section Scripts{
-                <script>
-                        $(document).ready(function () {
-                            $(window).scroll(function () {
-                                if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-                                    InfiniteScroll();
-                                }
-                            });
-                            var pageCounter = 1;
-                            function InfiniteScroll() {
-                                $.ajax({
-                                    url: "/Home/GetTopTattoos/",
-                                    type: 'POST',
-                                    dataType: 'html',
-                                    beforeSend: function (xhr) {
-                                        xhr.setRequestHeader("RequestVerificationToken",
-                                            $('input:hidden[name="__RequestVerificationToken"]').val());
-                                    },
-                                    data: { page: pageCounter },
-                                    success: function (result) {
-                                        $("#tattooContainer").append(result)
-                                        pageCounter++
-                                    }
-                                })
+@*
+    @section Scripts{
+        <script>
+                $(document).ready(function () {
+                    $(window).scroll(function () {
+                        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                            InfiniteScroll();
+                        }
+                    });
+                    var pageCounter = 1;
+                    function InfiniteScroll() {
+                        $.ajax({
+                            url: "/Home/GetTopTattoos/",
+                            type: 'POST',
+                            dataType: 'html',
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader("RequestVerificationToken",
+                                    $('input:hidden[name="__RequestVerificationToken"]').val());
+                            },
+                            data: { page: pageCounter },
+                            success: function (result) {
+                                $("#tattooContainer").append(result)
+                                pageCounter++
                             }
-                        });
+                        })
+                    }
+                });
 
-                </script>
-            }
-        *@
+        </script>
+    }
+*@

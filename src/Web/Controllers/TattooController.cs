@@ -1,12 +1,10 @@
 ﻿using Inkett.ApplicationCore.Interfaces.Services;
 using Inkett.Infrastructure.Identity;
-using Inkett.Web.Common;
 using Inkett.Web.Interfaces.Services;
-using Inkett.Web.Viewmodels.Tattoo;
+using Inkett.Web.Models.InputModels.Tattoos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System;
 using System.Threading.Tasks;
 
 namespace Inkett.Web.Controllers
@@ -16,18 +14,17 @@ namespace Inkett.Web.Controllers
     {
         private readonly InkettUserManager _userManager;
         private readonly ITattooViewModelService _tattooViewModelService;
-        private readonly IProfileViewModelService _profileViewModelService;
         private readonly IProfileService _profileService;
         private readonly IAuthorizationService _authorizationService;
         private readonly ITattooService _tattooService;
         private readonly ICommentService _commentService;
         private readonly INotificationService _notificationService;
+       
 
         public TattooController(ITattooViewModelService tattooViewModelService,
            InkettUserManager userManager,
            IAuthorizationService authorizationService,
             ITattooService tattooService,
-            IProfileViewModelService profileViewModelService,
             ICommentService commentService,
             IProfileService profileService,
             INotificationService notificationService)
@@ -36,10 +33,11 @@ namespace Inkett.Web.Controllers
             _userManager = userManager;
             _authorizationService = authorizationService;
             _tattooService = tattooService;
-            _profileViewModelService = profileViewModelService;
+         
             _commentService = commentService;
             _profileService = profileService;
             _notificationService = notificationService;
+            
         }
 
         [HttpGet]
@@ -49,10 +47,9 @@ namespace Inkett.Web.Controllers
             var profileId = _userManager.GetProfileId(User);
             if (tattoo == null)
             {
-                throw new ApplicationException(ExceptionMessages.TattooNotFound);
+                return NotFound();
             }
-            var viewModel = await _tattooViewModelService.GetIndexTattooViewModel(tattoo, profileId);
-            viewModel.Profile = _profileViewModelService.GetProfileViewModel(tattoo.Profile);
+            var viewModel =  _tattooViewModelService.GetTattooIndexViewModel(tattoo, profileId);
             return View(viewModel);
         }
 
@@ -60,57 +57,23 @@ namespace Inkett.Web.Controllers
         public async Task<IActionResult> Create()
         {
             var profileId = _userManager.GetProfileId(User);
-            var viewModel = await _tattooViewModelService.GetCreateTattooViewModel(profileId);
+            var profile =  _profileService.GetProfileWithAlbums(profileId);
+            var viewModel =  await _tattooViewModelService.GetTattooCreateViewModel(await profile);
             return this.View(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(TattooViewModel viewModel)
+        public async Task<IActionResult> Create(TattooCreateInputModel viewModel)
         {
             if (ModelState.IsValid)
             {
                 var profileId = _userManager.GetProfileId(User);
                 await _tattooViewModelService.CreateTattooByViewModel(viewModel, profileId);
-                return RedirectToAction("Tattoos","Profile", new { id=profileId});
+                return RedirectToAction("Tattoos", "Profile", new { id = profileId });
             }
             return View(viewModel);
         }
 
-
-        [HttpPost]
-        public async Task<IActionResult> CommentPost([FromBody]CommentBindingModel tattooComment)
-        {
-            if (!ModelState.IsValid)
-            {
-                return NoContent();
-            }
-            var profileId = _userManager.GetProfileId(User);
-            var profile = await _profileService.GetProfileById(profileId);
-            var profileViewModel = _profileViewModelService.GetProfileViewModel(profile);
-
-            await _commentService.CreateComment(profileId, tattooComment.TattooId, tattooComment.CommentText);
-            var commentViewModel = _tattooViewModelService.GetCommentViewModel(profileViewModel, tattooComment.CommentText);
-            
-            var jsonCommentViewModel = JsonConvert.SerializeObject(commentViewModel);
-            return Ok(jsonCommentViewModel);
-        }
-
-        [Route("LikeTattoo")]
-        [HttpPost]
-        public async Task LikeTattoo([FromBody]LikeBindingModel likeModel)
-        {
-            var profileId = _userManager.GetProfileId(User);
-            await _tattooService.CreateLike(profileId, likeModel.TattooId);
-        }
-
-        [Route("DislikeTattoo")]
-        [HttpPost]
-        public async Task DislikeTattoo([FromBody]LikeBindingModel likeModel)
-        {
-            var profileId = _userManager.GetProfileId(User);
-            await _tattooService.RemoveLike(profileId, likeModel.TattooId);
-        }
-       
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -120,53 +83,59 @@ namespace Inkett.Web.Controllers
             {
                 return NotFound();
             }
-            var authorizeResultTask =  _authorizationService.AuthorizeAsync(User, tattoo, "EditPolicy");
-            var viewModelTask = _tattooViewModelService.GetEditTattooViewModel(tattoo);
+            var authorizeResultTask = _authorizationService.AuthorizeAsync(User, tattoo, "EditPolicy");
             if (!authorizeResultTask.GetAwaiter().GetResult().Succeeded)
             {
                 return Forbid();
             }
-            return View(viewModelTask.GetAwaiter().GetResult());
+            var viewModel = await _tattooViewModelService.GetTattooEditViewModel(tattoo);
+            return View(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id,EditTattooViewModel viewModel)
+        public async Task<IActionResult> Edit(int id, TattooEditInputModel inputModel)
         {
-            var tattoo = await _tattooService.GetTattooWithStyles(id);
+           
             if (ModelState.IsValid)
             {
+                var tattoo = await _tattooService.GetTattooWithStyles(id);
+                var authorizeResultTask = _authorizationService.AuthorizeAsync(User, tattoo, "EditPolicy");
+                if (!authorizeResultTask.GetAwaiter().GetResult().Succeeded)
+                {
+                    return Forbid();
+                }
                 var profileId = _userManager.GetProfileId(User);
-                await _tattooViewModelService.EditTattooByViewModel(viewModel, tattoo);
+                await _tattooViewModelService.EditTattooByViewModel(inputModel, tattoo);
             }
-             viewModel = await _tattooViewModelService.GetEditTattooViewModel(tattoo);
+            var profile = _profileService.GetProfileWithAlbums(_userManager.GetProfileId(User));
+            var viewModel = await _tattooViewModelService.GetTattooEditViewModel(inputModel,await profile);
             return View(viewModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var profileId = _userManager.GetProfileId(User);
             var tattoo = await _tattooService.GetTattooById(id);
             if (tattoo == null)
             {
                 return NotFound();
             }
-            var authorizeResultTask = _authorizationService.AuthorizeAsync(User, tattoo, "EditPolicy");
-            var viewModelTask = _tattooViewModelService.GetListedTattooViewModel(tattoo);
-            if (!authorizeResultTask.GetAwaiter().GetResult().Succeeded)
+            var authorizeResult = await _authorizationService.AuthorizeAsync(User, tattoo, "EditPolicy");
+            if (!authorizeResult.Succeeded)
             {
                 return Forbid();
             }
-            return View(viewModelTask);
+            var viewModel = _tattooViewModelService.GetTattooListedViewModel(tattoo);
+            return View(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(ListedTattooViewModel viewModel)
+        public async Task<IActionResult> Delete(TattooDeleteInputModel inputModel)
         {
             if (ModelState.IsValid)
             {
                 var profileId = _userManager.GetProfileId(User);
-                var tattoo = await _tattooService.GetTattooById(viewModel.Id);
+                var tattoo = await _tattooService.GetTattooById(inputModel.Id);
                 if (tattoo == null)
                 {
                     return NotFound();
@@ -179,8 +148,39 @@ namespace Inkett.Web.Controllers
                 await _tattooService.RemoveTattoo(tattoo);
                 return RedirectToAction("Index", "Profile");
             }
-            return View(viewModel);
+            return RedirectToAction("Index","Profile");
         }
-            
+
+        [HttpPost]
+        public async Task<IActionResult> CommentPost([FromBody]CommentInputModel tattooComment)
+        {
+            if (!ModelState.IsValid)
+            {
+                return NoContent();
+            }
+            var profile = await _profileService.GetProfileById(_userManager.GetProfileId(User));
+            await _commentService.CreateComment(profile.Id, tattooComment.TattooId, tattooComment.CommentText);
+            var commentViewModel = _tattooViewModelService.GetCommentViewModel(profile, tattooComment.CommentText);
+
+            var jsonCommentViewModel = JsonConvert.SerializeObject(commentViewModel);
+            return Ok(jsonCommentViewModel);
+        }
+
+        [Route("LikeTattoo")]
+        [HttpPost]
+        public async Task LikeTattoo([FromBody]LikeInputModel likeModel)
+        {
+            var profileId = _userManager.GetProfileId(User);
+            await _tattooService.CreateLike(profileId, likeModel.TattooId);
+        }
+
+        [Route("DislikeTattoo")]
+        [HttpPost]
+        public async Task DislikeTattoo([FromBody]LikeInputModel likeModel)
+        {
+            var profileId = _userManager.GetProfileId(User);
+            await _tattooService.RemoveLike(profileId, likeModel.TattooId);
+        }
+
     }
 }

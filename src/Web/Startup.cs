@@ -1,5 +1,4 @@
-﻿using System;
-using Inkett.ApplicationCore.Interfaces.Repositories;
+﻿using Inkett.ApplicationCore.Interfaces.Repositories;
 using Inkett.ApplicationCore.Interfaces.Services;
 using Inkett.ApplicationCore.Services;
 using Inkett.Infrastructure.Data;
@@ -7,6 +6,10 @@ using Inkett.Infrastructure.Identity;
 using Inkett.Web.Interfaces.Services;
 using Inkett.Infrastructure.Services;
 using Inkett.Web.Services;
+using Inkett.Web.Handlers;
+using Inkett.ApplicationCore.Services.Options;
+using Inkett.Web.Common.Mapping;
+using Inkett.ApplicationCore.Entitites;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -16,8 +19,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authorization;
-using Inkett.Web.Handlers;
-using Inkett.ApplicationCore.Services.Options;
+using System;
+using Inkett.Web.Models.ViewModels.Profiles;
+using AutoMapper;
 
 namespace Web
 {
@@ -34,6 +38,11 @@ namespace Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CloudinaryApiDetails>(Configuration.GetSection("CloudinaryApiDetails"));
+
+           AutoMapperConfig.RegisterMappings(
+               typeof(Tattoo).Assembly,
+               typeof(ProfileViewModel).Assembly
+           );
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
@@ -69,6 +78,7 @@ namespace Web
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IImageUploader, ImageUploader>();
+            services.AddScoped<IHomeViewModelService, HomeViewModelService>();
             services.AddScoped<IProfileViewModelService, ProfileViewModelService>();
             services.AddScoped<IAlbumViewModelService, AlbumViewModelService>();
             services.AddScoped<ITattooViewModelService, TattooViewModelService>();

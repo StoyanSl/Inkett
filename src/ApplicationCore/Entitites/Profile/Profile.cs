@@ -19,25 +19,25 @@ namespace Inkett.ApplicationCore.Entitites
             Guard.Against.NullOrEmpty(profileName, nameof(profileName));
 
             this.AccountId = accountId;
-            this.ProfileName = profileName;
-            this.ProfileDescription = profileDescription;
-            this.ProfilePicture =defaultProfile;
-            this.CoverPicture = defaultCover;
+            this.Name = profileName;
+            this.Description = profileDescription;
+            this.ProfilePictureUri =defaultProfile;
+            this.CoverPictureUri = defaultCover;
         }
         [Required]
         public string AccountId { get; set; }
 
         [Required]
         [StringLength(25, MinimumLength = 2)]
-        public string ProfileName { get; set; }
+        public string Name { get; set; }
 
         [Required]
-        public string ProfilePicture { get; set; }
+        public string ProfilePictureUri { get; set; }
 
         [Required]
-        public string CoverPicture { get; set; }
+        public string CoverPictureUri { get; set; }
 
-        public string ProfileDescription { get; set; }
+        public string Description { get; set; }
 
         public List<Album> Albums { get; set; }
 
