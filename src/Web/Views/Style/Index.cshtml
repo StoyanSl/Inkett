@@ -35,14 +35,14 @@
             var pageCounter = 1;
             function InfiniteScroll() {
                 $.ajax({
-                    url: "/Style/GetTattoos/" +@Model.Id,
+                    url: "/api/Style/GetTattoos/" ,
                     type: 'POST',
                     dataType: 'html',
                     beforeSend: function (xhr) {
                         xhr.setRequestHeader("RequestVerificationToken",
                             $('input:hidden[name="__RequestVerificationToken"]').val());
                     },
-                    data: { page: pageCounter },
+                    data: {id:@Model.Id, page: pageCounter },
                     success: function (result) {
                         $("#tattooContainer").append(result)
                         pageCounter++

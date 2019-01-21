@@ -115,7 +115,7 @@
                     $(".button-like").toggleClass("liked");
                     if ($(".button-like").hasClass("liked")) {
                         $.ajax({
-                            url: "/LikeTattoo",
+                            url: "/api/Tattoo/LikeTattoo",
                             type: 'POST',
                             contentType: 'application/json',
                             beforeSend: function (xhr) {
@@ -128,7 +128,7 @@
                     }
                     else {
                         $.ajax({
-                            url: "/DislikeTattoo",
+                            url: "/api/Tattoo/DislikeTattoo",
                             type: 'POST',
                             contentType: 'application/json',
                             beforeSend: function (xhr) {
@@ -155,7 +155,7 @@
             var tattooId=@Model.Id;
             var token = $('input[name="__RequestVerificationToken"]', form).val();
                 $.ajax({
-                    url: "/Tattoo/CommentPost/"+@Model.Id,
+                    url: "/api/Tattoo/CommentPost/"+@Model.Id,
                     type: 'POST',
                     contentType: 'application/json',
                     beforeSend: function (xhr) {

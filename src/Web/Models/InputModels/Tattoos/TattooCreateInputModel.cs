@@ -18,6 +18,8 @@ namespace Inkett.Web.Models.InputModels.Tattoos
         [Display(Name = "Tattoo Picture")]
         public IFormFile TattooPicture { get; set; }
 
+        [MaxLength(255)]
+        [DataType(DataType.Text)]
         public string Description { get; set; }
         
         [AtLeastOneStyleRequired]
@@ -25,6 +27,8 @@ namespace Inkett.Web.Models.InputModels.Tattoos
 
         public List<SelectListItem> Albums { get; set; } = new List<SelectListItem>();
 
+        [Required]
+        [Range(0,int.MaxValue)]
         public int Album { get; set; }
 
         public void CreateMappings(IMapperConfigurationExpression configuration)

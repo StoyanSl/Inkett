@@ -68,30 +68,6 @@ namespace Inkett.Web.Controllers
             var viewModels = _profileViewModelService.GetProfilesViewModels(profiles);
             return View(viewModels);
         }
-
-        [HttpPost]
-        public async Task<PartialViewResult> GetTopTattoos(int? page)
-        {
-            var tattoos = await _tattooService.GetTopTattoos(page ?? 0, ItemsPerPage);
-            var viewModel = tattoos.Select(x => _tattooViewModelService.GetTattooListedViewModel(x)).ToList();
-            return PartialView("~/Views/Shared/_ListedTattoosContainer.cshtml", viewModel);
-        }
-        
-        [HttpPost]
-        public async Task<PartialViewResult> GetTopProfiles(int? page)
-        {
-            var profiles = await _profileService.GetTopProfiles(page ?? 0, ItemsPerPage);
-            var viewModels = _profileViewModelService.GetProfilesViewModels(profiles);
-            return PartialView("~/Views/Home/_ListedProfilesContainer.cshtml", viewModels);
-        }
-
-        [HttpPost]
-        public async Task<PartialViewResult> GetTattoos(int? page)
-        {
-            var tattoos = await _tattooService.GetTattoos(page ?? 0, ItemsPerPage);
-            var viewModel = tattoos.Select(x => _tattooViewModelService.GetTattooListedViewModel(x)).ToList();
-            return PartialView("~/Views/Shared/_ListedTattoosContainer.cshtml", viewModel);
-        }
         
         [AllowAnonymous]
         [HttpGet]

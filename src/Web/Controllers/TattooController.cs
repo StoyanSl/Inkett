@@ -33,7 +33,6 @@ namespace Inkett.Web.Controllers
             _userManager = userManager;
             _authorizationService = authorizationService;
             _tattooService = tattooService;
-         
             _commentService = commentService;
             _profileService = profileService;
             _notificationService = notificationService;
@@ -166,21 +165,7 @@ namespace Inkett.Web.Controllers
             return Ok(jsonCommentViewModel);
         }
 
-        [Route("LikeTattoo")]
-        [HttpPost]
-        public async Task LikeTattoo([FromBody]LikeInputModel likeModel)
-        {
-            var profileId = _userManager.GetProfileId(User);
-            await _tattooService.CreateLike(profileId, likeModel.TattooId);
-        }
-
-        [Route("DislikeTattoo")]
-        [HttpPost]
-        public async Task DislikeTattoo([FromBody]LikeInputModel likeModel)
-        {
-            var profileId = _userManager.GetProfileId(User);
-            await _tattooService.RemoveLike(profileId, likeModel.TattooId);
-        }
+       
 
     }
 }

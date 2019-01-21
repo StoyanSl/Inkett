@@ -29,7 +29,7 @@
                 var pageCounter = 1;
                 function InfiniteScroll() {
                     $.ajax({
-                        url: "/Home/GetTopTattoos/",
+                        url: "/api/Home/GetTopTattoos/",
                         type: 'POST',
                         dataType: 'html',
                         beforeSend: function (xhr) {

@@ -13,6 +13,7 @@ namespace Inkett.Web.Models.InputModels.Profiles
         public IFormFile ProfilePictureFile { get; set; }
 
         [MaxLength(255)]
+        [DataType(DataType.Text)]
         public string Description { get; set; }
     }
 }

@@ -163,31 +163,7 @@ namespace Inkett.Web.Controllers
 
         }
 
-        [HttpPost]
-        [Route("FollowProfile")]
-        public async Task<IActionResult> FollowProfile(int profileId)
-        {
-            var followerId = _userManager.GetProfileId(User);
-            if (profileId == followerId)
-            {
-                return NotFound();
-            }
-            await _profileService.CreateFollow(followerId, profileId);
-            return Ok();
-        }
-
-        [HttpPost]
-        [Route("UnFollowProfile")]
-        public async Task<IActionResult> UnFollowProfile(int profileId)
-        {
-            var followerId = _userManager.GetProfileId(User);
-            if (profileId == followerId)
-            {
-                return NotFound();
-            }
-            await _profileService.RemoveFollow(followerId, profileId);
-            return Ok();
-        }
+      
 
     }
 }

@@ -5,7 +5,7 @@ $(document).ready(function () {
         let profileId = $('#profileId').val();
         if ($(".button-like").hasClass("liked")) {
             $.ajax({
-                url: "/FollowProfile",
+                url: "/api/Profile/FollowProfile",
                 type: 'POST',
                 dataType:'html',
                 beforeSend: function (xhr) {
@@ -17,7 +17,7 @@ $(document).ready(function () {
         }
         else {
             $.ajax({
-                url: "/UnFollowProfile",
+                url: "/api/Profile/UnFollowProfile",
                 type: 'POST',
                 dataType: 'html',
                 beforeSend: function (xhr) {

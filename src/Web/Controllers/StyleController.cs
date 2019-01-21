@@ -54,16 +54,7 @@ namespace Inkett.Web.Controllers
             return View(viewModel);
         }
 
-        [HttpPost]
-        public async Task<PartialViewResult> GetTattoos(int id, int? page)
-        {
-            int tattoosPerPage = 9;
-            var style = await _styleService.GetStyleById(id);
-            var tattoos = await _tattooService.GetTattoosByStyle(page ?? 0, tattoosPerPage, id);
-            var tattoosViewModels = tattoos.Select(x => _tattooViewModelService.GetTattooListedViewModel(x)).ToList();
-            var partial = PartialView("~/Views/Shared/_ListedTattoosContainer.cshtml", tattoosViewModels);
-            return partial;
-        }
+        
 
     }
 }

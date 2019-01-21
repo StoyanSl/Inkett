@@ -9,6 +9,7 @@ namespace Inkett.Web.Models.InputModels.Tattoos
         public string CommentText { get; set; }
 
         [Required]
+        [Range(0,int.MaxValue)]
         public int TattooId { get; set; }
     }
 }

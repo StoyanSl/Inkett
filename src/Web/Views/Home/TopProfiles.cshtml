@@ -30,7 +30,7 @@
                 var pageCounter = 1;
                 function InfiniteScroll() {
                     $.ajax({
-                        url: "/Home/GetTopProfiles/",
+                        url: "/api/Home/GetTopProfiles/",
                         type: 'POST',
                         dataType: 'html',
                         beforeSend: function (xhr) {

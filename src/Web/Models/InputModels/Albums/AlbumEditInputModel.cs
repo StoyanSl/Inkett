@@ -9,6 +9,7 @@ namespace Inkett.Web.Models.InputModels.Albums
 {
     public class AlbumEditInputModel : IMapTo<AlbumEditViewModel>
     {
+        [Range(0, int.MaxValue)]
         public int Id { get; set; }
 
         [Required]
@@ -22,7 +23,8 @@ namespace Inkett.Web.Models.InputModels.Albums
 
         [Display(Name = "Album Description")]
         public string Description { get; set; }
-
+        
+        [DataType(DataType.Url)]
         public string PictureUri { get; set; }
     }
 }
